@@ -53,7 +53,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v4
         with:
-          file: ./tracedin-application/app-api/Dockerfile
+          file: ./ea-application/app-api/Dockerfile
           context: .
           builder: ${{ steps.buildx.outputs.name }}
           push: true
