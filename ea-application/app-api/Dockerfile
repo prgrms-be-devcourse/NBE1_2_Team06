@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine as build
+FROM openjdk:17-jdk-alpine as build
 WORKDIR /workspace/app
 
 # 환경변수 추가
@@ -11,7 +11,7 @@ COPY ../.. .
 RUN ./gradlew :ea-application:${MODULE_NAME}:build --parallel -x test
 RUN mkdir -p ${MODULE_PATH}/build/extracted && (java -Djarmode=layertools -jar ${MODULE_PATH}/build/libs/${MODULE_NAME}-${VERSION}.jar extract --destination ${MODULE_PATH}/build/extracted)
 
-FROM eclipse-temurin:17-jdk-alpine
+FROM openjdk:17-jdk-alpine
 VOLUME /tmp
 
 RUN apk update
