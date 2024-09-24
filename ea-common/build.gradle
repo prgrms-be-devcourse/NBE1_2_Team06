@@ -3,6 +3,6 @@ bootJar {
 }
 
 dependencies {
-
+    api 'org.springframework.boot:spring-boot-starter-json'
     implementation 'org.springframework:spring-context'
 }

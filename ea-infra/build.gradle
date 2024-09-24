@@ -3,6 +3,14 @@ bootJar {
 }
 
 dependencies {
+
+    implementation project(':ea-common')
+    implementation project(':ea-domain')
+
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     runtimeOnly 'com.mysql:mysql-connector-j'
+
+    //open feign
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '4.1.3'
+    implementation 'org.springframework.cloud:spring-cloud-commons:4.1.4'
 }
