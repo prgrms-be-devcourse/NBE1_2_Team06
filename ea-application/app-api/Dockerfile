@@ -14,8 +14,7 @@ RUN mkdir -p ${MODULE_PATH}/build/extracted && (java -Djarmode=layertools -jar $
 FROM openjdk:17.0.1-jdk-slim
 VOLUME /tmp
 
-RUN apk update
-RUN apk --no-cache add curl # for health check
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 
 ARG MODULE_PATH=ea-application/app-api
 ARG EXTRACTED=/workspace/app/${MODULE_PATH}/build/extracted
