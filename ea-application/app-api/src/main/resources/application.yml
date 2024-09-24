@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    group:
+      local: common, domain, infra
+      dev: common, domain, infra
+
+server:
+  shutdown: graceful
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev

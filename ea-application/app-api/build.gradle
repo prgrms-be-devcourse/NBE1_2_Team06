@@ -1,0 +1,15 @@
+dependencies {
+
+    implementation project(':ea-domain')
+    implementation project(':ea-infra')
+    implementation project(':ea-common')
+
+    //API 문서화 Swagger-UI
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+    //aop
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}
