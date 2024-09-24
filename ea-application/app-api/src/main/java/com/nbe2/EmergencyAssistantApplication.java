@@ -1,4 +1,4 @@
-package com.nbe2.api;
+package com.nbe2;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

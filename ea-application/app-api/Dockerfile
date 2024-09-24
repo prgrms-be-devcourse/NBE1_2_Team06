@@ -1,4 +1,4 @@
-FROM openjdk:17.0.1-jdk-slim as build
+FROM openjdk:17.0.1-jdk-slim AS build
 WORKDIR /workspace/app
 
 # 환경변수 추가
