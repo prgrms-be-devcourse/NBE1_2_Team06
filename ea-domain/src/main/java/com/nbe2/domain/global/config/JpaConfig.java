@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaAuditing
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "com.nbe2.domain")
 public class JpaConfig {}
