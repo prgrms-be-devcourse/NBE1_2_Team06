@@ -1,5 +1,6 @@
 package com.nbe2.domain.emergencyroom;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
