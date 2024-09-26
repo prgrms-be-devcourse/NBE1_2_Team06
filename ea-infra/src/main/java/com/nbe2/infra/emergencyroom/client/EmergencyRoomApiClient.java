@@ -7,24 +7,23 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-import com.nbe2.domain.emergencyroom.EmergencyRoomClient;
 import com.nbe2.domain.emergencyroom.RealTimeEmergencyInfo;
+import com.nbe2.domain.emergencyroom.RealTimeEmergencyRoomReader;
+import com.nbe2.domain.emergencyroom.Region;
 import com.nbe2.infra.openapi.client.OpenApiFeignClient;
 import com.nbe2.infra.openapi.dto.RealTimeEmergencyDataResponse;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
-public class EmergencyRoomApiClient implements EmergencyRoomClient {
+public class EmergencyRoomApiClient implements RealTimeEmergencyRoomReader {
 
     private final OpenApiFeignClient openApiFeignClient;
 
     @Override
-    public List<RealTimeEmergencyInfo> getRealTimeEmergencyData(String region, String subRegion) {
+    public List<RealTimeEmergencyInfo> getRealTimeEmergencyData(Region region) {
         return openApiFeignClient
-                .getRealTimeEmergencyData(region, subRegion, NUM_OF_ROWS)
+                .getRealTimeEmergencyData(region.region(), region.subRegion(), NUM_OF_ROWS)
                 .getItems()
                 .stream()
                 .map(RealTimeEmergencyDataResponse::toRealTimeEmergencyInfo)

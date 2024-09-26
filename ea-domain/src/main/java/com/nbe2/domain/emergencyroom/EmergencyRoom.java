@@ -53,9 +53,14 @@ public class EmergencyRoom extends BaseTimeEntity {
     @AllArgsConstructor
     @Builder
     public static class Location {
+
         private String longitude;
 
         private String latitude;
+
+        public Coordinate toCoordinate() {
+            return Coordinate.of(Double.parseDouble(longitude), Double.parseDouble(latitude));
+        }
     }
 
     @Embeddable
@@ -63,6 +68,7 @@ public class EmergencyRoom extends BaseTimeEntity {
     @AllArgsConstructor
     @Builder
     public static class BedCount {
+
         private int totalBedCount;
 
         private int thoracicIcuBedCount;
