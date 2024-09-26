@@ -1,6 +1,7 @@
 package com.nbe2.domain.user.exception;
 
 import static com.nbe2.common.constants.EAConstants.BAD_REQUEST;
+import static com.nbe2.common.constants.EAConstants.NOT_FOUND;
 
 import lombok.RequiredArgsConstructor;
 
@@ -9,6 +10,7 @@ import com.nbe2.common.exception.ErrorReason;
 
 @RequiredArgsConstructor
 public enum UserErrorCode implements BaseErrorCode {
+    USER_NOT_FOUND(NOT_FOUND, "USER_404_1", "존재하지 않는 회원입니다."),
     ALREADY_EXISTS_EMAIL(BAD_REQUEST, "USER_400_1", "이미 존재하는 이메일입니다.");
 
     private final Integer status;

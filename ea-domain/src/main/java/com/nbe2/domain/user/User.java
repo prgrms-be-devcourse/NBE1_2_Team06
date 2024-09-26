@@ -61,4 +61,8 @@ public class User extends BaseTimeEntity {
                 .signupStatus(SignupStatus.APPROVED)
                 .build();
     }
+
+    public void approve() {
+        this.signupStatus = SignupStatus.APPROVED;
+    }
 }
