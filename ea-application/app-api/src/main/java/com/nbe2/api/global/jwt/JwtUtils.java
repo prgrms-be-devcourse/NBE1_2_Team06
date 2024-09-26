@@ -1,40 +1,68 @@
 package com.nbe2.api.global.jwt;
 
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 
 import javax.crypto.spec.SecretKeySpec;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+
+import com.nbe2.common.exception.GlobalErrorCode;
+import com.nbe2.common.exception.WebException;
+
+import io.jsonwebtoken.*;
 
 public class JwtUtils {
-    private static final String SECRET_KEY =
-            "fefnfjlfkwjfelfefjkflefefnfjlfkwjfelfefjkflefefnfjlfkwjfelfefjkflefefnfjlfkwjfelfefjkflefefnfjlfkwjfelfefjkfle";
 
-    public static String createToken(String userId) {
-        Claims claims = Jwts.claims().setSubject(userId);
-        claims.put("role", "ADMIN");
+    @Value("${jwt.key}")
+    private static String SECRET_KEY;
 
+    private static final long EXPIRATION_TIME = 86400000; // -> 약 하루의 토큰 유효 기간
+
+    // Access Token 생성
+    public static String createAccessToken(String username, String role) {
+        return createJwt(username, role);
+    }
+
+    // jwt 생성
+    // 권한 설정은 임시
+    private static String createJwt(String username, String role) {
+        Claims claims = Jwts.claims().setSubject(username);
+        claims.put("role", role);
+        Date time = new Date();
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(new Date(System.currentTimeMillis() + 86400000))
-                .signWith(createSecreatKeySpac(), SignatureAlgorithm.HS256)
+                .setIssuedAt(time)
+                .setExpiration(new Date(time.getTime() + EXPIRATION_TIME))
+                //                .setExpiration(new Date(time.getTime() + 1))
+                .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    private static Key createSecreatKeySpac() {
-        return new SecretKeySpec(
-                Base64.getDecoder().decode(SECRET_KEY), SignatureAlgorithm.HS256.getJcaName());
+    // Jwt 서명 발급
+    private static Key getKey() {
+        return new SecretKeySpec(SECRET_KEY.getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 
-    public static String validateToken(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJwt(token).getBody().getSubject();
+    // Jwt에서 username 추출
+    public static String getUserName(String jwt) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getKey())
+                .build()
+                .parseClaimsJws(jwt)
+                .getBody()
+                .getSubject();
     }
 
-    public static String getUserId(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+    // Jwt 검증
+    public static boolean validateJwt(String jwt) {
+        try {
+            Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(jwt);
+            return true;
+        } catch (ExpiredJwtException e) {
+            throw new WebException(GlobalErrorCode.OTHER_SERVER_EXPIRED_TOKEN);
+        } catch (IllegalArgumentException e) {
+            throw new WebException(GlobalErrorCode.OTHER_SERVER_NOT_FOUND);
+        }
     }
 }

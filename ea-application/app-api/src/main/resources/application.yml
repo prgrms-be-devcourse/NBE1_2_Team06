@@ -12,9 +12,14 @@ spring:
   config:
     activate:
       on-profile: local
+jwt:
+  key: ${JWY_KEY}
 
 ---
 spring:
   config:
     activate:
       on-profile: dev
+
+jwt:
+  key: ${JWY_KEY}
