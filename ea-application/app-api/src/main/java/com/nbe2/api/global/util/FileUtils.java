@@ -5,11 +5,21 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nbe2.domain.file.FileMetaData;
 
+@Component
 public class FileUtils {
+
+    private static String uploadPath;
+
+    @Value("${file.upload.path}")
+    public static void setUploadPath(String uploadPath) {
+        FileUtils.uploadPath = uploadPath;
+    }
 
     public static FileMetaData saveFile(MultipartFile uploadFile) {
 
@@ -17,7 +27,6 @@ public class FileUtils {
             return null;
         }
 
-        String uploadPath = "/Users/kangjiwon/Desktop/Projects/DevCourse/prac829/upload/";
         if (!new File(uploadPath).exists()) {
             new File(uploadPath).mkdir();
         }

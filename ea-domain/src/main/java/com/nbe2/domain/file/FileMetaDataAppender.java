@@ -6,4 +6,12 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class FileMetaDataAppender {}
+public class FileMetaDataAppender {
+
+    private final FileMetaDateRepository fileMetaDateRepository;
+
+    public Long append(FileMetaData fileMetaData) {
+        FileMetaData saved = fileMetaDateRepository.save(fileMetaData);
+        return saved.getId();
+    }
+}
