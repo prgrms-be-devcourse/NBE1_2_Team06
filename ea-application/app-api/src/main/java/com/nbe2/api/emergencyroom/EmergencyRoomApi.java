@@ -32,7 +32,8 @@ public class EmergencyRoomApi {
     }
 
     @GetMapping("/search")
-    public Response<?> saveSearEmergency(@RequestParam("hospitalName") String hospitalName) {
+    public Response<List<String>> saveSearEmergency(
+            @RequestParam("hospitalName") String hospitalName) {
         List<String> emergencyRoomListForName =
                 emergencyRoomService.getEmergencyRoomListForName(hospitalName);
         return Response.success(emergencyRoomListForName);
