@@ -8,8 +8,7 @@ server:
   shutdown: graceful
 
 file:
-  upload:
-    path: ${FILE_UPLOAD_PATH}/Users/kangjiwon/Desktop/Projects/DevCourse/prac829/files/
+  upload-path: ${FILE_UPLOAD_PATH}
 
 ---
 spring:
