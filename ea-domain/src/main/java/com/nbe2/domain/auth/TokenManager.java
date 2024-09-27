@@ -13,4 +13,8 @@ public class TokenManager {
     public void save(RefreshToken refreshToken) {
         tokenRepository.setRefreshToken(refreshToken);
     }
+
+    public void removeRefreshToken(long userId) {
+        tokenRepository.removeRefreshToken(userId);
+    }
 }

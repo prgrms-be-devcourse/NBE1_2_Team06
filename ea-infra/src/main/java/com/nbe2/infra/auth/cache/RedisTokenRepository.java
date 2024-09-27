@@ -21,6 +21,11 @@ public class RedisTokenRepository implements TokenRepository {
                 .set(getKey(refreshToken.userId()), refreshToken, AuthConstants.REFRESH_TOKEN_TTL);
     }
 
+    @Override
+    public void removeRefreshToken(long userId) {
+        template.delete(getKey(userId));
+    }
+
     private String getKey(long userId) {
         return "REFRESH_TOKEN_ER:" + userId;
     }

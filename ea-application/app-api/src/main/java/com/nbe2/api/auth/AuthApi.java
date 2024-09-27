@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import com.nbe2.api.global.util.CookieUtils;
 import com.nbe2.domain.auth.AuthConstants;
 import com.nbe2.domain.auth.AuthService;
 import com.nbe2.domain.auth.Tokens;
+import com.nbe2.domain.auth.UserPrincipal;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -42,6 +44,12 @@ public class AuthApi {
         Tokens tokens = authService.login(loginRequest.toLogin());
         HttpHeaders headers = createTokenHeaders(tokens);
         return ResponseEntity.ok().headers(headers).body(Response.success());
+    }
+
+    @DeleteMapping("/logout")
+    public Response<Void> logout(@RequestBody UserPrincipal userPrincipal) {
+        authService.logout(userPrincipal.userId());
+        return Response.success();
     }
 
     private HttpHeaders createTokenHeaders(Tokens tokens) {

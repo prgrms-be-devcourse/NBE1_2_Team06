@@ -42,4 +42,8 @@ public class AuthService {
 
         return tokens;
     }
+
+    public void logout(long userId) {
+        tokenManager.removeRefreshToken(userId);
+    }
 }
