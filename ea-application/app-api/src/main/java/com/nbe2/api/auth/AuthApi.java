@@ -25,8 +25,8 @@ public class AuthApi {
     public Response<Void> signUp(
             @RequestBody SignupRequest signupRequest,
             @RequestParam(required = false) Optional<Long> emergencyRoomId,
-            @RequestParam(required = false) Optional<Long> fileId) {
-        authService.signUp(signupRequest.toUserProfile(), emergencyRoomId, fileId);
+            @RequestParam(required = false) Optional<Long> licenseId) {
+        authService.signUp(signupRequest.toUserProfile(), emergencyRoomId, licenseId);
         return Response.success();
     }
 }

@@ -22,14 +22,17 @@ public class UserValidator {
         }
     }
 
-    public MedicalProfile validateMedicalProfile(
-            Optional<Long> emergencyRoomId, Optional<Long> fileId) {
+    private boolean isEmailDuplicated(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    public boolean isMedicalUser(Optional<Long> emergencyId, Optional<Long> licenseId) {
+        return emergencyId.isPresent() || licenseId.isPresent();
+    }
+
+    public MedicalProfile validate(Optional<Long> emergencyRoomId, Optional<Long> fileId) {
         return new MedicalProfile(
                 emergencyRoomId.orElseThrow(() -> HospitalRequiredException.EXCEPTION),
                 fileId.orElseThrow(() -> MedicalLicenseRequiredException.EXCEPTION));
-    }
-
-    private boolean isEmailDuplicated(String email) {
-        return userRepository.existsByEmail(email);
     }
 }
