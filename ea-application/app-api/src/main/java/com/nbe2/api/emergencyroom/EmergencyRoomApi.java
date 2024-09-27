@@ -2,8 +2,6 @@ package com.nbe2.api.emergencyroom;
 
 import java.util.List;
 
-import jakarta.annotation.PostConstruct;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,11 +20,6 @@ public class EmergencyRoomApi {
 
     private final EmergencyRoomService emergencyRoomService;
 
-    @PostConstruct
-    public void init() {
-        emergencyRoomService.getEmergencyRoomData();
-    }
-
     @GetMapping("/real-time")
     public Response<List<RealTimeEmergencyRoomResponse>> getRealTimeEmergencyRooms(
             Double longitude, Double latitude) {
@@ -40,7 +33,7 @@ public class EmergencyRoomApi {
     }
 
     @GetMapping("/search")
-    public Response<?> testController2(@RequestParam("hospitalName") String hospitalName) {
+    public Response<?> saveSearEmergency(@RequestParam("hospitalName") String hospitalName) {
         List<String> emergencyRoomListForName =
                 emergencyRoomService.getEmergencyRoomListForName(hospitalName);
         return Response.success(emergencyRoomListForName);

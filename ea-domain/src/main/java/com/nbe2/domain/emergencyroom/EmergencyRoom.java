@@ -120,28 +120,4 @@ public class EmergencyRoom extends BaseTimeEntity {
                         .operatingRoomBedCount(operatingRoomBedCount)
                         .build();
     }
-
-    public EmergencyRoomInfo toEmergencyRoomInfo() {
-        return EmergencyRoomInfo.builder()
-                .id(hpid) // Assuming 'id' corresponds to 'hospitalId'
-                .hospitalName(hospitalName)
-                .zipCode(zipCode)
-                .address(address)
-                .mainContactNumber(mainContactNumber)
-                .emergencyRoomContactNumber(emergencyRoomContactNumber)
-                .simpleMap(simpleMap)
-                .emergencyRoomAvailability(emergencyRoomAvailability)
-                .longitude(location.longitude)
-                .latitude(location.latitude)
-                .medicalDepartments(medicalDepartments)
-                .totalBedCount(bedCount.totalBedCount)
-                .thoracicIcuBedCount(bedCount.thoracicIcuBedCount)
-                .neurologicalIcuBedCount(bedCount.neurologicalIcuBedCount)
-                .emergencyRoomBedCount(bedCount.emergencyRoomBedCount)
-                .generalWardBedCount(bedCount.generalWardBedCount)
-                .generalIcuBedCount(bedCount.generalIcuBedCount)
-                .neonatalIcuBedCount(bedCount.neonatalIcuBedCount)
-                .operatingRoomBedCount(bedCount.operatingRoomBedCount)
-                .build();
-    }
 }
