@@ -43,7 +43,7 @@ public class EmergencyRoomApiClient implements EmergencyRoomClient {
     }
 
     private List<EmergencyRoomInfo> getEmergencyData() {
-        return getAllEmergencyRoomData().stream()
+        return getAllEmergencyRoomData().parallelStream()
                 .map(ed -> openApiFeignClient.getEmergencyInfoData(ed.hpid(), 1, 1000).getItems())
                 .map(EmergencyRoomResponse::toEmergencyRoomInfo)
                 .toList();
@@ -51,7 +51,7 @@ public class EmergencyRoomApiClient implements EmergencyRoomClient {
 
     private List<EmergencyRoomInfo> getTraumaCenterData() {
         List<AllEmergencyRoomResponse> traumaCenterData = getAllTraumaCenterData();
-        return traumaCenterData.stream()
+        return traumaCenterData.parallelStream()
                 .map(tc -> openApiFeignClient.getTraumaCenterDataInfo(tc.hpid(), 1, 20).getItems())
                 .map(TraumaCenterResponse::toEmergencyRoomInfo)
                 .toList();
