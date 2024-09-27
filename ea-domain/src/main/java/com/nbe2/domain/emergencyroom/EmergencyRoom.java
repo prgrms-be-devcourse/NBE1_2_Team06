@@ -1,10 +1,17 @@
 package com.nbe2.domain.emergencyroom;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,10 +19,12 @@ import com.nbe2.domain.global.BaseTimeEntity;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "emergency_rooms")
 public class EmergencyRoom extends BaseTimeEntity {
 
     @Id
+    @Column(name = "emergency_room_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -33,25 +42,41 @@ public class EmergencyRoom extends BaseTimeEntity {
 
     private boolean emergencyRoomAvailability;
 
-    private String longitude;
-
-    private String latitude;
-
     private String medicalDepartments;
 
-    private int totalBedCount;
+    @Embedded private Location location;
 
-    private int thoracicIcuBedCount;
+    @Embedded private BedCount bedCount;
 
-    private int neurologicalIcuBedCount;
+    @Embeddable
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    @Builder
+    public static class Location {
+        private String longitude;
 
-    private int emergencyRoomBedCount;
+        private String latitude;
+    }
 
-    private int generalWardBedCount;
+    @Embeddable
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    @Builder
+    public static class BedCount {
+        private int totalBedCount;
 
-    private int generalIcuBedCount;
+        private int thoracicIcuBedCount;
 
-    private int neonatalIcuBedCount;
+        private int neurologicalIcuBedCount;
 
-    private int operatingRoomBedCount;
+        private int emergencyRoomBedCount;
+
+        private int generalWardBedCount;
+
+        private int generalIcuBedCount;
+
+        private int neonatalIcuBedCount;
+
+        private int operatingRoomBedCount;
+    }
 }
