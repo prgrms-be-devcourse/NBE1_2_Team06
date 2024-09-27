@@ -9,11 +9,11 @@ import java.util.stream.Stream;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import com.nbe2.domain.emergencyroom.EmergencyRoomClient;
 import com.nbe2.domain.emergencyroom.EmergencyRoomInfo;
-import com.nbe2.domain.emergencyroom.RealTimeEmergencyInfo;
+import com.nbe2.domain.emergencyroom.RealTimeEmergencyRoomInfo;
+import com.nbe2.domain.emergencyroom.Region;
 import com.nbe2.infra.openapi.client.OpenApiFeignClient;
 import com.nbe2.infra.openapi.dto.AllEmergencyRoomResponse;
 import com.nbe2.infra.openapi.dto.EmergencyRoomResponse;
@@ -22,15 +22,14 @@ import com.nbe2.infra.openapi.dto.TraumaCenterResponse;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class EmergencyRoomApiClient implements EmergencyRoomClient {
 
     private final OpenApiFeignClient openApiFeignClient;
 
     @Override
-    public List<RealTimeEmergencyInfo> getRealTimeEmergencyData(String region, String subRegion) {
+    public List<RealTimeEmergencyRoomInfo> getRealTimeInfo(Region region) {
         return openApiFeignClient
-                .getRealTimeEmergencyData(region, subRegion, NUM_OF_ROWS)
+                .getRealTimeEmergencyData(region.region(), region.subRegion(), NUM_OF_ROWS)
                 .getItems()
                 .stream()
                 .map(RealTimeEmergencyDataResponse::toRealTimeEmergencyInfo)
@@ -44,15 +43,15 @@ public class EmergencyRoomApiClient implements EmergencyRoomClient {
     }
 
     private List<EmergencyRoomInfo> getEmergencyData() {
-        return getAllEmergencyRoomData().stream()
+        return getAllEmergencyRoomData().parallelStream()
                 .map(ed -> openApiFeignClient.getEmergencyInfoData(ed.hpid(), 1, 1000).getItems())
                 .map(EmergencyRoomResponse::toEmergencyRoomInfo)
                 .toList();
     }
 
-    public List<EmergencyRoomInfo> getTraumaCenterData() {
+    private List<EmergencyRoomInfo> getTraumaCenterData() {
         List<AllEmergencyRoomResponse> traumaCenterData = getAllTraumaCenterData();
-        return traumaCenterData.stream()
+        return traumaCenterData.parallelStream()
                 .map(tc -> openApiFeignClient.getTraumaCenterDataInfo(tc.hpid(), 1, 20).getItems())
                 .map(TraumaCenterResponse::toEmergencyRoomInfo)
                 .toList();

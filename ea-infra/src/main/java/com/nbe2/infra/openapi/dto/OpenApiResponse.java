@@ -1,7 +1,5 @@
 package com.nbe2.infra.openapi.dto;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record OpenApiResponse<T>(@JsonProperty("response") Response<T> response) {
@@ -19,11 +17,11 @@ public record OpenApiResponse<T>(@JsonProperty("response") Response<T> response)
                 @JsonProperty("pageNo") int pageNo,
                 @JsonProperty("totalCount") int totalCount) {
 
-            public record Items<T>(@JsonProperty("item") List<T> item) {}
+            public record Items<T>(@JsonProperty("item") T item) {}
         }
     }
 
-    public List<T> getItems() {
+    public T getItems() {
         return response.body.items.item;
     }
 }
