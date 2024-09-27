@@ -28,6 +28,8 @@ public class EmergencyRoom extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String hpid;
+
     private String hospitalName;
 
     private String zipCode;
@@ -78,5 +80,53 @@ public class EmergencyRoom extends BaseTimeEntity {
         private int neonatalIcuBedCount;
 
         private int operatingRoomBedCount;
+    }
+
+    @Builder
+    public EmergencyRoom(
+            String hpid,
+            String hospitalName,
+            String zipCode,
+            String address,
+            String mainContactNumber,
+            String emergencyRoomContactNumber,
+            String simpleMap,
+            boolean emergencyRoomAvailability,
+            double longitude,
+            double latitude,
+            String medicalDepartments,
+            int totalBedCount,
+            int thoracicIcuBedCount,
+            int neurologicalIcuBedCount,
+            int emergencyRoomBedCount,
+            int generalWardBedCount,
+            int generalIcuBedCount,
+            int neonatalIcuBedCount,
+            int operatingRoomBedCount) {
+        this.hpid = hpid;
+        this.hospitalName = hospitalName;
+        this.zipCode = zipCode;
+        this.address = address;
+        this.mainContactNumber = mainContactNumber;
+        this.emergencyRoomContactNumber = emergencyRoomContactNumber;
+        this.simpleMap = simpleMap;
+        this.emergencyRoomAvailability = emergencyRoomAvailability;
+        this.medicalDepartments = medicalDepartments;
+        this.location =
+                Location.builder()
+                        .longitude(String.valueOf(longitude))
+                        .latitude(String.valueOf(longitude))
+                        .build();
+        this.bedCount =
+                BedCount.builder()
+                        .totalBedCount(totalBedCount)
+                        .thoracicIcuBedCount(thoracicIcuBedCount)
+                        .neurologicalIcuBedCount(neurologicalIcuBedCount)
+                        .emergencyRoomBedCount(emergencyRoomBedCount)
+                        .generalWardBedCount(generalWardBedCount)
+                        .generalIcuBedCount(generalIcuBedCount)
+                        .neonatalIcuBedCount(neonatalIcuBedCount)
+                        .operatingRoomBedCount(operatingRoomBedCount)
+                        .build();
     }
 }

@@ -5,8 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nbe2.infra.openapi.config.OpenApiFeignClientConfiguration;
-import com.nbe2.infra.openapi.dto.OpenApiResponse;
-import com.nbe2.infra.openapi.dto.RealTimeEmergencyDataResponse;
+import com.nbe2.infra.openapi.dto.*;
 
 @FeignClient(
         name = "openApiFeignClient",
@@ -19,4 +18,26 @@ public interface OpenApiFeignClient {
             @RequestParam String STAGE1,
             @RequestParam(required = false) String STAGE2,
             @RequestParam(required = false) int numOfRows);
+
+    @GetMapping(value = "/getEgytListInfoInqire")
+    OpenApiResponse<AllEmergencyRoomResponse> getAllEmergencyData(
+            @RequestParam(value = "pageStartNum", required = false) int pageStartNum,
+            @RequestParam(value = "numOfRows", required = false) int numOfRows);
+
+    @GetMapping(value = "/getEgytBassInfoInqire")
+    OpenApiResponse1<EmergencyRoomResponse> getEmergencyInfoData(
+            @RequestParam(value = "HPID", required = false) String hpid,
+            @RequestParam(value = "pageNo", required = false) int pageStartNum,
+            @RequestParam(value = "numOfRows", required = false) int numOfRows);
+
+    @GetMapping(value = "/getStrmListInfoInqire")
+    OpenApiResponse<AllEmergencyRoomResponse> getAllTraumaCenterData(
+            @RequestParam(value = "pageNo", required = false) int pageStartNum,
+            @RequestParam(value = "numOfRows", required = false) int numOfRows);
+
+    @GetMapping(value = "/getEgytBassInfoInqire")
+    OpenApiResponse1<TraumaCenterResponse> getTraumaCenterDataInfo(
+            @RequestParam(value = "HPID", required = false) String hpid,
+            @RequestParam(value = "pageNo", required = false) int pageStartNum,
+            @RequestParam(value = "numOfRows", required = false) int numOfRows);
 }
