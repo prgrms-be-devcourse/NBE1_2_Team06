@@ -36,7 +36,7 @@ class UserValidatorTest {
         @DisplayName("유효한 이메일 전달 시 예외가 발생하지 않는다.")
         void given_valid_email_when_validate_user_then_should_not_throw_exception() {
             // given
-            String email = "email@email.com";
+            String email = UserFixture.EMAIL;
 
             // when
             when(userRepository.existsByEmail(anyString())).thenReturn(false);
@@ -49,7 +49,7 @@ class UserValidatorTest {
         @DisplayName("이미 존재하는 이메일 전달 시 예외가 발생한다.")
         void given_invalid_email_when_validate_user_then_should_throw_exception() {
             // given
-            String email = "email@email.com";
+            String email = UserFixture.EMAIL;
 
             // when
             when(userRepository.existsByEmail(anyString())).thenReturn(true);

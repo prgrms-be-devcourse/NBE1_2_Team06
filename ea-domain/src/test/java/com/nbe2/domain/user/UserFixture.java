@@ -1,5 +1,7 @@
 package com.nbe2.domain.user;
 
+import java.lang.reflect.Field;
+
 public class UserFixture {
 
     public static final long ID = 1L;
@@ -19,6 +21,19 @@ public class UserFixture {
                 .role(UserRole.MEDICAL_PERSON)
                 .signupStatus(SignupStatus.PENDING)
                 .build();
+    }
+
+    public static User createUserWithId() {
+        User user = User.createNormalUserOf(NAME, EMAIL, PASSWORD);
+
+        try {
+            Field field = User.class.getDeclaredField("id");
+            field.setAccessible(true);
+            field.set(user, ID);
+        } catch (Exception ignored) {
+        }
+
+        return user;
     }
 
     public static UserProfile createUserProfile() {

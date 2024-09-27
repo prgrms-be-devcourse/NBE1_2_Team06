@@ -34,32 +34,70 @@ class UserReaderTest {
 
     @Mock private UserRepository userRepository;
 
-    @Test
+    @Nested
     @DisplayName("ID로 사용자를 조회한다.")
-    void given_user_id_when_user_exists_then_should_return_user() {
-        // given
-        long userId = 1L;
-        User expected = UserFixture.createUser();
+    class ReadByIdTest {
 
-        // when
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(expected));
+        @Test
+        @DisplayName("유효한 ID 전달 시 사용자를 반환한다.")
+        void given_user_id_when_user_exists_then_should_return_user() {
+            // given
+            long userId = UserFixture.ID;
+            User expected = UserFixture.createUser();
 
-        // then
-        User actual = userReader.read(userId);
-        assertEquals(expected, actual);
+            // when
+            when(userRepository.findById(anyLong())).thenReturn(Optional.of(expected));
+
+            // then
+            User actual = userReader.read(userId);
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 사용자 조회 시 예외가 발생한다.")
+        void given_user_id_when_user_not_exists_then_should_throw_exception() {
+            // given
+            long userId = UserFixture.ID;
+
+            // when
+            when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+            // then
+            assertThrows(UserNotFoundException.class, () -> userReader.read(userId));
+        }
     }
 
-    @Test
-    @DisplayName("존재하지 않는 사용자 조회 시 예외가 발생한다.")
-    void given_user_id_when_user_not_exists_then_should_throw_exception() {
-        // given
-        long userId = 1L;
+    @Nested
+    @DisplayName("이메일로 사용자를 조회한다.")
+    class ReadByEmailTest {
 
-        // when
-        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+        @Test
+        @DisplayName("유효한 이메일 전달 시 사용자를 반환한다.")
+        void given_email_when_user_exists_then_should_return_user() {
+            // given
+            String email = UserFixture.EMAIL;
+            User expected = UserFixture.createUser();
 
-        // then
-        assertThrows(UserNotFoundException.class, () -> userReader.read(userId));
+            // when
+            when(userRepository.findByEmail(email)).thenReturn(Optional.of(expected));
+
+            // then
+            User actual = userReader.read(email);
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 이메일로 조회 시 예외가 발생한다.")
+        void given_email_when_user_not_exists_then_should_throw_exception() {
+            // given
+            String email = UserFixture.EMAIL;
+
+            // when
+            when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+            // then
+            assertThrows(UserNotFoundException.class, () -> userReader.read(email));
+        }
     }
 
     @Nested
