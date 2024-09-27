@@ -1,6 +1,6 @@
 package com.nbe2.api.emergencyroom.dto;
 
-import com.nbe2.domain.emergencyroom.RealTimeEmergencyInfo;
+import com.nbe2.domain.emergencyroom.RealTimeEmergencyRoomWithDistance;
 
 public record RealTimeEmergencyRoomResponse(
         String hospitalId, // 병원 ID
@@ -19,27 +19,37 @@ public record RealTimeEmergencyRoomResponse(
         boolean isAngiographyAvailable, // 혈관촬영기 가용 여부 (Y: 가능, N: 불가)
         boolean isVentilatorAvailable, // 인공호흡기 가용 여부 (Y: 가능, N: 불가)
         boolean isIncubatorAvailable, // 인큐베이터 가용 여부 (Y: 가능, N: 불가)
-        boolean isAmbulanceAvailable // 구급차 가용 여부 (Y: 가능, N: 불가))
-        ) {
+        boolean isAmbulanceAvailable, // 구급차 가용 여부 (Y: 가능, N: 불가))
+        double distance) {
 
-    public static RealTimeEmergencyRoomResponse from(RealTimeEmergencyInfo realTimeEmergencyInfo) {
+    public static RealTimeEmergencyRoomResponse from(
+            RealTimeEmergencyRoomWithDistance realTimeEmergencyRoomWithDistance) {
         return new RealTimeEmergencyRoomResponse(
-                realTimeEmergencyInfo.hospitalId(),
-                realTimeEmergencyInfo.hospitalName(),
-                realTimeEmergencyInfo.emergencyPhone(),
-                realTimeEmergencyInfo.inputDate(),
-                realTimeEmergencyInfo.availableBeds(),
-                realTimeEmergencyInfo.operatingRoomBeds(),
-                realTimeEmergencyInfo.neuroIcuBeds(),
-                realTimeEmergencyInfo.neonatalIcuBeds(),
-                realTimeEmergencyInfo.chestIcuBeds(),
-                realTimeEmergencyInfo.generalIcuBeds(),
-                realTimeEmergencyInfo.generalWardBeds(),
-                realTimeEmergencyInfo.isCtAvailable(),
-                realTimeEmergencyInfo.isMriAvailable(),
-                realTimeEmergencyInfo.isAngiographyAvailable(),
-                realTimeEmergencyInfo.isVentilatorAvailable(),
-                realTimeEmergencyInfo.isIncubatorAvailable(),
-                realTimeEmergencyInfo.isAmbulanceAvailable());
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().hospitalId(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().hospitalName(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().emergencyPhone(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().inputDate(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().availableBeds(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().operatingRoomBeds(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().neuroIcuBeds(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().neonatalIcuBeds(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().chestIcuBeds(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().generalIcuBeds(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().generalWardBeds(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().isCtAvailable(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().isMriAvailable(),
+                realTimeEmergencyRoomWithDistance
+                        .realTimeEmergencyRoomInfo()
+                        .isAngiographyAvailable(),
+                realTimeEmergencyRoomWithDistance
+                        .realTimeEmergencyRoomInfo()
+                        .isVentilatorAvailable(),
+                realTimeEmergencyRoomWithDistance
+                        .realTimeEmergencyRoomInfo()
+                        .isIncubatorAvailable(),
+                realTimeEmergencyRoomWithDistance
+                        .realTimeEmergencyRoomInfo()
+                        .isAmbulanceAvailable(),
+                realTimeEmergencyRoomWithDistance.distance());
     }
 }

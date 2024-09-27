@@ -17,14 +17,14 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         show-sql: true
         format_sql: true
-#redis:
-#  host: localhost
-#  port: 6379
+redis:
+  host: localhost
+  port: 6379
 
 logging:
   level:
@@ -36,6 +36,9 @@ logging:
         SQL: trace
     com:
       nbe2: DEBUG
+
+kakao:
+  rest-api-key: ${KAKAO_REST_API_KEY}
 ---
 spring:
   config:
@@ -53,6 +56,6 @@ spring:
       hibernate:
         show-sql: true
         format_sql: true
-#redis:
-#  host: ${REDIS_HOST}
-#  port: ${REDIS_PORT}
+redis:
+  host: ${REDIS_HOST}
+  port: ${REDIS_PORT}
