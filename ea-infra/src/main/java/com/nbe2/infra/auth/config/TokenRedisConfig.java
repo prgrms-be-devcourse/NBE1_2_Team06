@@ -1,7 +1,5 @@
 package com.nbe2.infra.auth.config;
 
-import java.time.Duration;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -16,8 +14,6 @@ import com.nbe2.domain.auth.RefreshToken;
 @Configuration
 @RequiredArgsConstructor
 public class TokenRedisConfig {
-
-    public static final Duration REFRESH_TOKEN_TTL = Duration.ofDays(14);
 
     private final RedisConnectionFactory redisConnectionFactory;
 
