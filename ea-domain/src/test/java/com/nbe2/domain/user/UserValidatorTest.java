@@ -1,7 +1,9 @@
 package com.nbe2.domain.user;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -62,6 +64,28 @@ class UserValidatorTest {
     class MedicalProfileValidationTest {
 
         @Test
+        @DisplayName("병원 ID, 면허 ID가 전달되면 의료 관계자이다.")
+        void given_emergency_room_or_license_id_then_medical_user() {
+            // given
+            Optional<Long> emergencyRoomId = Optional.of(1L);
+            Optional<Long> licenseId = Optional.of(2L);
+
+            // then
+            assertTrue(userValidator.isMedicalUser(emergencyRoomId, licenseId));
+        }
+
+        @Test
+        @DisplayName("병원 ID, 면허 ID 모두 전달되지 않으면 일반 사용자이다.")
+        void given_empty_id_then_normal_user() {
+            // given
+            Optional<Long> emergencyRoomId = Optional.empty();
+            Optional<Long> licenseId = Optional.empty();
+
+            // then
+            assertFalse(userValidator.isMedicalUser(emergencyRoomId, licenseId));
+        }
+
+        @Test
         @DisplayName("유효한 병원 ID, 면허 파일 ID 전달 시 예외가 발생하지 않는다.")
         void given_valid_profile_when_validate_medical_profile_then_should_not_throw_exception() {
             // given
@@ -69,7 +93,7 @@ class UserValidatorTest {
             Optional<Long> medicalId = Optional.of(2L);
 
             // then
-            assertDoesNotThrow(() -> userValidator.validateMedicalProfile(emegencyId, medicalId));
+            assertDoesNotThrow(() -> userValidator.validate(emegencyId, medicalId));
         }
 
         @Test
@@ -83,7 +107,7 @@ class UserValidatorTest {
             // then
             assertThrows(
                     HospitalRequiredException.class,
-                    () -> userValidator.validateMedicalProfile(emergencyId, medicalId));
+                    () -> userValidator.validate(emergencyId, medicalId));
         }
 
         @Test
@@ -96,7 +120,7 @@ class UserValidatorTest {
             // then
             assertThrows(
                     MedicalLicenseRequiredException.class,
-                    () -> userValidator.validateMedicalProfile(emergencyId, medicalId));
+                    () -> userValidator.validate(emergencyId, medicalId));
         }
     }
 }

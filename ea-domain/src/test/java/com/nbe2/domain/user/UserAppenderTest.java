@@ -37,4 +37,20 @@ class UserAppenderTest {
         // then
         verify(userRepository).save(any(User.class));
     }
+
+    @Test
+    @DisplayName("의료 관계자를 저장한다.")
+    void given_user_and_medical_profile_when_create_medical_user_then_should_save_medical_user() {
+        // given
+        String encodedPassword = "encoded password";
+        UserProfile userProfile = UserFixture.createUserProfile();
+        MedicalProfile medicalProfile = UserFixture.createMedicalProfile();
+
+        // when
+        when(passwordEncoder.encode(anyString())).thenReturn(encodedPassword);
+        userAppender.append(userProfile, medicalProfile);
+
+        // then
+        verify(userRepository).save(any(User.class));
+    }
 }
