@@ -1,7 +1,7 @@
 package com.nbe2.infra.openapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.nbe2.domain.emergencyroom.RealTimeEmergencyInfo;
+import com.nbe2.domain.emergencyroom.RealTimeEmergencyRoomInfo;
 
 public record RealTimeEmergencyDataResponse(
         @JsonProperty("hpid") String hospitalId, // 병원 ID
@@ -23,8 +23,8 @@ public record RealTimeEmergencyDataResponse(
         @JsonProperty("hvamyn") String ambulanceAvailable // 구급차 가용 여부 (Y: 가능, N: 불가))
         ) {
 
-    public RealTimeEmergencyInfo toRealTimeEmergencyInfo() {
-        return new RealTimeEmergencyInfo(
+    public RealTimeEmergencyRoomInfo toRealTimeEmergencyInfo() {
+        return new RealTimeEmergencyRoomInfo(
                 hospitalId,
                 hospitalName,
                 emergencyPhone,

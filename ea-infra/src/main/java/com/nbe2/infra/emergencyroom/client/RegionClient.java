@@ -20,7 +20,7 @@ public class RegionClient implements CoordinateToRegionConverter {
     @Override
     public Region convert(Coordinate coordinate) {
         return kakaoClient
-                .getRegionData(coordinate.longitude(), coordinate.latitude())
+                .getRegionData(coordinate.getLongitude(), coordinate.getLatitude())
                 .documents()
                 .stream()
                 .filter(KakaoRegionResponse::isB)

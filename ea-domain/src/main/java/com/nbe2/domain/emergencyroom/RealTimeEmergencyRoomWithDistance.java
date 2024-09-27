@@ -1,10 +1,10 @@
 package com.nbe2.domain.emergencyroom;
 
 public record RealTimeEmergencyRoomWithDistance(
-        RealTimeEmergencyInfo realTimeEmergencyInfo, double distance) {
+        RealTimeEmergencyRoomInfo realTimeEmergencyRoomInfo, double distance) {
 
     public static RealTimeEmergencyRoomWithDistance of(
-            RealTimeEmergencyInfo realTimeEmergencyInfo, double distance) {
-        return new RealTimeEmergencyRoomWithDistance(realTimeEmergencyInfo, distance);
+            RealTimeEmergencyRoomInfo realTimeEmergencyRoomInfo, double distance) {
+        return new RealTimeEmergencyRoomWithDistance(realTimeEmergencyRoomInfo, distance);
     }
 }

@@ -1,6 +1,6 @@
 package com.nbe2.domain.emergencyroom;
 
-public record RealTimeEmergencyInfo(
+public record RealTimeEmergencyRoomInfo(
         String hospitalId, // 병원 ID
         String hospitalName, // 병원 이름
         String emergencyPhone, // 응급실 전화번호

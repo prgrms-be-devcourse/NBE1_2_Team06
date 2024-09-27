@@ -25,23 +25,31 @@ public record RealTimeEmergencyRoomResponse(
     public static RealTimeEmergencyRoomResponse from(
             RealTimeEmergencyRoomWithDistance realTimeEmergencyRoomWithDistance) {
         return new RealTimeEmergencyRoomResponse(
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().hospitalId(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().hospitalName(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().emergencyPhone(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().inputDate(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().availableBeds(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().operatingRoomBeds(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().neuroIcuBeds(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().neonatalIcuBeds(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().chestIcuBeds(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().generalIcuBeds(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().generalWardBeds(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().isCtAvailable(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().isMriAvailable(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().isAngiographyAvailable(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().isVentilatorAvailable(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().isIncubatorAvailable(),
-                realTimeEmergencyRoomWithDistance.realTimeEmergencyInfo().isAmbulanceAvailable(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().hospitalId(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().hospitalName(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().emergencyPhone(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().inputDate(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().availableBeds(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().operatingRoomBeds(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().neuroIcuBeds(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().neonatalIcuBeds(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().chestIcuBeds(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().generalIcuBeds(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().generalWardBeds(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().isCtAvailable(),
+                realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().isMriAvailable(),
+                realTimeEmergencyRoomWithDistance
+                        .realTimeEmergencyRoomInfo()
+                        .isAngiographyAvailable(),
+                realTimeEmergencyRoomWithDistance
+                        .realTimeEmergencyRoomInfo()
+                        .isVentilatorAvailable(),
+                realTimeEmergencyRoomWithDistance
+                        .realTimeEmergencyRoomInfo()
+                        .isIncubatorAvailable(),
+                realTimeEmergencyRoomWithDistance
+                        .realTimeEmergencyRoomInfo()
+                        .isAmbulanceAvailable(),
                 realTimeEmergencyRoomWithDistance.distance());
     }
 }

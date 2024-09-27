@@ -28,6 +28,8 @@ public class EmergencyRoom extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String hpId;
+
     private String hospitalName;
 
     private String zipCode;
@@ -44,24 +46,9 @@ public class EmergencyRoom extends BaseTimeEntity {
 
     private String medicalDepartments;
 
-    @Embedded private Location location;
+    @Embedded private Coordinate location;
 
     @Embedded private BedCount bedCount;
-
-    @Embeddable
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    @AllArgsConstructor
-    @Builder
-    public static class Location {
-
-        private String longitude;
-
-        private String latitude;
-
-        public Coordinate toCoordinate() {
-            return Coordinate.of(Double.parseDouble(longitude), Double.parseDouble(latitude));
-        }
-    }
 
     @Embeddable
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
