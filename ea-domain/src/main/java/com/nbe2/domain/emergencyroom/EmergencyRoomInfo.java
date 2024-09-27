@@ -26,7 +26,7 @@ public record EmergencyRoomInfo(
 
     public EmergencyRoom toEmergencyRoom() {
         return EmergencyRoom.builder()
-                .hpid(id) // Assuming 'id' corresponds to 'hospitalId'
+                .hpid(id)
                 .hospitalName(hospitalName)
                 .zipCode(zipCode)
                 .address(address)
