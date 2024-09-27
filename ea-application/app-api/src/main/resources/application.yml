@@ -7,9 +7,6 @@ spring:
 server:
   shutdown: graceful
 
-file:
-  upload-path: ${FILE_UPLOAD_PATH}
-
 ---
 spring:
   config:

@@ -5,7 +5,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-/files/
+/ea-application/app-api/files/
 
 ### STS ###
 .apt_generated
