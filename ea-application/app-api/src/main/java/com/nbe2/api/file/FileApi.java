@@ -1,7 +1,6 @@
 package com.nbe2.api.file;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
 
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -40,15 +39,10 @@ public class FileApi {
         FileMetaData fileMetaData = fileMetaDataService.getFileMetaData(fileId);
         File file = FileUtils.validate(fileMetaData.getPath());
         Resource resource = new FileSystemResource(file);
-
-        String encoded =
-                new String(
-                        tradingFile.getFileName().getBytes(StandardCharsets.UTF_8),
-                        StandardCharsets.ISO_8859_1);
-
-        log.info("download file: {}", encoded);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + encoded + "\"")
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment;filename=\"" + fileMetaData.getEncodedFileName() + "\"")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
                 .header(HttpHeaders.CONTENT_LENGTH, String.valueOf(file.length()))
                 .body(resource);

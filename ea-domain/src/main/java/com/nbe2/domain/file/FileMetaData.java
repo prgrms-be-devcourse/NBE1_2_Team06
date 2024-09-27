@@ -1,5 +1,7 @@
 package com.nbe2.domain.file;
 
+import java.nio.charset.StandardCharsets;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,5 +32,9 @@ public class FileMetaData {
 
     public static FileMetaData of(String originalFilename, String path) {
         return FileMetaData.builder().fileName(originalFilename).path(path).build();
+    }
+
+    public String getEncodedFileName() {
+        return new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
     }
 }
