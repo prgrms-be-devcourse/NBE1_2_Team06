@@ -19,6 +19,10 @@ public class UserReader {
         return userRepository.findById(userId).orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 
+    public User read(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    }
+
     public PageResult<UserProfileWithLicense> read(Pageable pageable) {
         Page<UserProfileWithLicense> userPage =
                 userRepository.findPageBySignupStatus(SignupStatus.PENDING, pageable);
