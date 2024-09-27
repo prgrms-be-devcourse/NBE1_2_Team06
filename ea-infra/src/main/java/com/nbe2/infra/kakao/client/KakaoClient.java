@@ -10,11 +10,11 @@ import com.nbe2.infra.kakao.dto.KakaoRegionResponse;
 
 @FeignClient(
         name = "kakao-client",
-        url = "https://kapi.kakao.com",
+        url = "https://dapi.kakao.com",
         configuration = KakaoFeignConfig.class)
 public interface KakaoClient {
 
-    @GetMapping("/v2/local/v2/local/geo/coord2regioncode.json")
+    @GetMapping("/v2/local/geo/coord2regioncode.json")
     KakaoApiResponse<KakaoRegionResponse> getRegionData(
             @RequestParam Double x, @RequestParam Double y);
 }

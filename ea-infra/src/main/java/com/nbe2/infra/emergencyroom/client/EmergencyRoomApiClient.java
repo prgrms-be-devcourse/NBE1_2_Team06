@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 
 import com.nbe2.domain.emergencyroom.EmergencyRoomClient;
 import com.nbe2.domain.emergencyroom.EmergencyRoomInfo;
-import com.nbe2.domain.emergencyroom.RealTimeEmergencyInfo;
-import com.nbe2.domain.emergencyroom.RealTimeClient;
 import com.nbe2.domain.emergencyroom.RealTimeEmergencyRoomInfo;
 import com.nbe2.domain.emergencyroom.Region;
 import com.nbe2.infra.openapi.client.OpenApiFeignClient;
@@ -24,7 +22,7 @@ import com.nbe2.infra.openapi.dto.TraumaCenterResponse;
 
 @Component
 @RequiredArgsConstructor
-public class EmergencyRoomApiClient implements RealTimeClient {
+public class EmergencyRoomApiClient implements EmergencyRoomClient {
 
     private final OpenApiFeignClient openApiFeignClient;
 
@@ -51,7 +49,7 @@ public class EmergencyRoomApiClient implements RealTimeClient {
                 .toList();
     }
 
-    public List<EmergencyRoomInfo> getTraumaCenterData() {
+    private List<EmergencyRoomInfo> getTraumaCenterData() {
         List<AllEmergencyRoomResponse> traumaCenterData = getAllTraumaCenterData();
         return traumaCenterData.stream()
                 .map(tc -> openApiFeignClient.getTraumaCenterDataInfo(tc.hpid(), 1, 20).getItems())

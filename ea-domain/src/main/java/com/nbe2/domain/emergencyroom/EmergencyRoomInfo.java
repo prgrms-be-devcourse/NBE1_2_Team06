@@ -26,7 +26,7 @@ public record EmergencyRoomInfo(
 
     public EmergencyRoom toEmergencyRoom() {
         return EmergencyRoom.builder()
-                .hpid(id)
+                .hpId(id)
                 .hospitalName(hospitalName)
                 .zipCode(zipCode)
                 .address(address)
@@ -34,8 +34,8 @@ public record EmergencyRoomInfo(
                 .emergencyRoomContactNumber(emergencyRoomContactNumber)
                 .simpleMap(simpleMap)
                 .emergencyRoomAvailability(emergencyRoomAvailability)
-                .longitude(Double.parseDouble(longitude))
-                .latitude(Double.parseDouble(latitude))
+                .longitude(longitude)
+                .latitude(latitude)
                 .medicalDepartments(medicalDepartments)
                 .totalBedCount(totalBedCount)
                 .thoracicIcuBedCount(thoracicIcuBedCount)

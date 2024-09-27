@@ -25,7 +25,7 @@ public final class Coordinate {
         double lat1 = Math.toRadians(latitude);
         double lon1 = Math.toRadians(longitude);
         double lat2 = Math.toRadians(targetCoordinate.getLatitude());
-        double lon2 = Math.toRadians(targetCoordinate.getLatitude());
+        double lon2 = Math.toRadians(targetCoordinate.getLongitude());
 
         double deltaLat = lat2 - lat1;
         double deltaLon = lon2 - lon1;
@@ -39,6 +39,6 @@ public final class Coordinate {
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return EARTH_RADIUS_KM * c;
+        return Math.round(EARTH_RADIUS_KM * c * 100) / 100.0;
     }
 }

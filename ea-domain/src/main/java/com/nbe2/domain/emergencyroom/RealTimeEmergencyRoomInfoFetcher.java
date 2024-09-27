@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RealTimeEmergencyRoomInfoFetcher {
 
-    private final RealTimeClient realTimeClient;
+    private final EmergencyRoomClient realTimeClient;
     private final RealTimeEmergencyRoomInfoCacheManager cacheManager;
 
     public List<RealTimeEmergencyRoomInfo> fetch(Region region) {

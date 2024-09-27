@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,12 @@ import com.nbe2.domain.emergencyroom.EmergencyRoomService;
 public class EmergencyRoomApi {
 
     private final EmergencyRoomService emergencyRoomService;
+
+    @GetMapping("/init")
+    public Response<Void> init() {
+        emergencyRoomService.init();
+        return Response.success("전국 응급실 데이터 저장 완료");
+    }
 
     @GetMapping("/real-time")
     public Response<List<RealTimeEmergencyRoomResponse>> getRealTimeEmergencyRooms(

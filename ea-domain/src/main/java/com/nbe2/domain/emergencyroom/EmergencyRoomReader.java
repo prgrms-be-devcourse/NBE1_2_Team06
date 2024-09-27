@@ -1,5 +1,7 @@
 package com.nbe2.domain.emergencyroom;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -16,5 +18,11 @@ public class EmergencyRoomReader {
         return emergencyRoomRepository
                 .findByHpId(hospitalId)
                 .orElseThrow(() -> EmergencyRoomNotFoundException.EXCEPTION);
+    }
+
+    public List<String> readByHospitalName(String hospitalName) {
+        return emergencyRoomRepository.findByHospitalNameContaining(hospitalName).stream()
+                .map(EmergencyRoom::getHpId)
+                .toList();
     }
 }

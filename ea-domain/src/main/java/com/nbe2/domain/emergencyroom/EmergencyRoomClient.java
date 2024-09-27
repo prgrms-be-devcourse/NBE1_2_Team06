@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface EmergencyRoomClient {
 
-    List<RealTimeEmergencyInfo> getRealTimeEmergencyData(String region, String subRegion);
+    List<RealTimeEmergencyRoomInfo> getRealTimeInfo(Region region);
 
     List<EmergencyRoomInfo> getEmergencyRoomInfoData();
 }

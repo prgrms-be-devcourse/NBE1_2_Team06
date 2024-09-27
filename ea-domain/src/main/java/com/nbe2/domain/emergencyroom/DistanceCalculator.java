@@ -1,5 +1,6 @@
 package com.nbe2.domain.emergencyroom;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ public class DistanceCalculator {
 
         return realTimeEmergencyRoomInfos.stream()
                 .map(info -> calculateDistance(currentCoordinate, info))
+                .sorted(Comparator.comparing(RealTimeEmergencyRoomWithDistance::distance))
                 .toList();
     }
 

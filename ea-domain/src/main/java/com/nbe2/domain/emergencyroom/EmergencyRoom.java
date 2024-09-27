@@ -75,7 +75,7 @@ public class EmergencyRoom extends BaseTimeEntity {
 
     @Builder
     public EmergencyRoom(
-            String hpid,
+            String hpId,
             String hospitalName,
             String zipCode,
             String address,
@@ -83,8 +83,8 @@ public class EmergencyRoom extends BaseTimeEntity {
             String emergencyRoomContactNumber,
             String simpleMap,
             boolean emergencyRoomAvailability,
-            double longitude,
-            double latitude,
+            String longitude,
+            String latitude,
             String medicalDepartments,
             int totalBedCount,
             int thoracicIcuBedCount,
@@ -94,7 +94,7 @@ public class EmergencyRoom extends BaseTimeEntity {
             int generalIcuBedCount,
             int neonatalIcuBedCount,
             int operatingRoomBedCount) {
-        this.hpid = hpid;
+        this.hpId = hpId;
         this.hospitalName = hospitalName;
         this.zipCode = zipCode;
         this.address = address;
@@ -103,11 +103,7 @@ public class EmergencyRoom extends BaseTimeEntity {
         this.simpleMap = simpleMap;
         this.emergencyRoomAvailability = emergencyRoomAvailability;
         this.medicalDepartments = medicalDepartments;
-        this.location =
-                Location.builder()
-                        .longitude(String.valueOf(longitude))
-                        .latitude(String.valueOf(longitude))
-                        .build();
+        this.location = Coordinate.of(Double.valueOf(longitude), Double.valueOf(latitude));
         this.bedCount =
                 BedCount.builder()
                         .totalBedCount(totalBedCount)
