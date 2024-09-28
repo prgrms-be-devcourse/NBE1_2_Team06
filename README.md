@@ -21,11 +21,11 @@
 📁 ea-domain # Business-Layer, Implementation-Layer
 📁 ea-infra # Data-Access-Layer, Kafka, Redis
 ```
-https://github.com/prgrms-be-devcourse/NBE1_2_Team06
-- [ea-application](https://github.com/COS-project/cos-backend/blob/main/cercat-application/README.md)
-- [ea-common](https://github.com/COS-project/cos-backend/blob/main/cercat-common/README.md)
-- [ea-domain](https://github.com/COS-project/cos-backend/blob/main/cercat-domain/README.md)
-- [ea-infra](https://github.com/COS-project/cos-backend/blob/main/cercat-infra/README.md)
+
+- [ea-application](https://github.com/prgrms-be-devcourse/NBE1_2_Team06/blob/develop/ea-application/README.md)
+- [ea-common](https://github.com/prgrms-be-devcourse/NBE1_2_Team06/blob/develop/ea-common/README.md)
+- [ea-domain](https://github.com/prgrms-be-devcourse/NBE1_2_Team06/blob/develop/ea-domain/README.md)
+- [ea-infra](https://github.com/prgrms-be-devcourse/NBE1_2_Team06/blob/develop/ea-infra/README.md)
 
 # 패키지 구조
 
