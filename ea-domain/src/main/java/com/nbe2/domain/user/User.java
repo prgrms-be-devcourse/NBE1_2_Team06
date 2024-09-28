@@ -1,17 +1,9 @@
 package com.nbe2.domain.user;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import java.util.LinkedList;
+import java.util.List;
+
+import jakarta.persistence.*;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.nbe2.domain.global.BaseTimeEntity;
+import com.nbe2.domain.posts.entity.Post;
 
 @Entity
 @Getter
@@ -51,6 +44,9 @@ public class User extends BaseTimeEntity {
             fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST)
     private MedicalPersonInfo medicalPersonInfo;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Post> posts = new LinkedList<>();
 
     @Builder
     public User(
@@ -88,5 +84,10 @@ public class User extends BaseTimeEntity {
 
     public void approve() {
         this.signupStatus = SignupStatus.APPROVED;
+    }
+
+    // ** 연관관계 편의 메서드 **//
+    public void addPost(final Post post) {
+        posts.add(post);
     }
 }
