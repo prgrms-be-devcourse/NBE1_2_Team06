@@ -17,12 +17,12 @@ public class UserValidator {
     private final UserRepository userRepository;
 
     public void validate(String email) {
-        if (isEmailDuplicated(email)) {
+        if (isEmailExists(email)) {
             throw AlreadyExistsEmailException.EXCEPTION;
         }
     }
 
-    private boolean isEmailDuplicated(String email) {
+    public boolean isEmailExists(String email) {
         return userRepository.existsByEmail(email);
     }
 

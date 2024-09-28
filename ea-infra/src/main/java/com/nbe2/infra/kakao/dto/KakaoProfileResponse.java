@@ -9,6 +9,6 @@ import com.nbe2.domain.auth.OAuthProfile;
 @NoArgsConstructor
 public class KakaoProfileResponse implements OAuthProfile {
 
-    private String name;
+    private String nickname;
     private String email;
 }
