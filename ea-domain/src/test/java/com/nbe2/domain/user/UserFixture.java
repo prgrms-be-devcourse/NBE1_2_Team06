@@ -1,13 +1,10 @@
 package com.nbe2.domain.user;
 
+import static com.nbe2.domain.global.TestConstants.*;
+
 import java.lang.reflect.Field;
 
 public class UserFixture {
-
-    public static final long ID = 1L;
-    public static final String NAME = "name";
-    public static final String EMAIL = "email";
-    public static final String PASSWORD = "password";
 
     public static User createUser() {
         return User.createNormalUserOf(NAME, EMAIL, PASSWORD);

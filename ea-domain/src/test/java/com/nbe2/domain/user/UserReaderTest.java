@@ -1,5 +1,7 @@
 package com.nbe2.domain.user;
 
+import static com.nbe2.domain.global.TestConstants.EMAIL;
+import static com.nbe2.domain.global.TestConstants.ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -42,7 +44,7 @@ class UserReaderTest {
         @DisplayName("유효한 ID 전달 시 사용자를 반환한다.")
         void given_user_id_when_user_exists_then_should_return_user() {
             // given
-            long userId = UserFixture.ID;
+            long userId = ID;
             User expected = UserFixture.createUser();
 
             // when
@@ -57,7 +59,7 @@ class UserReaderTest {
         @DisplayName("존재하지 않는 사용자 조회 시 예외가 발생한다.")
         void given_user_id_when_user_not_exists_then_should_throw_exception() {
             // given
-            long userId = UserFixture.ID;
+            long userId = ID;
 
             // when
             when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
@@ -75,7 +77,7 @@ class UserReaderTest {
         @DisplayName("유효한 이메일 전달 시 사용자를 반환한다.")
         void given_email_when_user_exists_then_should_return_user() {
             // given
-            String email = UserFixture.EMAIL;
+            String email = EMAIL;
             User expected = UserFixture.createUser();
 
             // when
@@ -90,7 +92,7 @@ class UserReaderTest {
         @DisplayName("존재하지 않는 이메일로 조회 시 예외가 발생한다.")
         void given_email_when_user_not_exists_then_should_throw_exception() {
             // given
-            String email = UserFixture.EMAIL;
+            String email = EMAIL;
 
             // when
             when(userRepository.findByEmail(email)).thenReturn(Optional.empty());

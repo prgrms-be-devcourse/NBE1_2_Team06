@@ -1,8 +1,6 @@
 package com.nbe2.domain.auth;
 
-import static com.nbe2.domain.user.UserFixture.EMAIL;
-import static com.nbe2.domain.user.UserFixture.ID;
-import static com.nbe2.domain.user.UserFixture.PASSWORD;
+import static com.nbe2.domain.global.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
