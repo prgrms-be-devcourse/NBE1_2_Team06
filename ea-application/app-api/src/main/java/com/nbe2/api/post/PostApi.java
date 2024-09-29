@@ -10,6 +10,7 @@ import com.nbe2.api.post.dto.LocalPostPageRequest;
 import com.nbe2.api.post.dto.PostRegisterRequest;
 import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.posts.service.PostService;
+import com.nbe2.domain.posts.service.dto.PostDetailsCommand;
 import com.nbe2.domain.posts.service.dto.PostListCommand;
 
 @RestController
@@ -25,20 +26,21 @@ public class PostApi {
             @Validated final PostRegisterRequest request,
             //            , @AuthenticationPrincipal String username
             @RequestParam("username") final String username) {
-        Long postId = postService.registerPost(request.toCommand(username));
+        Long postId = postService.savePost(request.toCommand(username));
         return Response.success(postId);
     }
 
     @GetMapping
     public Response<PageResult<PostListCommand>> getLocalPostPage(
             @Validated final LocalPostPageRequest request) {
-        PageResult<PostListCommand> postPage = postService.getPostPageByCity(request.toCommand());
+        PageResult<PostListCommand> postPage =
+                postService.findPostListPageByCity(request.toCommand());
         return Response.success(postPage);
     }
 
     @GetMapping("/{postsId}")
-    public Response<?> getPostDetails(@PathVariable("postsId") String postsId) {
-
+    public Response<PostDetailsCommand> getPostDetails(
+            @PathVariable("postsId") final String postsId) {
         return null;
     }
 }

@@ -22,12 +22,12 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Long registerPost(final PostRegisterCommand command) {
+    public Long savePost(final PostRegisterCommand command) {
         return postAppender.append(command);
     }
 
     @Override
-    public PageResult<PostListCommand> getPostPageByCity(final LocalPostPageCommand command) {
+    public PageResult<PostListCommand> findPostListPageByCity(final LocalPostPageCommand command) {
         return postReader.getPageByCity(command);
     }
 }

@@ -7,7 +7,7 @@ import com.nbe2.domain.posts.service.dto.PostRegisterCommand;
 
 public interface PostService {
 
-    Long registerPost(PostRegisterCommand command);
+    Long savePost(PostRegisterCommand command);
 
-    PageResult<PostListCommand> getPostPageByCity(LocalPostPageCommand command);
+    PageResult<PostListCommand> findPostListPageByCity(LocalPostPageCommand command);
 }
