@@ -5,20 +5,13 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 
 import com.nbe2.domain.posts.entity.Post;
-import com.nbe2.domain.posts.exception.PostNotFoundException;
-import com.nbe2.domain.posts.repository.PostRepository;
-import com.nbe2.domain.posts.service.dto.PostUpdateCommand;
+import com.nbe2.domain.posts.service.dto.PostDefaultInfo;
 
 @Component
 @RequiredArgsConstructor
 public class PostUpdater {
-    private final PostRepository postRepository;
 
-    public Long postUpdate(final PostUpdateCommand command) {
-        Post post =
-                postRepository
-                        .findById(command.id())
-                        .orElseThrow(() -> PostNotFoundException.EXCEPTION);
-        return post.update(command.title(), command.content(), command.city());
+    public Long update(final Post post, final PostDefaultInfo info) {
+        return post.update(info.title(), info.content(), info.city());
     }
 }

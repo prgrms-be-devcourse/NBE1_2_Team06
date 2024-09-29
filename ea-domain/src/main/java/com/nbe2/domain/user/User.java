@@ -1,8 +1,5 @@
 package com.nbe2.domain.user;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import jakarta.persistence.*;
 
 import lombok.AccessLevel;
@@ -11,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.nbe2.domain.global.BaseTimeEntity;
-import com.nbe2.domain.posts.entity.Post;
 
 @Entity
 @Getter
@@ -44,9 +40,6 @@ public class User extends BaseTimeEntity {
             fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST)
     private MedicalPersonInfo medicalPersonInfo;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<Post> posts = new LinkedList<>();
 
     @Builder
     public User(
@@ -84,10 +77,5 @@ public class User extends BaseTimeEntity {
 
     public void approve() {
         this.signupStatus = SignupStatus.APPROVED;
-    }
-
-    // ** 연관관계 편의 메서드 **//
-    public void addPost(final Post post) {
-        posts.add(post);
     }
 }
