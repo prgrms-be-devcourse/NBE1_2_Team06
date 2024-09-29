@@ -12,21 +12,21 @@ import com.nbe2.domain.global.util.PagingUtil;
 import com.nbe2.domain.posts.entity.Post;
 import com.nbe2.domain.posts.repository.PostRepository;
 import com.nbe2.domain.posts.service.dto.LocalPostPageCommand;
-import com.nbe2.domain.posts.service.dto.PostCommand;
+import com.nbe2.domain.posts.service.dto.PostListCommand;
 
 @Component
 @RequiredArgsConstructor
 public class PostReader {
     private final PostRepository postRepository;
 
-    public PageResult<PostCommand> getPageByCity(final LocalPostPageCommand command) {
+    public PageResult<PostListCommand> getPageByCity(final LocalPostPageCommand command) {
         Page<Post> postPage =
                 postRepository.findByCity(command.city(), PagingUtil.toPageRequest(command.page()));
-        List<PostCommand> postCommands =
+        List<PostListCommand> postCommands =
                 postPage.getContent().stream()
                         .map(
                                 p ->
-                                        new PostCommand(
+                                        new PostListCommand(
                                                 p.getId(),
                                                 p.getUser().getName(),
                                                 p.getTitle(),

@@ -10,7 +10,7 @@ import com.nbe2.api.post.dto.LocalPostPageRequest;
 import com.nbe2.api.post.dto.PostRegisterRequest;
 import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.posts.service.PostService;
-import com.nbe2.domain.posts.service.dto.PostCommand;
+import com.nbe2.domain.posts.service.dto.PostListCommand;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,9 +30,15 @@ public class PostApi {
     }
 
     @GetMapping
-    public Response<PageResult<PostCommand>> getLocalPostPage(
+    public Response<PageResult<PostListCommand>> getLocalPostPage(
             @Validated final LocalPostPageRequest request) {
-        PageResult<PostCommand> postPage = postService.getPostPageByCity(request.toCommand());
+        PageResult<PostListCommand> postPage = postService.getPostPageByCity(request.toCommand());
         return Response.success(postPage);
+    }
+
+    @GetMapping("/{postsId}")
+    public Response<?> getPostDetails(@PathVariable("postsId") String postsId) {
+
+        return null;
     }
 }
