@@ -37,7 +37,7 @@ public class User extends BaseTimeEntity {
     @OneToOne(
             optional = false,
             mappedBy = "user",
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = CascadeType.PERSIST)
     private MedicalPersonInfo medicalPersonInfo;
 

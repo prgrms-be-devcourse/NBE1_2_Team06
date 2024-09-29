@@ -1,5 +1,6 @@
 package com.nbe2.domain.notice;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -31,34 +32,34 @@ public class Notice extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long noticeId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "emergency_room_id")
     private EmergencyRoom emergencyRoom;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String content;
 
-    public static Notice from(NoticeDomain domain) {
+    public static Notice from(NoticeInfo noticeInfo, User user, EmergencyRoom emergencyRoom) {
         return Notice.builder()
-                .noticeId(domain.getNoticeId())
-                .user(User.from(domain.getUserId()))
-                .emergencyRoom(EmergencyRoom.from(domain.getEmergencyRoomId()))
-                .title(domain.getNoticeInfo().title())
-                .content(domain.getNoticeInfo().content())
+                .title(String.valueOf(noticeInfo.title()))
+                .content(String.valueOf(noticeInfo.content()))
+                .emergencyRoom(emergencyRoom)
+                .user(user)
                 .build();
     }
 
-    public static Notice from(Long noticeId) {
-        return Notice.builder().noticeId(noticeId).build();
+    public void updateTitle(String newTitle) {
+        this.title = newTitle;
     }
 
-    public NoticeDomain toDomain() {
-        return new NoticeDomain(
-                noticeId, user.getId(), emergencyRoom.getId(), new NoticeInfo(title, content));
+    public void updateContent(String newContent) {
+        this.content = newContent;
     }
 }

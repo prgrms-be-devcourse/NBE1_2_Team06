@@ -1,3 +1,5 @@
 package com.nbe2.domain.notice;
 
-public record NoticeInfo(String title, String content) {}
+import java.util.Optional;
+
+public record NoticeInfo(Optional<String> title, Optional<String> content, String hpId) {}
