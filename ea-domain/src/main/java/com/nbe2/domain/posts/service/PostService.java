@@ -12,4 +12,6 @@ public interface PostService {
     PostDetailsCommand findPostDetails(Long postsId);
 
     Long updatePost(PostUpdateCommand command);
+
+    void deletePost(Long postsId);
 }

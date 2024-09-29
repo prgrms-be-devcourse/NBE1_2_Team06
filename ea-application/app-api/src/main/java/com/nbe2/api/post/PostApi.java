@@ -53,4 +53,10 @@ public class PostApi {
         Long postId = postService.updatePost(request.toCommand(postsId, request));
         return Response.success(postId);
     }
+
+    @DeleteMapping("/{postsId}")
+    public Response<Void> deletePost(@PathVariable("postsId") final Long postsId) {
+        postService.deletePost(postsId);
+        return Response.success();
+    }
 }
