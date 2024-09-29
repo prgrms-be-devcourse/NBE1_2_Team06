@@ -13,7 +13,7 @@ spring:
     activate:
       on-profile: local
 jwt:
-  key: ${JWY_KEY}
+  screat-key: ${JWT_KEY}
 
 ---
 spring:
@@ -22,4 +22,4 @@ spring:
       on-profile: dev
 
 jwt:
-  key: ${JWY_KEY}
+  screat-key: ${JWT_KEY}
