@@ -10,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.global.util.PagingUtil;
 import com.nbe2.domain.posts.entity.Post;
+import com.nbe2.domain.posts.exception.PostNotFoundException;
 import com.nbe2.domain.posts.repository.PostRepository;
 import com.nbe2.domain.posts.service.dto.LocalPostPageCommand;
+import com.nbe2.domain.posts.service.dto.PostDetailsCommand;
 import com.nbe2.domain.posts.service.dto.PostListCommand;
 
 @Component
@@ -19,7 +21,7 @@ import com.nbe2.domain.posts.service.dto.PostListCommand;
 public class PostReader {
     private final PostRepository postRepository;
 
-    public PageResult<PostListCommand> getPageByCity(final LocalPostPageCommand command) {
+    public PageResult<PostListCommand> readPostListPageByCity(final LocalPostPageCommand command) {
         Page<Post> postPage =
                 postRepository.findByCity(command.city(), PagingUtil.toPageRequest(command.page()));
         List<PostListCommand> postCommands =
@@ -33,5 +35,11 @@ public class PostReader {
                                                 p.getContent()))
                         .toList();
         return new PageResult<>(postCommands, postPage.getTotalPages(), postPage.hasNext());
+    }
+
+    public PostDetailsCommand readPostDetails(final Long postsId) {
+        Post post =
+                postRepository.findById(postsId).orElseThrow(() -> PostNotFoundException.EXCEPTION);
+        return PostDetailsCommand.from(post);
     }
 }

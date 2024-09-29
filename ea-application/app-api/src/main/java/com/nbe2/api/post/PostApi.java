@@ -40,7 +40,8 @@ public class PostApi {
 
     @GetMapping("/{postsId}")
     public Response<PostDetailsCommand> getPostDetails(
-            @PathVariable("postsId") final String postsId) {
-        return null;
+            @PathVariable("postsId") final Long postsId) {
+        PostDetailsCommand postDetails = postService.findPostDetails(postsId);
+        return Response.success(postDetails);
     }
 }
