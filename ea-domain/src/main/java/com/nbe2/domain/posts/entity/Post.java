@@ -51,4 +51,12 @@ public class Post extends BaseTimeEntity {
         this.content = content;
         this.city = city;
     }
+
+    // ** business logic **//
+    public Long update(final String title, final String content, final City city) {
+        this.title = title;
+        this.content = content;
+        this.city = city;
+        return id;
+    }
 }

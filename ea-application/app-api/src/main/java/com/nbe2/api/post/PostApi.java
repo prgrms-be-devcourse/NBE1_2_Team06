@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import com.nbe2.api.global.dto.Response;
 import com.nbe2.api.post.dto.LocalPostPageRequest;
 import com.nbe2.api.post.dto.PostRegisterRequest;
+import com.nbe2.api.post.dto.PostUpdateRequest;
 import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.posts.service.PostService;
 import com.nbe2.domain.posts.service.dto.PostDetailsCommand;
@@ -43,5 +44,13 @@ public class PostApi {
             @PathVariable("postsId") final Long postsId) {
         PostDetailsCommand postDetails = postService.findPostDetails(postsId);
         return Response.success(postDetails);
+    }
+
+    @PutMapping("/{postsId}")
+    public Response<Long> putPost(
+            @PathVariable("postsId") final Long postsId,
+            @Validated final PostUpdateRequest request) {
+        Long postId = postService.updatePost(request.toCommand(postsId, request));
+        return Response.success(postId);
     }
 }
