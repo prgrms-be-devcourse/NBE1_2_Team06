@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.nbe2.domain.auth.AuthFixture;
+import com.nbe2.domain.auth.OAuthProfile;
 import com.nbe2.domain.auth.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,6 +51,19 @@ class UserAppenderTest {
         // when
         when(passwordEncoder.encode(anyString())).thenReturn(encodedPassword);
         userAppender.append(userProfile, medicalProfile);
+
+        // then
+        verify(userRepository).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("소셜 계정을 연동한 사용자를 저장한다.")
+    void given_oauth_profile_when_create_oauth_user_then_should_save_oauth_user() {
+        // given
+        OAuthProfile oAuthProfile = AuthFixture.createOAuthProfile();
+
+        // when
+        userAppender.append(oAuthProfile);
 
         // then
         verify(userRepository).save(any(User.class));

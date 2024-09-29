@@ -16,6 +16,9 @@ import com.nbe2.domain.user.UserValidator;
 @RequiredArgsConstructor
 public class AuthService {
 
+    private final TokenGenerator tokenGenerator;
+    private final TokenManager tokenManager;
+    private final Authenticator authenticator;
     private final UserValidator userValidator;
     private final UserAppender userAppender;
 
@@ -30,5 +33,17 @@ public class AuthService {
         } else {
             userAppender.append(userProfile);
         }
+    }
+
+    public Tokens login(Login login) {
+        UserPrincipal userPrincipal = authenticator.authenticate(login);
+        Tokens tokens = tokenGenerator.generateToken(userPrincipal);
+        tokenManager.save(RefreshToken.of(userPrincipal.userId(), tokens.refreshToken()));
+
+        return tokens;
+    }
+
+    public void logout(long userId) {
+        tokenManager.removeRefreshToken(userId);
     }
 }

@@ -16,4 +16,9 @@ public class SecurityPasswordEncoder implements PasswordEncoder {
     public String encode(String plainPassword) {
         return plainPassword; // @TODO Spring Security 적용하면 BCryptPasswordEncoder가 인코딩하게 수정
     }
+
+    @Override
+    public boolean isPasswordUnmatched(String plainPassword, String encodedPassword) {
+        return !plainPassword.equals(encodedPassword);
+    }
 }
