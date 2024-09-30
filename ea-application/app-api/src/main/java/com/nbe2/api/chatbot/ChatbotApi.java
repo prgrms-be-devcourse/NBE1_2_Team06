@@ -1,32 +1,91 @@
 package com.nbe2.api.chatbot;
 
 import org.springframework.http.codec.ServerSentEvent;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
 import com.nbe2.api.chatbot.dto.QuestionRequest;
-import com.nbe2.infra.chatbot.client.OpenAiClient;
+import com.nbe2.api.chatbot.dto.SessionResponse;
+import com.nbe2.api.global.dto.Response;
+import com.nbe2.domain.chatbot.ChatbotService;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/chatbot")
 public class ChatbotApi {
 
-    // Flux를 사용해야 해서 인프라 모듈에서 클래스를 냅다 가져와야 함
-    private final OpenAiClient chatClient;
+    private final ChatbotService chatbotService;
 
-    // ServerSentEvent를 응답값으로 보내면 SSE로 전달됨
-    // 그래야 원래 의도했던 OpenAI의 생성된 응답을 글자 조각 단위로 스트리밍해줄 수 있음
-    @GetMapping("/test")
-    public Flux<ServerSentEvent<String>> openaiTest(@RequestBody QuestionRequest request) {
-        return chatClient
-                .invoke(request.question())
+    @PostMapping("/session")
+    public Response<SessionResponse> connectChatbot() {
+        return Response.success(SessionResponse.of(chatbotService.openChatMemorySession()));
+    }
+
+    @PostMapping("/query")
+    public Flux<ServerSentEvent<String>> openAiTest2(@RequestBody QuestionRequest request) {
+        return Flux.<String>create(
+                        emitter ->
+                                chatbotService.getResponse(
+                                        request.toQuestion(),
+                                        new ChatbotService.ResponseHandler() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                emitter.next(response);
+                                            }
+
+                                            @Override
+                                            public void onComplete() {
+                                                emitter.complete();
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable throwable) {
+                                                emitter.error(throwable);
+                                            }
+                                        }),
+                        FluxSink.OverflowStrategy.BUFFER)
                 .map(str -> ServerSentEvent.<String>builder().data(str).build());
+    }
+
+    // Postman에서 SSE 스트리밍 응답은 보기가 불편해서
+    // 임시로 로컬 테스트 용 API 추가, 추후에 프론트 연결 시 제거할 예정
+    @PostMapping("/test")
+    public Flux<String> openAiTest3(@RequestBody QuestionRequest request) {
+        return Flux.create(
+                emitter ->
+                        chatbotService.getResponse(
+                                request.toQuestion(),
+                                new ChatbotService.ResponseHandler() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        emitter.next(response);
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+                                        emitter.complete();
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable throwable) {
+                                        emitter.error(throwable);
+                                    }
+                                }),
+                FluxSink.OverflowStrategy.BUFFER);
+    }
+
+    @DeleteMapping("/session")
+    public Response<Void> closeChatbot(@RequestParam String id) {
+        chatbotService.closeChatMemorySession(id);
+        return Response.success();
     }
 }

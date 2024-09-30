@@ -1,3 +1,10 @@
 package com.nbe2.api.chatbot.dto;
 
-public record QuestionRequest(String question) {}
+import com.nbe2.domain.chatbot.Question;
+
+public record QuestionRequest(String query, String sessionId) {
+
+    public Question toQuestion() {
+        return new Question(query, sessionId);
+    }
+}

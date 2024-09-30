@@ -1,24 +1,53 @@
 package com.nbe2.infra.chatbot.client;
 
-import org.springframework.ai.chat.model.StreamingChatModel;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
+
+import com.nbe2.domain.chatbot.ChatbotService;
+import com.nbe2.domain.chatbot.Question;
 
 import reactor.core.publisher.Flux;
 
 @Component
 @RequiredArgsConstructor
-public class OpenAiClient {
+public class OpenAiClient implements ChatbotService {
 
-    private final StreamingChatModel chatModel;
-    private final DataRetriever dataRetriever;
-    private final Prompter prompter;
+    private final ChatClient chatClient;
+    private final ChatMemory chatMemory;
 
-    // OpenAI API(gpt-4o-mini) 응답 받기
-    // ChatModel API를 쓸 때 이전 대화 기록을 기억할 수 없어 좀 아쉬움
-    // ChatClient를 직접 쓰면 ChatMemory 적용할 수 있는데 어제 에러 장난 아니게 남
-    public Flux<String> invoke(String query) {
-        return chatModel.stream(prompter.createPrompt(query, dataRetriever.retrieveVector(query)));
+    @Override
+    public void getResponse(Question question, ResponseHandler handler) {
+        Flux<String> chatResponse =
+                chatClient
+                        .prompt()
+                        .user(question.query())
+                        .advisors(
+                                advisorSpec ->
+                                        advisorSpec
+                                                .param(
+                                                        AbstractChatMemoryAdvisor
+                                                                .CHAT_MEMORY_CONVERSATION_ID_KEY,
+                                                        question.sessionId())
+                                                .param(
+                                                        AbstractChatMemoryAdvisor
+                                                                .CHAT_MEMORY_RETRIEVE_SIZE_KEY,
+                                                        100))
+                        .stream()
+                        .content();
+
+        chatResponse.subscribe(
+                handler::onResponse, // 데이터가 있을 때 호출
+                handler::onError, // 에러 발생 시 호출
+                handler::onComplete // 완료 시 호출
+                );
+    }
+
+    @Override
+    public void closeChatMemorySession(String sessionId) {
+        chatMemory.clear(sessionId);
     }
 }
