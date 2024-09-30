@@ -18,11 +18,16 @@ public class NoticeAppender {
     private final UserReader userReader;
     private final NoticeRepository noticeRepository;
     private final NoticeInfoValidator noticeInfoValidator;
+    private final NoticeFileRepository noticeFileRepository;
 
     public Notice append(NoticeInfo noticeInfo, User user, EmergencyRoom emergencyRoom) { // insert
         noticeInfoValidator.validateTitle(noticeInfo); // title Null 검사
         noticeInfoValidator.validateContent(noticeInfo); // content Null 검사
         return noticeRepository.save(Notice.from(noticeInfo, user, emergencyRoom));
+    }
+
+    public NoticeFile appendWithFile(NoticeFile file) {
+        return noticeFileRepository.save(file);
     }
 
     // noticeInfo dto에 있는 hpId로 emergencyRomm 조회

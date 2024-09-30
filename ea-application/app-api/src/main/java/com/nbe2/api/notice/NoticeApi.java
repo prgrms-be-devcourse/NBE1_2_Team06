@@ -19,6 +19,8 @@ import com.nbe2.api.notice.dto.NoticteCreateRequest;
 import com.nbe2.common.annotation.PageDefault;
 import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
+import com.nbe2.domain.file.FileMetaDataService;
+import com.nbe2.domain.notice.NoticeFile;
 import com.nbe2.domain.notice.NoticeInfo;
 import com.nbe2.domain.notice.NoticeReadInfo;
 import com.nbe2.domain.notice.NoticeService;
@@ -29,12 +31,25 @@ import com.nbe2.domain.notice.NoticeUpdateInfo;
 @RequestMapping("/api/v1/notices")
 public class NoticeApi {
     private final NoticeService noticeService;
+    private final FileMetaDataService fileMetaDataService;
 
     @PostMapping // insert
     public Response<Void> createNotice(
-            @RequestBody NoticteCreateRequest request, @RequestParam(name = "userId") Long userId) {
+            @RequestBody NoticteCreateRequest request,
+            @RequestParam(name = "userId") Long userId,
+            @RequestParam(name = "file", required = false) Long fileId) {
         NoticeInfo newNoticeinfo = request.toNoticeInfo();
-        noticeService.writeNotice(newNoticeinfo, userId);
+        System.out.println("fileId : " + fileId);
+        // 파일 Id등록
+        if (fileId != null) {
+            NoticeFile file =
+                    NoticeFile.of(
+                            fileMetaDataService.getFileMetaData(fileId),
+                            noticeService.writeNotice(newNoticeinfo, userId));
+            noticeService.writeNoticeWithFile(file);
+        } else {
+            noticeService.writeNotice(newNoticeinfo, userId);
+        }
         return Response.success();
     }
 

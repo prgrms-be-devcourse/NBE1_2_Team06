@@ -1,22 +1,37 @@
 package com.nbe2.domain.notice;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+import com.nbe2.domain.file.FileMetaData;
 
 @Entity
+@Builder
+@IdClass(NoticeFilePK.class)
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "notice_files")
 public class NoticeFile {
-    /*
 
-    	@Id
-    	@OneToOne(fetch = FetchType.EAGER)
-    	private File file;
-    */
+    @Id
+    @Column(name = "file_id")
+    private Long fileMetaDataId;
 
-    // 오류 나서 임시로 해놨습니다
-    @Id private Long fileId;
+    @Id
+    @Column(name = "notice_id")
+    private Long noticeId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Notice notice;
+    public static NoticeFile of(FileMetaData fileMetaData, Notice notice) {
+        return NoticeFile.builder()
+                .fileMetaDataId(fileMetaData.getId())
+                .noticeId(notice.getNoticeId())
+                .build();
+    }
 }

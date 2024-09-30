@@ -20,9 +20,14 @@ public class NoticeService {
     private final NoticeDeleter noticeDeleter;
 
     public Notice writeNotice(NoticeInfo noticeInfo, Long userId) { // Notice 등록
+        // @TODO 병원 관계자만 공지사항을 작성할 수 있어야 됨
         EmergencyRoom noticeAppenderEmergencyRoom = noticeAppender.getEmergencyRoom(noticeInfo);
         User noticeAppenderUser = noticeAppender.getUser(userId);
         return noticeAppender.append(noticeInfo, noticeAppenderUser, noticeAppenderEmergencyRoom);
+    }
+
+    public void writeNoticeWithFile(NoticeFile file) { // Notice 파일 추가
+        noticeAppender.appendWithFile(file);
     }
 
     public void deleteNotice(Long noticeId) {
