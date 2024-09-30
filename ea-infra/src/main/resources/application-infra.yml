@@ -5,6 +5,10 @@ spring:
 openapi:
   service-key: ${OPENAPI_SERVICE_KEY}
 
+naver:
+  map-clinet-id: ${NAVER_MAP_CLINET_ID}
+  map-screat-key: ${NAVER_MAP_SCREAT_KEY}
+
 ---
 spring:
   config:
@@ -23,8 +27,8 @@ spring:
         show-sql: true
         format_sql: true
 redis:
-  host: localhost
-  port: 6379
+  host: ${REDIS_HOST}
+  port: ${REDIS_PORT}
 
 logging:
   level:
@@ -39,6 +43,7 @@ logging:
 
 kakao:
   rest-api-key: ${KAKAO_REST_API_KEY}
+
 ---
 spring:
   config:
