@@ -120,7 +120,7 @@ public class SecurityConfig {
         return web ->
                 web.ignoring()
                         .requestMatchers("/api/v1/oauth/**")
-                        .requestMatchers("/api/v1/auth/**")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/**")
                         .requestMatchers(HttpMethod.GET, "/api/v1/notices/**")
                         .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**")
                         .requestMatchers(HttpMethod.GET, "/api/v1/directions")

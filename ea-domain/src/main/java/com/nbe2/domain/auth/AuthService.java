@@ -7,10 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.domain.user.MedicalProfile;
-import com.nbe2.domain.user.UserAppender;
-import com.nbe2.domain.user.UserProfile;
-import com.nbe2.domain.user.UserValidator;
+import com.nbe2.domain.emergencyroom.exception.RefreshNotFountException;
+import com.nbe2.domain.user.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +19,8 @@ public class AuthService {
     private final Authenticator authenticator;
     private final UserValidator userValidator;
     private final UserAppender userAppender;
+    private final TokenValidator tokenValidator;
+    private final TokenProvider tokenProvider;
 
     @Transactional
     public void signUp(
@@ -45,5 +45,20 @@ public class AuthService {
 
     public void logout(long userId) {
         tokenManager.removeRefreshToken(userId);
+    }
+
+    public Tokens updateToken(Tokens tokens) {
+        if (!tokenValidator.checkJwt(tokens.refreshToken())) {
+            throw RefreshNotFountException.EXCEPTION;
+        }
+
+        tokenProvider.getUserPrincipal(tokens.refreshToken());
+        String userId = tokenProvider.getUserId(tokens.refreshToken());
+        String userRole = tokenProvider.getUserRole(tokens.refreshToken());
+
+        tokenManager.checkRefreshToken(Long.parseLong(userId));
+
+        return tokenGenerator.generateToken(
+                UserPrincipal.of(Long.parseLong(userId), UserRole.valueOf(userRole)));
     }
 }

@@ -14,13 +14,7 @@ public enum GlobalErrorCode implements BaseErrorCode {
     OTHER_SERVER_EXPIRED_TOKEN(BAD_REQUEST, "AUTH_OTHER_400", "Other server expired token"),
     OTHER_SERVER_NOT_FOUND(BAD_REQUEST, "AUTH_OTHER_400", "Other server not found error"),
     OTHER_SERVER_INTERNAL_SERVER_ERROR(
-            BAD_REQUEST, "FEIGN_400_6", "Other server internal server error"),
-
-    UNSUPPORTED_TOKEN(BAD_REQUEST, "TOKEN_400", "지원 하지 않은 토큰"),
-    EXPIRED_TOKEN(UNAUTHORIZED, "TOKEN_401", "만료된 토큰"),
-    TOKEN_NOT_VALIDATE(UNAUTHORIZED, "TOKEN_401", "유효하지 않은 토큰"),
-
-    TOKEN_BAD_SIGNATURE(UNAUTHORIZED, "TOKEN_401", "서명 불일치");
+            BAD_REQUEST, "FEIGN_400_6", "Other server internal server error");
 
     private final Integer status;
     private final String errorCode;

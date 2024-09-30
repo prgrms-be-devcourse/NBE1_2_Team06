@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.nbe2.api.global.exception.JwtNotValidateException;
 import com.nbe2.api.global.exception.JwtUnsupportedException;
+import com.nbe2.domain.auth.TokenValidator;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -16,12 +17,16 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 
 @Component
-public class JwtValidator {
+public class JwtValidator implements TokenValidator {
+
+    private static String SECRET_KEY;
 
     @Value("${jwt.screat-key}")
-    private String SECRET_KEY;
+    public void setSecretKey(String secretKey) {
+        SECRET_KEY = secretKey;
+    }
 
-    private Key getKey() {
+    private static Key getKey() {
         return new SecretKeySpec(SECRET_KEY.getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 
@@ -31,13 +36,10 @@ public class JwtValidator {
             Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(jwt);
             return true;
         } catch (ExpiredJwtException e) {
-            return false;
+            throw JwtNotValidateException.EXCEPTION;
         } catch (UnsupportedJwtException e) {
             //            logger.info("지원되지 않는 JWT 토큰입니다. ");
             throw JwtUnsupportedException.EXCEPTION;
-        } catch (IllegalArgumentException e) {
-            //            logger.info("잘못된 JWT 토큰입니다. ");
-            throw JwtNotValidateException.EXCEPTION;
         }
     }
 }

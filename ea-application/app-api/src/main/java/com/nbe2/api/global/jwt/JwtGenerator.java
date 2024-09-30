@@ -20,12 +20,16 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtGenerator implements TokenGenerator {
     private static final long ACCESS_EXPIRATION_TIME = 80; // -> 약 10분의 토큰 유효 기간
-    private static final long REFRESH_EXPIRATION_TIME = 86; // -> 약 하루의 토큰 유효 기간
+    private static final long REFRESH_EXPIRATION_TIME = 860000000; // -> 약 하루의 토큰 유효 기간
+
+    private static String SECRET_KEY;
 
     @Value("${jwt.screat-key}")
-    private String SECRET_KEY;
+    public void setSecretKey(String secretKey) {
+        SECRET_KEY = secretKey;
+    }
 
-    private Key getKey() {
+    private static Key getKey() {
         return new SecretKeySpec(SECRET_KEY.getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 
@@ -38,18 +42,10 @@ public class JwtGenerator implements TokenGenerator {
                 .build();
     }
 
-    @Override
-    public Tokens createAccessToken(UserPrincipal userPrincipal, String refreshToken) {
-        return Tokens.builder()
-                .accessToken(generatorAccessToken(userPrincipal))
-                .refreshToken(refreshToken)
-                .build();
-    }
-
-    private String generatorAccessToken(UserPrincipal principal) {
+    private static String generatorAccessToken(UserPrincipal principal) {
         return Jwts.builder()
                 .setHeader(setHeader("ACCESS"))
-                .setClaims(setClaims(principal))
+                .setClaims(setAccessClaims(principal))
                 .setSubject(String.valueOf(principal.userId()))
                 .setIssuedAt(getNowDate())
                 .setExpiration(new Date(getNowDate().getTime() + ACCESS_EXPIRATION_TIME))
@@ -57,10 +53,10 @@ public class JwtGenerator implements TokenGenerator {
                 .compact();
     }
 
-    private String generatorRefreshToken(UserPrincipal principal) {
-
+    private static String generatorRefreshToken(UserPrincipal principal) {
         return Jwts.builder()
                 .setHeader(setHeader("REFRESH"))
+                .setClaims(setRefreshClaims(principal))
                 .setSubject(String.valueOf(principal.userId()))
                 .setIssuedAt(getNowDate())
                 .setExpiration(new Date(getNowDate().getTime() + REFRESH_EXPIRATION_TIME))
@@ -76,13 +72,19 @@ public class JwtGenerator implements TokenGenerator {
         return header;
     }
 
-    private static Map<String, Object> setClaims(UserPrincipal principal) {
+    private static Map<String, Object> setAccessClaims(UserPrincipal principal) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("ROLE", principal.role());
+        claims.put("UserPrincpal", principal);
         return claims;
     }
 
-    private Date getNowDate() {
+    private static Map<String, Object> setRefreshClaims(UserPrincipal principal) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("ROLE", principal.role().name());
+        return claims;
+    }
+
+    private static Date getNowDate() {
         return new Date();
     }
 }

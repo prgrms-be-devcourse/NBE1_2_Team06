@@ -1,17 +1,18 @@
 package com.nbe2.domain.auth;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.domain.user.UserRole;
+import com.nbe2.domain.emergencyroom.exception.RefreshNotFountException;
 
 @Component
 @RequiredArgsConstructor
 public class TokenManager {
 
     private final TokenRepository tokenRepository;
-    private final TokenGenerator tokenGenerator;
 
     public void save(RefreshToken refreshToken) {
         tokenRepository.setRefreshToken(refreshToken);
@@ -21,26 +22,9 @@ public class TokenManager {
         tokenRepository.removeRefreshToken(userId);
     }
 
-    public Tokens updateToken(Tokens tokens) {
-        RefreshToken refreshToken = getRefreshToken(Long.parseLong(tokens.userInfo().userId));
-        if (refreshToken != null) {
-            return tokenGenerator.createAccessToken(
-                    UserPrincipal.of(refreshToken.userId(), UserRole.USER),
-                    refreshToken.refreshToken());
-        } else {
-            Tokens newTokens =
-                    tokenGenerator.generateToken(
-                            UserPrincipal.of(
-                                    Long.parseLong(tokens.userInfo().userId),
-                                    tokens.userInfo().userRole));
-            save(
-                    RefreshToken.of(
-                            Long.parseLong(tokens.userInfo().userId), newTokens.refreshToken()));
-            return newTokens;
-        }
-    }
-
-    private RefreshToken getRefreshToken(long userId) {
-        return tokenRepository.getRefreshToken(userId);
+    public void checkRefreshToken(long userId) {
+        Optional<RefreshToken> refreshToken = tokenRepository.getRefreshToken(userId);
+        // redis에 값이 없을 경우 에러를 발생시키고 클라쪽에 로그인창으로 리다이렉트 요청
+        refreshToken.orElseThrow(() -> RefreshNotFountException.EXCEPTION);
     }
 }

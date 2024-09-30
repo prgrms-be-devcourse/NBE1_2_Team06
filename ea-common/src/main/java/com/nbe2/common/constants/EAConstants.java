@@ -10,4 +10,6 @@ public class EAConstants {
     public static final int INTERNAL_SERVER = 500;
 
     public static final String BEARER = "Bearer ";
+
+    public static final String AUTHORIZATION_HEADER = "Authorization";
 }

@@ -1,5 +1,7 @@
 package com.nbe2.infra.auth.cache;
 
+import java.util.Optional;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -27,8 +29,8 @@ public class RedisTokenRepository implements TokenRepository {
     }
 
     @Override
-    public RefreshToken getRefreshToken(long userId) {
-        return template.opsForValue().get(getKey(userId));
+    public Optional<RefreshToken> getRefreshToken(long userId) {
+        return Optional.ofNullable(template.opsForValue().get(getKey(userId)));
     }
 
     private String getKey(long userId) {
