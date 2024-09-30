@@ -21,10 +21,12 @@ public class JwtUtils {
         return jwtValidator.checkJwt(jwt);
     }
 
+    // 유저의 권한 반환
     public String getRole(String jwt) {
         return provider.getRole(jwt);
     }
 
+    // 유저 ID 반환
     public String getUserId(String jwt) {
         return provider.getUserId(jwt);
     }

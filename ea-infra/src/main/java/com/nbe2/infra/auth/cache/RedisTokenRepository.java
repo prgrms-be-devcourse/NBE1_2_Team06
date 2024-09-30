@@ -26,6 +26,11 @@ public class RedisTokenRepository implements TokenRepository {
         template.delete(getKey(userId));
     }
 
+    @Override
+    public RefreshToken getRefreshToken(long userId) {
+        return template.opsForValue().get(getKey(userId));
+    }
+
     private String getKey(long userId) {
         return "REFRESH_TOKEN_ER:" + userId;
     }

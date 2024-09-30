@@ -1,14 +1,24 @@
 package com.nbe2.api.global.config;
 
+import java.io.IOException;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
@@ -71,6 +81,35 @@ public class SecurityConfig {
                                         // 그 외 회원 인증 필요
                                         .anyRequest()
                                         .authenticated());
+        httpSecurity.exceptionHandling(
+                httpSecurityExceptionHandlingConfigurer ->
+                        httpSecurityExceptionHandlingConfigurer
+                                // 토큰
+                                .authenticationEntryPoint(
+                                        new AuthenticationEntryPoint() {
+                                            @Override
+                                            public void commence(
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response,
+                                                    AuthenticationException authException)
+                                                    throws IOException, ServletException {
+                                                response.sendError(
+                                                        HttpServletResponse.SC_UNAUTHORIZED,
+                                                        "UnAuthorized");
+                                            }
+                                        })
+                                .accessDeniedHandler(
+                                        new AccessDeniedHandler() {
+                                            @Override
+                                            public void handle(
+                                                    HttpServletRequest request,
+                                                    HttpServletResponse response,
+                                                    AccessDeniedException accessDeniedException)
+                                                    throws IOException, ServletException {
+                                                response.sendError(
+                                                        HttpServletResponse.SC_FORBIDDEN);
+                                            }
+                                        }));
 
         return httpSecurity.build();
     }
@@ -85,6 +124,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/notices/**")
                         .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**")
                         .requestMatchers(HttpMethod.GET, "/api/v1/directions")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/emergency-rooms/**");
+                        .requestMatchers(HttpMethod.GET, "/api/v1/emergency-rooms/**")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/reissue")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/admin/reissue");
     }
 }

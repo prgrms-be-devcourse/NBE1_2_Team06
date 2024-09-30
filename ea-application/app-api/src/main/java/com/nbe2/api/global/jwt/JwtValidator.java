@@ -7,7 +7,6 @@ import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.nbe2.api.global.exception.JwtExpiredException;
 import com.nbe2.api.global.exception.JwtNotValidateException;
 import com.nbe2.api.global.exception.JwtUnsupportedException;
 
@@ -32,8 +31,7 @@ public class JwtValidator {
             Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(jwt);
             return true;
         } catch (ExpiredJwtException e) {
-            //            logger.info("만료된 JWT 토큰입니다. ");
-            throw JwtExpiredException.EXCEPTION;
+            return false;
         } catch (UnsupportedJwtException e) {
             //            logger.info("지원되지 않는 JWT 토큰입니다. ");
             throw JwtUnsupportedException.EXCEPTION;

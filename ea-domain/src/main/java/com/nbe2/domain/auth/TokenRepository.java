@@ -5,4 +5,6 @@ public interface TokenRepository {
     void setRefreshToken(RefreshToken refreshToken);
 
     void removeRefreshToken(long userId);
+
+    RefreshToken getRefreshToken(long userId);
 }
