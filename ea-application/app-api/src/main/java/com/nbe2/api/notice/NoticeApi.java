@@ -1,7 +1,5 @@
 package com.nbe2.api.notice;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +16,9 @@ import com.nbe2.api.global.dto.Response;
 import com.nbe2.api.notice.dto.NoticeReadResponse;
 import com.nbe2.api.notice.dto.NoticeUpdateReqeust;
 import com.nbe2.api.notice.dto.NoticteCreateRequest;
+import com.nbe2.common.annotation.PageDefault;
+import com.nbe2.common.dto.Page;
+import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.notice.NoticeInfo;
 import com.nbe2.domain.notice.NoticeReadInfo;
 import com.nbe2.domain.notice.NoticeService;
@@ -52,11 +53,10 @@ public class NoticeApi {
     }
 
     @GetMapping // read
-    public Response<List<NoticeReadResponse>> getNotices(
-            @RequestParam(name = "emergecnyRoomId") Long emergecnyRoomId) {
-        List<NoticeReadInfo> readInfos = noticeService.readNotice(emergecnyRoomId);
-        List<NoticeReadResponse> readResponses =
-                readInfos.stream().map(NoticeReadResponse::fromNoticeReadInfo).toList();
-        return Response.success(readResponses);
+    public Response<PageResult<NoticeReadResponse>> getNoticePage(
+            @RequestParam(name = "emergencyRoomId") Long emergencyRoomId, @PageDefault Page page) {
+        PageResult<NoticeReadInfo> noticeReadPageResult =
+                noticeService.readNotice(emergencyRoomId, page);
+        return Response.success(noticeReadPageResult.map(NoticeReadResponse::fromNoticeReadInfo));
     }
 }

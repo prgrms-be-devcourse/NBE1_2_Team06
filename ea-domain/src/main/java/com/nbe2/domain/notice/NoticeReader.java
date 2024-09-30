@@ -1,11 +1,13 @@
 package com.nbe2.domain.notice;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+
+import com.nbe2.common.dto.PageResult;
 
 @Component
 @RequiredArgsConstructor
@@ -13,7 +15,10 @@ public class NoticeReader {
     private final NoticeRepository noticeRepository;
 
     @Transactional
-    public List<NoticeReadInfo> readAllById(Long emergencyRoomId) {
-        return noticeRepository.findByEmergencyRoomId(emergencyRoomId);
+    public PageResult<NoticeReadInfo> readAllByIdPage(Long emergencyRoomId, Pageable pageable) {
+        Page<NoticeReadInfo> noticeInfos =
+                noticeRepository.findByEmergencyRoomIdPage(pageable, emergencyRoomId);
+        return new PageResult<>(
+                noticeInfos.getContent(), noticeInfos.getTotalPages(), noticeInfos.hasNext());
     }
 }
