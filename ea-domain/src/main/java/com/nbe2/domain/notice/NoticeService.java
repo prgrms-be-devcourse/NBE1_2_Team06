@@ -38,4 +38,9 @@ public class NoticeService {
     public PageResult<NoticeReadInfo> readNotice(Long emergecnyRoomId, Page page) {
         return noticeReader.readAllByIdPage(emergecnyRoomId, PagingUtil.toPageRequest(page));
     }
+
+    public PageResult<NoticeReadInfo> searchByTitle(Long emergecnyRoomId, String title, Page page) {
+        return noticeReader.searchBytitlePage(
+                emergecnyRoomId, title, PagingUtil.toPageRequest(page));
+    }
 }

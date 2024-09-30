@@ -53,10 +53,20 @@ public class NoticeApi {
     }
 
     @GetMapping // read
-    public Response<PageResult<NoticeReadResponse>> getNoticePage(
+    public Response<PageResult<NoticeReadResponse>> getNotice(
             @RequestParam(name = "emergencyRoomId") Long emergencyRoomId, @PageDefault Page page) {
         PageResult<NoticeReadInfo> noticeReadPageResult =
                 noticeService.readNotice(emergencyRoomId, page);
+        return Response.success(noticeReadPageResult.map(NoticeReadResponse::fromNoticeReadInfo));
+    }
+
+    @GetMapping("/search/{title}") // searchByTitle
+    public Response<PageResult<NoticeReadResponse>> searchNotice(
+            @RequestParam(name = "emergencyRoomId") Long emergencyRoomId,
+            @PathVariable String title,
+            @PageDefault Page page) {
+        PageResult<NoticeReadInfo> noticeReadPageResult =
+                noticeService.searchByTitle(emergencyRoomId, title, page);
         return Response.success(noticeReadPageResult.map(NoticeReadResponse::fromNoticeReadInfo));
     }
 }

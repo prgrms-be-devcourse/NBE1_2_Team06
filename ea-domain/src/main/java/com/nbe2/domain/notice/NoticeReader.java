@@ -21,4 +21,15 @@ public class NoticeReader {
         return new PageResult<>(
                 noticeInfos.getContent(), noticeInfos.getTotalPages(), noticeInfos.hasNext());
     }
+
+    @Transactional
+    public PageResult<NoticeReadInfo> searchBytitlePage(
+            Long emergencyRoomId, String title, Pageable pageable) {
+        Page<NoticeReadInfo> noticeSearchTitle =
+                noticeRepository.findByTitle(pageable, emergencyRoomId, title);
+        return new PageResult<>(
+                noticeSearchTitle.getContent(),
+                noticeSearchTitle.getTotalPages(),
+                noticeSearchTitle.hasNext());
+    }
 }
