@@ -48,8 +48,8 @@ public class Notice extends BaseTimeEntity {
 
     public static Notice from(NoticeInfo noticeInfo, User user, EmergencyRoom emergencyRoom) {
         return Notice.builder()
-                .title(String.valueOf(noticeInfo.title()))
-                .content(String.valueOf(noticeInfo.content()))
+                .title((noticeInfo.title().get()))
+                .content(noticeInfo.content().get())
                 .emergencyRoom(emergencyRoom)
                 .user(user)
                 .build();
