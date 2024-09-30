@@ -7,4 +7,6 @@ public interface EmergencyRoomClient {
     List<RealTimeEmergencyRoomInfo> getRealTimeInfo(Region region);
 
     List<EmergencyRoomInfo> getEmergencyRoomInfoData();
+
+    void directionsEmergencyRoom(String hospitalName);
 }
