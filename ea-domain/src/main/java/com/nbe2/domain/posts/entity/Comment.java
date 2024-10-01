@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.nbe2.domain.global.BaseTimeEntity;
 import com.nbe2.domain.user.User;
 
 @Entity
+@Getter
 @Table(name = "comments")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseTimeEntity {

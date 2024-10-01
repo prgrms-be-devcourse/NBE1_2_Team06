@@ -1,6 +1,7 @@
 package com.nbe2.domain.posts.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -12,6 +13,7 @@ import com.nbe2.domain.user.User;
 import com.nbe2.domain.user.UserReader;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CommentService {
     private final UserReader userReader;

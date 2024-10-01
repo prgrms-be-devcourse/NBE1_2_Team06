@@ -34,7 +34,7 @@ public class Post extends BaseTimeEntity {
 
     //    @OneToMany(mappedBy = "", cascade = CascadeType.ALL, orphanRemoval = true)
     //    private List<Comments> comments = new LinkedList<>();
-    //    private Long commentCount;
+    @Version private Long commentCount = 0L;
 
     //    @OneToMany(mappedBy = "", cascade = CascadeType.ALL, orphanRemoval = true)
     //    private List<Likes> likes = new LinkedList<>();
@@ -57,5 +57,9 @@ public class Post extends BaseTimeEntity {
         this.content = content;
         this.city = city;
         return id;
+    }
+
+    public Long addComment() {
+        return ++commentCount;
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 
 import com.nbe2.domain.posts.entity.Comment;
+import com.nbe2.domain.posts.exception.CommentRegisterConflictException;
 import com.nbe2.domain.posts.repository.CommentRepository;
 
 @Component
@@ -13,6 +14,11 @@ public class CommentAppender {
     private final CommentRepository commentRepository;
 
     public void append(Comment comment) {
-        commentRepository.save(comment);
+        comment.getPost().addComment();
+        try {
+            commentRepository.save(comment);
+        } catch (CommentRegisterConflictException e) {
+            throw CommentRegisterConflictException.EXCEPTION;
+        }
     }
 }

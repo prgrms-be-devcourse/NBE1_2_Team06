@@ -1,5 +1,7 @@
 package com.nbe2.domain.posts.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,11 +11,9 @@ import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.global.util.PagingUtil;
 import com.nbe2.domain.posts.entity.City;
+import com.nbe2.domain.posts.entity.Comment;
 import com.nbe2.domain.posts.entity.Post;
-import com.nbe2.domain.posts.service.component.PostAppender;
-import com.nbe2.domain.posts.service.component.PostDeleter;
-import com.nbe2.domain.posts.service.component.PostReader;
-import com.nbe2.domain.posts.service.component.PostUpdater;
+import com.nbe2.domain.posts.service.component.*;
 import com.nbe2.domain.posts.service.dto.*;
 import com.nbe2.domain.user.User;
 import com.nbe2.domain.user.UserReader;
@@ -27,6 +27,7 @@ public class PostService {
     private final PostReader postReader;
     private final PostUpdater postUpdater;
     private final PostDeleter postDeleter;
+    private final CommentReader commentReader;
     private final UserReader userReader;
 
     @Transactional
@@ -46,7 +47,8 @@ public class PostService {
 
     public PostDetailsInfo findDetails(final Long postsId) {
         Post post = postReader.read(postsId);
-        return PostDetailsInfo.from(post);
+        List<Comment> comments = commentReader.read(post);
+        return PostDetailsInfo.from(post, comments);
     }
 
     @Transactional

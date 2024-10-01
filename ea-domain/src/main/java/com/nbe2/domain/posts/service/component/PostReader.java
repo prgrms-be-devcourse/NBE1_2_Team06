@@ -1,5 +1,7 @@
 package com.nbe2.domain.posts.service.component;
 
+import static com.nbe2.domain.posts.entity.QPost.post;
+
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -43,7 +45,8 @@ public class PostReader {
                                         post.getId(),
                                         post.getUser().getName(),
                                         post.getTitle(),
-                                        post.getContent()))
+                                        post.getContent(),
+                                        post.getCommentCount()))
                 .toList();
     }
 }
