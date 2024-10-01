@@ -9,10 +9,9 @@ import lombok.RequiredArgsConstructor;
 public class EmergencyRoomDirections {
 
     private final EmergencyRoomClient roomClient;
-    private final EmergencyRoomRepository emergencyRoomRepository;
 
-    public void directionsEmergencyRoom(String hospitalName, String myLocation) {
-
-        roomClient.directionsEmergencyRoom(null, null);
+    public EmergencyRoomDirectionsInfo directionsEmergencyRoom(
+            String myLocation, String latitudeAndLongitude) {
+        return roomClient.directionsEmergencyRoom(myLocation, latitudeAndLongitude);
     }
 }

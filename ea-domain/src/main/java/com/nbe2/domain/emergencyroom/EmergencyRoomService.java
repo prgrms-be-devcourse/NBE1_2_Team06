@@ -34,7 +34,10 @@ public class EmergencyRoomService {
         return emergencyRoomReader.readByHospitalName(name);
     }
 
-    public void directionsEmergencyRoom(String hospitalName, String myLocation) {
-        emergencyRoomDirections.directionsEmergencyRoom(hospitalName, myLocation);
+    public EmergencyRoomDirectionsInfo directionsEmergencyRoom(
+            String myLocation, String hospitalName) {
+        Coordinate byHospitalLocation = emergencyRoomReader.findByHospitalName(hospitalName);
+        String latitudeAndLongitude = byHospitalLocation.convertorLatitudeAndLongitude();
+        return emergencyRoomDirections.directionsEmergencyRoom(myLocation, latitudeAndLongitude);
     }
 }

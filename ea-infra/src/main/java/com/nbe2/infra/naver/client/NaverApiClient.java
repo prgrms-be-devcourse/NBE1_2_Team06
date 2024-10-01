@@ -14,8 +14,6 @@ import com.nbe2.infra.naver.dto.NaverDirectionsResponse;
 public interface NaverApiClient {
 
     @GetMapping(value = "/driving")
-    NaverDirectionsResponse getRealTimeEmergencyData(
-            @RequestParam String goal, @RequestParam String start);
-    //            @RequestParam(required = false) int numOfRows);
-
+    NaverDirectionsResponse getEmergencyDirectionsData(
+            @RequestParam String goal, @RequestParam String start, @RequestParam String trafast);
 }

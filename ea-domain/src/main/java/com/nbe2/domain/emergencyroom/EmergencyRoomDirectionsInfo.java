@@ -12,18 +12,14 @@ public record EmergencyRoomDirectionsInfo(
         @JsonProperty("message") String message,
         @JsonProperty("currentDateTime") String currentDateTime,
         @JsonProperty("route") Route route) {
-    @Builder
-    public record Route(
-            @JsonProperty("trafast") Option trafast,
-            @JsonProperty("tracomfort") Option tracomfort,
-            @JsonProperty("traoptimal") Option traoptimal,
-            @JsonProperty("traavoidtoll") Option traavoidtoll,
-            @JsonProperty("traavoidcaronly") Option traavoidcaronly) {}
 
     @Builder
-    public record Option(
+    public record Route(@JsonProperty("traoptimal") List<Traoptimal> traoptimal) {}
+
+    @Builder
+    public record Traoptimal(
             @JsonProperty("summary") Summary summary,
-            @JsonProperty("path") List<Path> path,
+            @JsonProperty("path") List<Double[]> path,
             @JsonProperty("section") List<Section> section,
             @JsonProperty("guide") List<Guide> guide) {}
 
@@ -34,7 +30,7 @@ public record EmergencyRoomDirectionsInfo(
             @JsonProperty("distance") Integer distance,
             @JsonProperty("duration") Integer duration,
             @JsonProperty("departureTime") String departureTime,
-            @JsonProperty("bbox") List<Double> bbox,
+            @JsonProperty("bbox") List<List<Double>> bbox,
             @JsonProperty("tollFare") Integer tollFare,
             @JsonProperty("taxiFare") Integer taxiFare,
             @JsonProperty("fuelPrice") Integer fuelPrice) {}
@@ -45,11 +41,6 @@ public record EmergencyRoomDirectionsInfo(
     @Builder
     public record Goal(
             @JsonProperty("location") List<Double> location, @JsonProperty("dir") Integer dir) {}
-
-    @Builder
-    public record Path(
-            @JsonProperty("pointIndex") Integer pointIndex,
-            @JsonProperty("coordinates") List<Double> coordinates) {}
 
     @Builder
     public record Section(

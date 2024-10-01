@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
+import com.nbe2.api.emergencyroom.dto.EmergencyRoomDirectionsResponse;
 import com.nbe2.api.emergencyroom.dto.RealTimeEmergencyRoomResponse;
 import com.nbe2.api.global.dto.Response;
 import com.nbe2.domain.emergencyroom.Coordinate;
+import com.nbe2.domain.emergencyroom.EmergencyRoomDirectionsInfo;
 import com.nbe2.domain.emergencyroom.EmergencyRoomService;
 
 @RestController
@@ -48,10 +50,13 @@ public class EmergencyRoomApi {
     }
 
     @GetMapping("/directions")
-    public Response<Void> directionsEmergency(
+    public Response<EmergencyRoomDirectionsResponse> directionsEmergency(
             @RequestParam("myLocation") String myLocation,
             @RequestParam("hospitalName") String hospitalName) {
-        emergencyRoomService.directionsEmergencyRoom(hospitalName, myLocation);
-        return Response.success();
+        EmergencyRoomDirectionsInfo emergencyRoomDirectionsInfo =
+                emergencyRoomService.directionsEmergencyRoom(myLocation, hospitalName);
+        EmergencyRoomDirectionsResponse emergencyRoomDirectionsResponse =
+                EmergencyRoomDirectionsResponse.to(emergencyRoomDirectionsInfo);
+        return Response.success(emergencyRoomDirectionsResponse);
     }
 }
