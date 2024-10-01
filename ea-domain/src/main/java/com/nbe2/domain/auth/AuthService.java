@@ -7,10 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.domain.user.MedicalProfile;
-import com.nbe2.domain.user.UserAppender;
-import com.nbe2.domain.user.UserProfile;
-import com.nbe2.domain.user.UserValidator;
+import com.nbe2.domain.user.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +18,7 @@ public class AuthService {
     private final Authenticator authenticator;
     private final UserValidator userValidator;
     private final UserAppender userAppender;
+    private final TokenProvider tokenProvider;
 
     @Transactional
     public void signUp(
@@ -37,7 +35,8 @@ public class AuthService {
 
     public Tokens login(Login login) {
         UserPrincipal userPrincipal = authenticator.authenticate(login);
-        Tokens tokens = tokenGenerator.generateToken(userPrincipal);
+        Tokens tokens = tokenGenerator.generate(userPrincipal);
+        System.out.println(tokens);
         tokenManager.save(RefreshToken.of(userPrincipal.userId(), tokens.refreshToken()));
 
         return tokens;
@@ -45,5 +44,14 @@ public class AuthService {
 
     public void logout(long userId) {
         tokenManager.removeRefreshToken(userId);
+    }
+
+    public Tokens updateToken(Tokens tokens) {
+        UserPrincipal userPrincipal = tokenProvider.getTokenUserPrincipal(tokens.refreshToken());
+        tokenManager.checkRefreshToken(userPrincipal.userId());
+        Tokens newRefreshToken = tokenGenerator.generate(userPrincipal);
+        tokenManager.save(newRefreshToken.getRefreshToken(userPrincipal.userId()));
+
+        return newRefreshToken;
     }
 }
