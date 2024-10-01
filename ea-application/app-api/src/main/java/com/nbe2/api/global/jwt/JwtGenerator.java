@@ -19,7 +19,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtGenerator implements TokenGenerator {
-    private static final long ACCESS_EXPIRATION_TIME = 80; // -> 약 10분의 토큰 유효 기간
+    private static final long ACCESS_EXPIRATION_TIME = 860000000; // -> 약 10분의 토큰 유효 기간
     private static final long REFRESH_EXPIRATION_TIME = 860000000; // -> 약 하루의 토큰 유효 기간
 
     private static String SECRET_KEY;
@@ -33,9 +33,8 @@ public class JwtGenerator implements TokenGenerator {
         return new SecretKeySpec(SECRET_KEY.getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 
-    @Override
     // Jwt 생성
-    public Tokens generateToken(UserPrincipal principal) {
+    public Tokens generate(UserPrincipal principal) {
         return Tokens.builder()
                 .accessToken(generatorAccessToken(principal))
                 .refreshToken(generatorRefreshToken(principal))
@@ -45,7 +44,7 @@ public class JwtGenerator implements TokenGenerator {
     private static String generatorAccessToken(UserPrincipal principal) {
         return Jwts.builder()
                 .setHeader(setHeader("ACCESS"))
-                .setClaims(setAccessClaims(principal))
+                .setClaims(setClaims(principal))
                 .setSubject(String.valueOf(principal.userId()))
                 .setIssuedAt(getNowDate())
                 .setExpiration(new Date(getNowDate().getTime() + ACCESS_EXPIRATION_TIME))
@@ -56,7 +55,7 @@ public class JwtGenerator implements TokenGenerator {
     private static String generatorRefreshToken(UserPrincipal principal) {
         return Jwts.builder()
                 .setHeader(setHeader("REFRESH"))
-                .setClaims(setRefreshClaims(principal))
+                .setClaims(setClaims(principal))
                 .setSubject(String.valueOf(principal.userId()))
                 .setIssuedAt(getNowDate())
                 .setExpiration(new Date(getNowDate().getTime() + REFRESH_EXPIRATION_TIME))
@@ -72,13 +71,13 @@ public class JwtGenerator implements TokenGenerator {
         return header;
     }
 
-    private static Map<String, Object> setAccessClaims(UserPrincipal principal) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("UserPrincpal", principal);
-        return claims;
-    }
+    //    private static Map<String, Object> setAccessClaims(UserPrincipal principal) {
+    //        Map<String, Object> claims = new HashMap<>();
+    //        claims.put("UserPrincpal", principal);
+    //        return claims;
+    //    }
 
-    private static Map<String, Object> setRefreshClaims(UserPrincipal principal) {
+    private static Map<String, Object> setClaims(UserPrincipal principal) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("ROLE", principal.role().name());
         return claims;

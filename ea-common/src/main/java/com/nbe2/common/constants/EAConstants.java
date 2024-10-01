@@ -7,7 +7,7 @@ public class EAConstants {
     public static final int FORBIDDEN = 403;
     public static final int NOT_FOUND = 404;
     public static final int CONFLICT = 409;
-    public static final int INTERNAL_SERVER = 500;
+    public static final int INTERNAL_SERVER = 900;
 
     public static final String BEARER = "Bearer ";
 

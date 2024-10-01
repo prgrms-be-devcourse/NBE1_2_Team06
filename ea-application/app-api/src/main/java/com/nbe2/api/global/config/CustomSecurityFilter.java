@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 
 import com.nbe2.api.global.exception.JwtNotFountException;
 import com.nbe2.api.global.jwt.JwtProvider;
-import com.nbe2.api.global.jwt.JwtValidator;
 import com.nbe2.domain.auth.*;
 
 @RequiredArgsConstructor
@@ -31,22 +30,22 @@ import com.nbe2.domain.auth.*;
 public class CustomSecurityFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
-    private final JwtValidator jwtValidator;
 
     @Override
     protected void doFilterInternal(
             HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String jwtToken = reversToken(request);
-
-        // AccessToken(JWT) 유효한지 검사
-        // 유효하지 않으면 Refresh Token을 이용해 새 AccessToken 발급
-        if (jwtToken != null && jwtValidator.checkJwt(jwtToken)) {
+        try {
+            String jwtToken = reversToken(request);
+            // AccessToken(JWT) 유효한지 검사
+            // 유효하지 않으면 Refresh Token을 이용해 새 AccessToken 발급
             System.out.println("전부다 유효합니다.");
-            UserPrincipal userPrincipal = jwtProvider.getUserPrincipal(jwtToken);
+            UserPrincipal tokenUserPrincipal = jwtProvider.getTokenUserPrincipal(jwtToken);
             List<GrantedAuthority> grantedAuthorities =
-                    convertorGrantedAuthority(String.valueOf(userPrincipal.role()));
-            setSecurityContextHolder(userPrincipal.userId(), grantedAuthorities);
+                    convertorGrantedAuthority(String.valueOf(tokenUserPrincipal.role()));
+            setSecurityContextHolder(tokenUserPrincipal.userId(), grantedAuthorities);
+        } catch (Exception e) {
+            request.setAttribute("exception", e);
         }
 
         filterChain.doFilter(request, response);

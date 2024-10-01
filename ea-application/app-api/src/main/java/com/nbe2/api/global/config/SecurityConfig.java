@@ -1,34 +1,29 @@
 package com.nbe2.api.global.config;
 
-import java.io.IOException;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
+
+import com.nbe2.api.global.jwt.JwtProvider;
 
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomSecurityFilter customSecurityFilter;
+    private final JwtProvider jwtProvider;
+
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -44,7 +39,9 @@ public class SecurityConfig {
                                 sessionManagement.sessionCreationPolicy(
                                         SessionCreationPolicy.STATELESS))
                 // 필터 추가
-                .addFilterBefore(customSecurityFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(
+                        new CustomSecurityFilter(jwtProvider),
+                        UsernamePasswordAuthenticationFilter.class)
                 // 접근 제어 설정
                 .authorizeHttpRequests(
                         authorizationManagerRequestMatcherRegistry ->
@@ -81,35 +78,13 @@ public class SecurityConfig {
                                         // 그 외 회원 인증 필요
                                         .anyRequest()
                                         .authenticated());
+
         httpSecurity.exceptionHandling(
                 httpSecurityExceptionHandlingConfigurer ->
                         httpSecurityExceptionHandlingConfigurer
                                 // 토큰
-                                .authenticationEntryPoint(
-                                        new AuthenticationEntryPoint() {
-                                            @Override
-                                            public void commence(
-                                                    HttpServletRequest request,
-                                                    HttpServletResponse response,
-                                                    AuthenticationException authException)
-                                                    throws IOException, ServletException {
-                                                response.sendError(
-                                                        HttpServletResponse.SC_UNAUTHORIZED,
-                                                        "UnAuthorized");
-                                            }
-                                        })
-                                .accessDeniedHandler(
-                                        new AccessDeniedHandler() {
-                                            @Override
-                                            public void handle(
-                                                    HttpServletRequest request,
-                                                    HttpServletResponse response,
-                                                    AccessDeniedException accessDeniedException)
-                                                    throws IOException, ServletException {
-                                                response.sendError(
-                                                        HttpServletResponse.SC_FORBIDDEN);
-                                            }
-                                        }));
+                                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                                .accessDeniedHandler(customAccessDeniedHandler));
 
         return httpSecurity.build();
     }

@@ -96,12 +96,12 @@ class AuthServiceTest {
 
             // when
             when(authenticator.authenticate(any(Login.class))).thenReturn(principal);
-            when(tokenGenerator.generateToken(any(UserPrincipal.class))).thenReturn(expected);
+            when(tokenGenerator.generate(any(UserPrincipal.class))).thenReturn(expected);
 
             // then
             Tokens actual = authService.login(login);
             verify(authenticator).authenticate(login);
-            verify(tokenGenerator).generateToken(principal);
+            verify(tokenGenerator).generate(principal);
             verify(tokenManager).save(RefreshToken.of(ID, expected.refreshToken()));
             assertEquals(expected, actual);
         }

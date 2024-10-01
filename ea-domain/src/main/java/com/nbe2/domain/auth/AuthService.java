@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.domain.emergencyroom.exception.RefreshNotFountException;
 import com.nbe2.domain.user.*;
 
 @Service
@@ -19,7 +18,6 @@ public class AuthService {
     private final Authenticator authenticator;
     private final UserValidator userValidator;
     private final UserAppender userAppender;
-    private final TokenValidator tokenValidator;
     private final TokenProvider tokenProvider;
 
     @Transactional
@@ -37,7 +35,8 @@ public class AuthService {
 
     public Tokens login(Login login) {
         UserPrincipal userPrincipal = authenticator.authenticate(login);
-        Tokens tokens = tokenGenerator.generateToken(userPrincipal);
+        Tokens tokens = tokenGenerator.generate(userPrincipal);
+        System.out.println(tokens);
         tokenManager.save(RefreshToken.of(userPrincipal.userId(), tokens.refreshToken()));
 
         return tokens;
@@ -48,17 +47,11 @@ public class AuthService {
     }
 
     public Tokens updateToken(Tokens tokens) {
-        if (!tokenValidator.checkJwt(tokens.refreshToken())) {
-            throw RefreshNotFountException.EXCEPTION;
-        }
+        UserPrincipal userPrincipal = tokenProvider.getTokenUserPrincipal(tokens.refreshToken());
+        tokenManager.checkRefreshToken(userPrincipal.userId());
+        Tokens newRefreshToken = tokenGenerator.generate(userPrincipal);
+        tokenManager.save(newRefreshToken.getRefreshToken(userPrincipal.userId()));
 
-        tokenProvider.getUserPrincipal(tokens.refreshToken());
-        String userId = tokenProvider.getUserId(tokens.refreshToken());
-        String userRole = tokenProvider.getUserRole(tokens.refreshToken());
-
-        tokenManager.checkRefreshToken(Long.parseLong(userId));
-
-        return tokenGenerator.generateToken(
-                UserPrincipal.of(Long.parseLong(userId), UserRole.valueOf(userRole)));
+        return newRefreshToken;
     }
 }
