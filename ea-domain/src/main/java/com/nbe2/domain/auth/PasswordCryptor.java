@@ -1,6 +1,6 @@
 package com.nbe2.domain.auth;
 
-public interface PasswordEncoder {
+public interface PasswordCryptor {
 
     String encode(String plainPassword);
 

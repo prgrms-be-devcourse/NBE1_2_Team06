@@ -12,7 +12,7 @@ import com.nbe2.domain.user.UserReader;
 @RequiredArgsConstructor
 public class Authenticator {
 
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordCryptor passwordCryptor;
     private final UserReader userReader;
 
     public UserPrincipal authenticate(Login login) {
@@ -23,7 +23,7 @@ public class Authenticator {
     }
 
     private void validatePassword(String plain, String encoded) {
-        if (passwordEncoder.isPasswordUnmatched(plain, encoded)) {
+        if (passwordCryptor.isPasswordUnmatched(plain, encoded)) {
             throw AuthenticationException.EXCEPTION;
         }
     }

@@ -26,7 +26,7 @@ class AuthenticatorTest {
 
     @InjectMocks private Authenticator authenticator;
 
-    @Mock private PasswordEncoder passwordEncoder;
+    @Mock private PasswordCryptor passwordCryptor;
 
     @Mock private UserReader userReader;
 
@@ -40,7 +40,7 @@ class AuthenticatorTest {
 
         // when
         when(userReader.read(anyString())).thenReturn(user);
-        when(passwordEncoder.isPasswordUnmatched(anyString(), anyString())).thenReturn(false);
+        when(passwordCryptor.isPasswordUnmatched(anyString(), anyString())).thenReturn(false);
 
         // then
         UserPrincipal actual = authenticator.authenticate(login);
@@ -69,7 +69,7 @@ class AuthenticatorTest {
 
         // when
         when(userReader.read(anyString())).thenReturn(user);
-        when(passwordEncoder.isPasswordUnmatched(anyString(), anyString())).thenReturn(true);
+        when(passwordCryptor.isPasswordUnmatched(anyString(), anyString())).thenReturn(true);
 
         // then
         assertThrows(AuthenticationException.class, () -> authenticator.authenticate(login));

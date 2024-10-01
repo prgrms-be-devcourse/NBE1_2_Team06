@@ -5,13 +5,13 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 
 import com.nbe2.domain.auth.OAuthProfile;
-import com.nbe2.domain.auth.PasswordEncoder;
+import com.nbe2.domain.auth.PasswordCryptor;
 
 @Component
 @RequiredArgsConstructor
 public class UserAppender {
 
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordCryptor passwordCryptor;
     private final UserRepository userRepository;
 
     public void append(UserProfile userProfile) {
@@ -19,7 +19,7 @@ public class UserAppender {
                 User.of(
                         userProfile.name(),
                         userProfile.email(),
-                        passwordEncoder.encode(userProfile.password())));
+                        passwordCryptor.encode(userProfile.password())));
     }
 
     public void append(OAuthProfile oAuthProfile) {

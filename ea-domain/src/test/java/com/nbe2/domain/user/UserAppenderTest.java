@@ -14,14 +14,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.nbe2.domain.auth.AuthFixture;
 import com.nbe2.domain.auth.OAuthProfile;
-import com.nbe2.domain.auth.PasswordEncoder;
+import com.nbe2.domain.auth.PasswordCryptor;
 
 @ExtendWith(MockitoExtension.class)
 class UserAppenderTest {
 
     @InjectMocks private UserAppender userAppender;
 
-    @Mock private PasswordEncoder passwordEncoder;
+    @Mock private PasswordCryptor passwordCryptor;
 
     @Mock private UserRepository userRepository;
 
@@ -33,7 +33,7 @@ class UserAppenderTest {
         UserProfile userProfile = UserFixture.createUserProfile();
 
         // when
-        when(passwordEncoder.encode(anyString())).thenReturn(encodedPassword);
+        when(passwordCryptor.encode(anyString())).thenReturn(encodedPassword);
         userAppender.append(userProfile);
 
         // then
