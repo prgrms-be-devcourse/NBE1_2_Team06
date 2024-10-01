@@ -10,11 +10,9 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.domain.emergencyroom.EmergencyRoomClient;
-import com.nbe2.domain.emergencyroom.EmergencyRoomInfo;
-import com.nbe2.domain.emergencyroom.RealTimeEmergencyRoomInfo;
-import com.nbe2.domain.emergencyroom.Region;
+import com.nbe2.domain.emergencyroom.*;
 import com.nbe2.infra.naver.client.NaverApiClient;
+import com.nbe2.infra.naver.dto.NaverDirectionsResponse;
 import com.nbe2.infra.openapi.client.OpenApiFeignClient;
 import com.nbe2.infra.openapi.dto.AllEmergencyRoomResponse;
 import com.nbe2.infra.openapi.dto.EmergencyRoomResponse;
@@ -45,7 +43,13 @@ public class EmergencyRoomApiClient implements EmergencyRoomClient {
     }
 
     @Override
-    public void directionsEmergencyRoom(String hospitalName) {}
+    public EmergencyRoomDirectionsInfo directionsEmergencyRoom(String Start, String end) {
+        NaverDirectionsResponse realTimeEmergencyData =
+                naverApiClient.getRealTimeEmergencyData(
+                        "129.084848,35.179800", "127.027619,37.497942");
+        System.out.println(realTimeEmergencyData.toString());
+        return null;
+    }
 
     private List<EmergencyRoomInfo> getEmergencyData() {
         return getAllEmergencyRoomData().parallelStream()

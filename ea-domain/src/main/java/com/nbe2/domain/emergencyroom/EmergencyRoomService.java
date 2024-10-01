@@ -16,7 +16,7 @@ public class EmergencyRoomService {
     private final DistanceCalculator distanceCalculator;
     private final EmergencyRoomInitializer emergencyRoomInitializer;
     private final EmergencyRoomReader emergencyRoomReader;
-    private final EmergencyDirections emergencyDirections;
+    private final EmergencyRoomDirections emergencyRoomDirections;
 
     @Transactional
     public void init() {
@@ -34,7 +34,7 @@ public class EmergencyRoomService {
         return emergencyRoomReader.readByHospitalName(name);
     }
 
-    public void directionsEmergencyRoom(String hospitalName) {
-        emergencyDirections.directionsEmergencyRoom(hospitalName);
+    public void directionsEmergencyRoom(String hospitalName, String myLocation) {
+        emergencyRoomDirections.directionsEmergencyRoom(hospitalName, myLocation);
     }
 }

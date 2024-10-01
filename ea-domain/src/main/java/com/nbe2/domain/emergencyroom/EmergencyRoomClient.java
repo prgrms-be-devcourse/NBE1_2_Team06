@@ -8,5 +8,5 @@ public interface EmergencyRoomClient {
 
     List<EmergencyRoomInfo> getEmergencyRoomInfoData();
 
-    void directionsEmergencyRoom(String hospitalName);
+    EmergencyRoomDirectionsInfo directionsEmergencyRoom(String start, String end);
 }

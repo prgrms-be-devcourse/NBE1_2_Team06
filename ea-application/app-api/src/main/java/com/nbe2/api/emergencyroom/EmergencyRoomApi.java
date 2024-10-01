@@ -48,8 +48,10 @@ public class EmergencyRoomApi {
     }
 
     @GetMapping("/directions")
-    public Response<Void> directionsEmergency(@RequestParam("hospitalName") String hospitalName) {
-        emergencyRoomService.directionsEmergencyRoom(hospitalName);
+    public Response<Void> directionsEmergency(
+            @RequestParam("myLocation") String myLocation,
+            @RequestParam("hospitalName") String hospitalName) {
+        emergencyRoomService.directionsEmergencyRoom(hospitalName, myLocation);
         return Response.success();
     }
 }
