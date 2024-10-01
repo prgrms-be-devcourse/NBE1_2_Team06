@@ -16,14 +16,13 @@ public class UserAppender {
 
     public void append(UserProfile userProfile) {
         userRepository.save(
-                User.createNormalUserOf(
+                User.of(
                         userProfile.name(),
                         userProfile.email(),
                         passwordEncoder.encode(userProfile.password())));
     }
 
     public void append(OAuthProfile oAuthProfile) {
-        userRepository.save(
-                User.createNormalUserOf(oAuthProfile.getNickname(), oAuthProfile.getEmail(), null));
+        userRepository.save(User.of(oAuthProfile.getNickname(), oAuthProfile.getEmail(), null));
     }
 }

@@ -5,6 +5,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserRepositoryCustom {
 
-    Page<UserProfileWithLicense> findPageBySignupStatus(
-            SignupStatus signupStatus, Pageable pageable);
+    Page<UserProfileWithLicense> findPageByApprovalStatus(
+            ApprovalStatus approvalStatus, Pageable pageable);
 }
