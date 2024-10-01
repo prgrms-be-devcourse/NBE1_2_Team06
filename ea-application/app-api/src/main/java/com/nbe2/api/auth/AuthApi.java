@@ -2,6 +2,7 @@ package com.nbe2.api.auth;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class AuthApi {
     }
 
     @DeleteMapping("/logout")
-    public Response<Void> logout(@RequestBody UserPrincipal userPrincipal) {
+    public Response<Void> logout(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         authService.logout(userPrincipal.userId());
         return Response.success();
     }

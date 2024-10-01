@@ -27,7 +27,6 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        System.out.println("filterChain");
         httpSecurity
                 // CSRF 비활성화: JWT를 사용할 경우 CSRF 공격을 방지할 필요가 없음
                 .csrf(AbstractHttpConfigurer::disable)

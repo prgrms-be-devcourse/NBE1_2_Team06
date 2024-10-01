@@ -27,7 +27,6 @@ public class AuthService {
     public Tokens login(Login login) {
         UserPrincipal userPrincipal = authenticator.authenticate(login);
         Tokens tokens = tokenGenerator.generate(userPrincipal);
-        System.out.println(tokens);
         tokenManager.save(RefreshToken.of(userPrincipal.userId(), tokens.refreshToken()));
 
         return tokens;
