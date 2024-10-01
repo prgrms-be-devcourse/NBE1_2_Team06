@@ -6,7 +6,12 @@ import com.nbe2.domain.posts.entity.Comment;
 import com.nbe2.domain.posts.entity.Post;
 
 public record PostDetailsInfo(
-        Long id, String name, String title, String content, List<CommentDetailsInfo> commentInfos) {
+        Long id,
+        String name,
+        String title,
+        String content,
+        Long commentCount,
+        List<CommentDetailsInfo> commentInfos) {
     public static PostDetailsInfo from(Post post, List<Comment> comments) {
 
         return new PostDetailsInfo(
@@ -14,6 +19,7 @@ public record PostDetailsInfo(
                 post.getUser().getName(),
                 post.getTitle(),
                 post.getContent(),
+                post.getCommentCount(),
                 comments.stream().map(CommentDetailsInfo::from).toList());
     }
 }

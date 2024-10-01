@@ -3,7 +3,6 @@ package com.nbe2.domain.posts.service.component;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +13,6 @@ import com.nbe2.domain.posts.repository.CommentRepository;
 import com.nbe2.domain.user.User;
 
 @Component
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CommentReader {
     private final CommentRepository commentRepository;

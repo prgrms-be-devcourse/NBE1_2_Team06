@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import com.nbe2.api.global.dto.Response;
 import com.nbe2.api.post.dto.CommentRegisterRequest;
@@ -17,6 +18,7 @@ import com.nbe2.domain.posts.service.dto.CommentDetailsInfo;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/comments")
+@Slf4j
 public class CommentApi {
     private final CommentService commentService;
 
@@ -46,6 +48,12 @@ public class CommentApi {
             @RequestBody final CommentUpdateRequest request) {
         Long postId =
                 commentService.update(commentsId, CommentDefaultInfo.create(request.content()));
+        return Response.success(postId);
+    }
+
+    @DeleteMapping("{commentsId}")
+    public Response<Long> deleteComment(@PathVariable("commentsId") Long commentsId) {
+        Long postId = commentService.delete(commentsId);
         return Response.success(postId);
     }
 }

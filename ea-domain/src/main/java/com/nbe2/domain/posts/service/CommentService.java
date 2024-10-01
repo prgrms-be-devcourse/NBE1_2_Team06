@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.nbe2.domain.posts.entity.Comment;
 import com.nbe2.domain.posts.entity.Post;
-import com.nbe2.domain.posts.service.component.CommentAppender;
-import com.nbe2.domain.posts.service.component.CommentReader;
-import com.nbe2.domain.posts.service.component.CommentUpdater;
-import com.nbe2.domain.posts.service.component.PostReader;
+import com.nbe2.domain.posts.service.component.*;
 import com.nbe2.domain.posts.service.dto.CommentDefaultInfo;
 import com.nbe2.domain.posts.service.dto.CommentDetailsInfo;
 import com.nbe2.domain.user.User;
@@ -27,6 +24,7 @@ public class CommentService {
     private final CommentAppender commentAppender;
     private final CommentReader commentReader;
     private final CommentUpdater commentUpdater;
+    private final CommentDeleter commentDeleter;
 
     public Long save(final Long postId, final Long userId, final CommentDefaultInfo info) {
         Post post = postReader.read(postId);
@@ -53,6 +51,12 @@ public class CommentService {
     public Long update(final Long commentsId, final CommentDefaultInfo info) {
         Comment comment = commentReader.read(commentsId);
         commentUpdater.update(comment, info);
+        return comment.getPostId();
+    }
+
+    public Long delete(final Long commentsId) {
+        Comment comment = commentReader.read(commentsId);
+        commentDeleter.delete(comment);
         return comment.getPostId();
     }
 }

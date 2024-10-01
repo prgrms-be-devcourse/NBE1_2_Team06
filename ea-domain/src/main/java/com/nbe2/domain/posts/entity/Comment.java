@@ -47,7 +47,6 @@ public class Comment extends BaseTimeEntity {
     }
 
     // business logic **//
-
     public Long update(final String content) {
         this.content = content;
         return id;
