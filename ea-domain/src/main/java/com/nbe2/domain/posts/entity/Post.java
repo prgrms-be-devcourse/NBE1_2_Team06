@@ -51,6 +51,10 @@ public class Post extends BaseTimeEntity {
         this.city = city;
     }
 
+    public String getUserName() {
+        return user.getName();
+    }
+
     // ** business logic **//
     public Long update(final String title, final String content, final City city) {
         this.title = title;
@@ -62,4 +66,8 @@ public class Post extends BaseTimeEntity {
     public Long addComment() {
         return ++commentCount;
     }
+
+    //    public Long removeComment(){
+    //
+    //    }
 }
