@@ -1,5 +1,7 @@
 package com.nbe2.api.notice;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +22,6 @@ import com.nbe2.common.annotation.PageDefault;
 import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.file.FileMetaDataService;
-import com.nbe2.domain.notice.NoticeFile;
 import com.nbe2.domain.notice.NoticeInfo;
 import com.nbe2.domain.notice.NoticeReadInfo;
 import com.nbe2.domain.notice.NoticeService;
@@ -36,25 +37,17 @@ public class NoticeApi {
     @PostMapping // insert
     public Response<Void> createNotice(
             @RequestBody NoticteCreateRequest request,
-            @RequestParam(name = "userId") Long userId,
-            @RequestParam(name = "file", required = false) Long fileId) {
+            @RequestParam("userId") Long userId,
+            @RequestParam(name = "file", required = false) List<Long> fileIds) {
+        // @TODO 의료 관계자만 등록할 수 있게 해야 함
         NoticeInfo newNoticeinfo = request.toNoticeInfo();
-        System.out.println("fileId : " + fileId);
         // 파일 Id등록
-        if (fileId != null) {
-            NoticeFile file =
-                    NoticeFile.of(
-                            fileMetaDataService.getFileMetaData(fileId),
-                            noticeService.writeNotice(newNoticeinfo, userId));
-            noticeService.writeNoticeWithFile(file);
-        } else {
-            noticeService.writeNotice(newNoticeinfo, userId);
-        }
+        noticeService.writeNoticeWithFile(newNoticeinfo, userId, fileIds);
         return Response.success();
     }
 
     @PutMapping("/{noticeId}") // update
-    public Response<Void> updateNotice(
+    public Response<Void> updateNotice( // @TODO 권한(동일한 Id로 접속해야 됨)이 있어야 수정 가능하게 해야 됨
             @PathVariable Long noticeId, @RequestBody NoticeUpdateReqeust updateReqeust) {
         NoticeUpdateInfo updateInfo = updateReqeust.toNoticeUpdateInfo();
         noticeService.updateNotice(updateInfo, noticeId);
@@ -63,6 +56,7 @@ public class NoticeApi {
 
     @DeleteMapping("/{noticeId}") // delete
     public Response<Void> deleteNotice(@PathVariable Long noticeId) {
+        // @TODO 권한(동일한 Id로 접속해야 됨)이 있어야 삭제 가능하게 해야 됨
         noticeService.deleteNotice(noticeId);
         return Response.success();
     }
@@ -72,6 +66,7 @@ public class NoticeApi {
             @RequestParam(name = "emergencyRoomId") Long emergencyRoomId, @PageDefault Page page) {
         PageResult<NoticeReadInfo> noticeReadPageResult =
                 noticeService.readNotice(emergencyRoomId, page);
+
         return Response.success(noticeReadPageResult.map(NoticeReadResponse::fromNoticeReadInfo));
     }
 

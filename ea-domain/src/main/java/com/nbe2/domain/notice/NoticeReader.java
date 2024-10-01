@@ -3,33 +3,39 @@ package com.nbe2.domain.notice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
 import com.nbe2.common.dto.PageResult;
+import com.nbe2.domain.notice.exception.NoticeNotFoundNoticeIdException;
 
 @Component
 @RequiredArgsConstructor
 public class NoticeReader {
     private final NoticeRepository noticeRepository;
 
-    @Transactional
-    public PageResult<NoticeReadInfo> readAllByIdPage(Long emergencyRoomId, Pageable pageable) {
-        Page<NoticeReadInfo> noticeInfos =
-                noticeRepository.findByEmergencyRoomIdPage(pageable, emergencyRoomId);
+    public PageResult<NoticeReadInfo> readAll(Pageable pageable, Long emergencyRoomId) {
+        Page<NoticeReadInfo> readNotices =
+                noticeRepository
+                        .findByEmergencyRoomId(pageable, emergencyRoomId)
+                        .map(NoticeReadInfo::convertToNoticeReadInfo);
         return new PageResult<>(
-                noticeInfos.getContent(), noticeInfos.getTotalPages(), noticeInfos.hasNext());
+                readNotices.getContent(), readNotices.getTotalPages(), readNotices.hasNext());
     }
 
-    @Transactional
-    public PageResult<NoticeReadInfo> searchBytitlePage(
-            Long emergencyRoomId, String title, Pageable pageable) {
-        Page<NoticeReadInfo> noticeSearchTitle =
-                noticeRepository.findByTitle(pageable, emergencyRoomId, title);
+    public PageResult<NoticeReadInfo> searchTitle(
+            Pageable pageable, Long emergencyRoomId, String title) {
+        Page<NoticeReadInfo> searchTitles =
+                noticeRepository
+                        .findByEmergencyRoomIdAndTitle(pageable, emergencyRoomId, title)
+                        .map(NoticeReadInfo::convertToNoticeReadInfo);
         return new PageResult<>(
-                noticeSearchTitle.getContent(),
-                noticeSearchTitle.getTotalPages(),
-                noticeSearchTitle.hasNext());
+                searchTitles.getContent(), searchTitles.getTotalPages(), searchTitles.hasNext());
+    }
+
+    public Notice findByNoticeId(Long noticeId) {
+        return noticeRepository
+                .findById(noticeId)
+                .orElseThrow(() -> NoticeNotFoundNoticeIdException.EXCEPTION);
     }
 }

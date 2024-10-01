@@ -4,24 +4,18 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.domain.notice.exception.NoticeNotFoundNoticeIdException;
-
 @Component
 @RequiredArgsConstructor
 public class NoticeUpdater {
 
     private final NoticeInfoValidator noticeInfoValidator;
     private final NoticeRepository noticeRepository;
+    private final NoticeReader noticeReader;
 
     public void updateNotice(NoticeUpdateInfo updateInfo, Long noticeId) {
-        noticeInfoValidator.validateUpdateTitle(updateInfo); // title Null 검사
-        noticeInfoValidator.validateUpdateContent(updateInfo); // content Null 검사
-        Notice before =
-                noticeRepository
-                        .findById(noticeId)
-                        .orElseThrow(() -> NoticeNotFoundNoticeIdException.EXCEPTION);
-        before.updateTitle(String.valueOf(updateInfo.title()));
-        before.updateContent(String.valueOf(updateInfo.content()));
+        noticeInfoValidator.validateUpdateNotice(updateInfo);
+        Notice before = noticeReader.findByNoticeId(noticeId);
+        before.updateNotice(updateInfo.title().get(), updateInfo.content().get());
         noticeRepository.save(before);
     }
 }

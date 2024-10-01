@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 
 import com.nbe2.domain.emergencyroom.EmergencyRoom;
+import com.nbe2.domain.emergencyroom.EmergencyRoomReader;
 import com.nbe2.domain.emergencyroom.EmergencyRoomRepository;
-import com.nbe2.domain.notice.exception.NoticeNotFoundHpIdException;
 import com.nbe2.domain.user.User;
 import com.nbe2.domain.user.UserReader;
 
@@ -19,25 +19,17 @@ public class NoticeAppender {
     private final NoticeRepository noticeRepository;
     private final NoticeInfoValidator noticeInfoValidator;
     private final NoticeFileRepository noticeFileRepository;
+    private final EmergencyRoomReader emergencyRoomReader;
 
-    public Notice append(NoticeInfo noticeInfo, User user, EmergencyRoom emergencyRoom) { // insert
-        noticeInfoValidator.validateTitle(noticeInfo); // title Null 검사
-        noticeInfoValidator.validateContent(noticeInfo); // content Null 검사
-        return noticeRepository.save(Notice.from(noticeInfo, user, emergencyRoom));
+    public Notice append(Notice newNotice) { // insert
+        System.out.println("content : " + newNotice.getContent());
+        return noticeRepository.save(newNotice);
     }
 
-    public NoticeFile appendWithFile(NoticeFile file) {
-        return noticeFileRepository.save(file);
-    }
-
-    // noticeInfo dto에 있는 hpId로 emergencyRomm 조회
-    public EmergencyRoom getEmergencyRoom(NoticeInfo noticeInfo) {
-        return emergencyRoomRepository
-                .findByHpId(noticeInfo.hpId())
-                .orElseThrow(() -> NoticeNotFoundHpIdException.EXCEPTION);
-    }
-
-    public User getUser(Long userId) {
-        return userReader.read(userId);
+    public Notice createNotice(NoticeInfo newNoticeInfo, Long userId) {
+        EmergencyRoom emergencyRoom = emergencyRoomReader.read(newNoticeInfo.hpId());
+        User user = userReader.read(userId);
+        noticeInfoValidator.validateNotice(newNoticeInfo);
+        return Notice.from(newNoticeInfo, user, emergencyRoom);
     }
 }

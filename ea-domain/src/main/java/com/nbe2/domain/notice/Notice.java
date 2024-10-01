@@ -1,7 +1,9 @@
 package com.nbe2.domain.notice;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,17 +37,20 @@ public class Notice extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long noticeId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emergency_room_id")
     private EmergencyRoom emergencyRoom;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "file_id")
-    private List<NoticeFile> noticeFile;
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "notice",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<NoticeFile> noticeFiles;
 
     @Column(nullable = false)
     private String title;
@@ -62,11 +67,20 @@ public class Notice extends BaseTimeEntity {
                 .build();
     }
 
-    public void updateTitle(String newTitle) {
-        this.title = newTitle;
+    public void addFiles(List<NoticeFile> noticeFiles) {
+        this.noticeFiles = noticeFiles.isEmpty() ? null : noticeFiles;
     }
 
-    public void updateContent(String newContent) {
-        this.content = newContent;
+    public List<Long> getFileIds() {
+        List<Long> fileIds = new ArrayList<>();
+        for (NoticeFile noticeFile : noticeFiles) {
+            fileIds.add(noticeFile.getFileMetaData().getId());
+        }
+        return fileIds;
+    }
+
+    public void updateNotice(String updatedTitle, String updatedContent) {
+        this.title = updatedTitle;
+        this.content = updatedContent;
     }
 }
