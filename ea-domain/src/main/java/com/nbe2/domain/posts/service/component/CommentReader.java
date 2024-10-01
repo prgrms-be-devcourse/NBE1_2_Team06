@@ -11,6 +11,7 @@ import com.nbe2.domain.posts.entity.Comment;
 import com.nbe2.domain.posts.entity.Post;
 import com.nbe2.domain.posts.exception.CommentNotFoundException;
 import com.nbe2.domain.posts.repository.CommentRepository;
+import com.nbe2.domain.user.User;
 
 @Component
 @Transactional(readOnly = true)
@@ -26,5 +27,9 @@ public class CommentReader {
 
     public List<Comment> read(final Post post) {
         return commentRepository.findByPost(post);
+    }
+
+    public List<Comment> read(final User user) {
+        return commentRepository.findByUser(user);
     }
 }
