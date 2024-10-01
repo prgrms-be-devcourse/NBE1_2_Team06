@@ -1,7 +1,5 @@
 package com.nbe2.domain.auth;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,16 +19,9 @@ public class AuthService {
     private final TokenProvider tokenProvider;
 
     @Transactional
-    public void signUp(
-            UserProfile userProfile, Optional<Long> emergencyRoomId, Optional<Long> licenseId) {
+    public void signUp(UserProfile userProfile) {
         userValidator.validate(userProfile.email());
-
-        if (userValidator.isMedicalUser(emergencyRoomId, licenseId)) {
-            MedicalProfile medicalProfile = userValidator.validate(emergencyRoomId, licenseId);
-            userAppender.append(userProfile, medicalProfile);
-        } else {
-            userAppender.append(userProfile);
-        }
+        userAppender.append(userProfile);
     }
 
     public Tokens login(Login login) {

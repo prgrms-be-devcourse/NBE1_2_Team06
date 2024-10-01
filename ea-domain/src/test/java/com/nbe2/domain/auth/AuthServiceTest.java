@@ -10,8 +10,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Optional;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -52,11 +50,9 @@ class AuthServiceTest {
         void given_valid_email_when_sign_up_then_should_append_user() {
             // given
             UserProfile userProfile = UserFixture.createUserProfile();
-            Optional<Long> emergencyRoomId = Optional.empty();
-            Optional<Long> fileId = Optional.empty();
 
             // when
-            authService.signUp(userProfile, emergencyRoomId, fileId);
+            authService.signUp(userProfile);
 
             // then
             verify(userValidator).validate(userProfile.email());
@@ -68,17 +64,13 @@ class AuthServiceTest {
         void given_invalid_email_when_sign_up_then_should_throw_exception() {
             // given
             UserProfile userProfile = UserFixture.createUserProfile();
-            Optional<Long> emergencyRoomId = Optional.empty();
-            Optional<Long> fileId = Optional.empty();
 
             // when
             doThrow(AlreadyExistsEmailException.class).when(userValidator).validate(anyString());
 
             // then
             verify(userAppender, never()).append(any(UserProfile.class));
-            assertThrows(
-                    AlreadyExistsEmailException.class,
-                    () -> authService.signUp(userProfile, emergencyRoomId, fileId));
+            assertThrows(AlreadyExistsEmailException.class, () -> authService.signUp(userProfile));
         }
     }
 
