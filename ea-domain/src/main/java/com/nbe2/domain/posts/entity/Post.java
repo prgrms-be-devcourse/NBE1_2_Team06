@@ -63,11 +63,11 @@ public class Post extends BaseTimeEntity {
         return id;
     }
 
-    public Long addComment() {
+    public Long increaseCommentCount() {
         return ++commentCount;
     }
 
-    public Long removeComment() {
+    public Long decreaseCommentCount() {
         if (commentCount <= 0) return commentCount;
         return --commentCount;
     }

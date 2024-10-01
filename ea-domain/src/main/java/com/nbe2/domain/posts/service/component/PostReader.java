@@ -25,6 +25,12 @@ public class PostReader {
         return postRepository.findById(id).orElseThrow(() -> PostNotFoundException.EXCEPTION);
     }
 
+    public Post readWithPessimisticWriteLock(Long id) {
+        return postRepository
+                .findByIdWithPessimisticWriteLock(id)
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
+    }
+
     public PageResult<PostListInfo> readListPage(PageRequest pageRequest, City city) {
         Page<Post> postPage = postRepository.findByCity(city, pageRequest);
         return new PageResult<>(mapToInfo(postPage), postPage.getTotalPages(), postPage.hasNext());

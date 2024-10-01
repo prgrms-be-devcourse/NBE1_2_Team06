@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 import com.nbe2.domain.posts.entity.Comment;
 import com.nbe2.domain.posts.entity.Post;
 import com.nbe2.domain.posts.service.component.*;
-import com.nbe2.domain.posts.service.dto.CommentDefaultInfo;
-import com.nbe2.domain.posts.service.dto.CommentDetailsInfo;
+import com.nbe2.domain.posts.service.dto.CommentReadInfo;
+import com.nbe2.domain.posts.service.dto.CommentWriteInfo;
 import com.nbe2.domain.user.User;
 import com.nbe2.domain.user.UserReader;
 
@@ -25,38 +25,35 @@ public class CommentService {
     private final CommentReader commentReader;
     private final CommentUpdater commentUpdater;
     private final CommentDeleter commentDeleter;
+    private final CommentValidator commentValidator;
 
-    public Long save(final Long postId, final Long userId, final CommentDefaultInfo info) {
-        Post post = postReader.read(postId);
-        User user = userReader.read(userId);
-        commentAppender.append(
-                Comment.builder().post(post).user(user).content(info.content()).build());
+    public Long save(final Long postId, final CommentWriteInfo writeInfo) {
+        Post post = postReader.readWithPessimisticWriteLock(postId);
+        User user = userReader.read(writeInfo.userId());
+        commentAppender.append(post, user, writeInfo.commentInfo());
+        post.increaseCommentCount();
         return postId;
     }
 
     @Transactional(readOnly = true)
-    public List<CommentDetailsInfo> findByUserId(final Long userId) {
-        User user = userReader.read(userId);
-        List<Comment> comments = commentReader.read(user);
-        return comments.stream().map(CommentDetailsInfo::from).toList();
+    public List<CommentReadInfo> findPostComments(final Long postId) {
+        Post post = postReader.read(postId);
+        List<Comment> comments = commentReader.read(post);
+        return comments.stream().map(CommentReadInfo::from).toList();
     }
 
-    @Transactional(readOnly = true)
-    public List<CommentDetailsInfo> findByUserEmail(final String email) {
-        User user = userReader.read(email);
-        List<Comment> comments = commentReader.read(user);
-        return comments.stream().map(CommentDetailsInfo::from).toList();
-    }
-
-    public Long update(final Long commentsId, final CommentDefaultInfo info) {
+    public Long update(final Long commentsId, final CommentWriteInfo writeInfo) {
         Comment comment = commentReader.read(commentsId);
-        commentUpdater.update(comment, info);
+        commentValidator.isOwnerId(writeInfo.userId(), comment);
+        commentUpdater.update(comment, writeInfo.commentInfo());
         return comment.getPostId();
     }
 
     public Long delete(final Long commentsId) {
         Comment comment = commentReader.read(commentsId);
+        Post post = postReader.readWithPessimisticWriteLock(comment.getPostId());
         commentDeleter.delete(comment);
+        post.decreaseCommentCount();
         return comment.getPostId();
     }
 }

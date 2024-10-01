@@ -1,5 +1,6 @@
 package com.nbe2.api.post;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import com.nbe2.api.post.dto.PostUpdateRequest;
 import com.nbe2.common.annotation.PageDefault;
 import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
+import com.nbe2.domain.auth.UserPrincipal;
 import com.nbe2.domain.posts.entity.City;
 import com.nbe2.domain.posts.service.PostService;
 import com.nbe2.domain.posts.service.dto.*;
@@ -22,38 +24,37 @@ public class PostApi {
 
     private final PostService postService;
 
-    // ToDo : SpringSecurity 의 @AuthenticationPrincipal 사용
     @PostMapping
     public Response<Long> postPost(
             @RequestBody @Validated final PostRegisterRequest request,
-            //            , @AuthenticationPrincipal Long id    (userId)
-            @RequestParam("id") final Long id) {
+            @AuthenticationPrincipal final UserPrincipal userPrincipal
+            //            @RequestParam("id") final Long id
+            ) {
         Long postId =
                 postService.save(
-                        id,
+                        userPrincipal.userId(),
+                        //                        id,
                         PostDefaultInfo.create(request.title(), request.content(), request.city()));
         return Response.success(postId);
     }
 
     @GetMapping
     public Response<PageResult<PostListInfo>> getLocalPostPage(
-            @RequestParam("city") City city, @PageDefault Page page) {
+            @RequestParam("city") final City city, final @PageDefault Page page) {
         PageResult<PostListInfo> postPage = postService.findListPageByCity(page, city);
         return Response.success(postPage);
     }
 
-    // TODO : 1. UserApi로 이동
-    // 내 게시글 조회
+    // 내 게시글 조회 Api
+    // TODO : UserApi 로 이동
     // @GetMapping("/api/v1/my/posts")
-    // TODO : 2. SpringSecurity 의 @AuthenticationPrincipal 사용
     @GetMapping("/my")
     public Response<PageResult<PostListInfo>> getMyPostPage(
-            @RequestParam("id")
-                    final Long id
-                            //            , @AuthenticationPrincipal Long id (userId)
-                            ,
+            //            @RequestParam("id") final Long id
+            @AuthenticationPrincipal final UserPrincipal userPrincipal,
             @PageDefault final Page page) {
-        PageResult<PostListInfo> postPage = postService.findListPageByUserId(page, id);
+        PageResult<PostListInfo> postPage =
+                postService.findListPageByUserId(page, userPrincipal.userId());
         return Response.success(postPage);
     }
 
