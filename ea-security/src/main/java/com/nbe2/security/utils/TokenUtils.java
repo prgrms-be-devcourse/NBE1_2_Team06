@@ -1,4 +1,4 @@
-package com.nbe2.api.global.util;
+package com.nbe2.security.utils;
 
 import java.time.Duration;
 

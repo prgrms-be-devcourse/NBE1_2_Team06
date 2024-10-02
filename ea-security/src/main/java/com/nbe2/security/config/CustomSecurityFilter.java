@@ -1,7 +1,4 @@
-package com.nbe2.api.global.config;
-
-import static com.nbe2.common.constants.EAConstants.AUTHORIZATION_HEADER;
-import static com.nbe2.common.constants.EAConstants.BEARER;
+package com.nbe2.security.config;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,9 +18,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.api.global.exception.JwtNotFountException;
-import com.nbe2.api.global.jwt.JwtProvider;
-import com.nbe2.domain.auth.*;
+import com.nbe2.common.constants.EAConstants;
+import com.nbe2.domain.auth.UserPrincipal;
+import com.nbe2.security.exception.JwtNotFountException;
+import com.nbe2.security.utils.JwtProvider;
 
 @RequiredArgsConstructor
 @Component
@@ -39,7 +37,6 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
             String jwtToken = reversToken(request);
             // AccessToken(JWT) 유효한지 검사
             // 유효하지 않으면 Refresh Token을 이용해 새 AccessToken 발급
-            System.out.println("전부다 유효합니다.");
             UserPrincipal tokenUserPrincipal = jwtProvider.getTokenUserPrincipal(jwtToken);
             List<GrantedAuthority> grantedAuthorities =
                     convertorGrantedAuthority(String.valueOf(tokenUserPrincipal.role()));
@@ -64,10 +61,10 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
 
     // 헤더에서 토큰 추출
     private String reversToken(HttpServletRequest httpServletRequest) {
-        String bearerToken = httpServletRequest.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER)) {
-            if (bearerToken.length() > BEARER.length()) {
-                return bearerToken.substring(BEARER.length());
+        String bearerToken = httpServletRequest.getHeader(EAConstants.AUTHORIZATION_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(EAConstants.BEARER)) {
+            if (bearerToken.length() > EAConstants.BEARER.length()) {
+                return bearerToken.substring(EAConstants.BEARER.length());
             }
         }
         // 토큰 정보 칸이 비어있으면 없는 토큰으로 간주하고 오류 발생

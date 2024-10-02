@@ -1,8 +1,8 @@
 spring:
   profiles:
     group:
-      local: common, domain, infra
-      dev: common, domain, infra
+      local: common, domain, infra, security
+      dev: common, domain, infra, security
 
 server:
   shutdown: graceful
@@ -12,14 +12,9 @@ spring:
   config:
     activate:
       on-profile: local
-jwt:
-  screat-key: ${JWT_KEY}
 
 ---
 spring:
   config:
     activate:
       on-profile: dev
-
-jwt:
-  screat-key: ${JWT_KEY}

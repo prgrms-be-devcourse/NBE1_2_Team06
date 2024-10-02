@@ -1,4 +1,4 @@
-package com.nbe2.api.global.exception;
+package com.nbe2.security.exception;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.UnsupportedJwtException;

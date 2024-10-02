@@ -1,4 +1,4 @@
-package com.nbe2.api.global.jwt;
+package com.nbe2.security.utils;
 
 import java.security.Key;
 import java.util.Date;

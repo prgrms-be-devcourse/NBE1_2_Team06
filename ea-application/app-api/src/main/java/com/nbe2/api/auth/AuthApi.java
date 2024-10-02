@@ -17,10 +17,10 @@ import com.nbe2.api.auth.dto.LoginRequest;
 import com.nbe2.api.auth.dto.SignupRequest;
 import com.nbe2.api.auth.dto.TokensRequest;
 import com.nbe2.api.global.dto.Response;
-import com.nbe2.api.global.util.TokenUtils;
 import com.nbe2.domain.auth.AuthService;
 import com.nbe2.domain.auth.Tokens;
 import com.nbe2.domain.auth.UserPrincipal;
+import com.nbe2.security.utils.TokenUtils;
 
 @RestController
 @RequestMapping("/api/v1/auth")

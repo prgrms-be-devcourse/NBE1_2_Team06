@@ -1,4 +1,4 @@
-package com.nbe2.api.global.config;
+package com.nbe2.security.config;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import com.nbe2.api.global.exception.JwtUnkownException;
+import com.nbe2.security.exception.JwtUnkownException;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {

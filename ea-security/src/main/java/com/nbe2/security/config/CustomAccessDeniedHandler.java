@@ -1,4 +1,4 @@
-package com.nbe2.api.global.config;
+package com.nbe2.security.config;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import com.nbe2.api.global.exception.NoPermissionException;
+import com.nbe2.security.exception.JwtNotFountException;
 
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
@@ -30,6 +30,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
             HttpServletResponse response,
             AccessDeniedException accessDeniedException)
             throws IOException, ServletException {
-        resolver.resolveException(request, response, null, NoPermissionException.EXCEPTION);
+        resolver.resolveException(request, response, null, JwtNotFountException.EXCEPTION);
     }
 }
