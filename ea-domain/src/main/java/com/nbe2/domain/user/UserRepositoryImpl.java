@@ -24,8 +24,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<UserProfileWithLicense> findPageBySignupStatus(
-            SignupStatus signupStatus, Pageable pageable) {
+    public Page<UserProfileWithLicense> findPageByApprovalStatus(
+            ApprovalStatus approvalStatus, Pageable pageable) {
         List<UserProfileWithLicense> content =
                 queryFactory
                         .select(
@@ -38,7 +38,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                         .from(user)
                         .join(medicalPersonInfo)
                         .on(medicalPersonInfo.user.id.eq(user.id))
-                        .where(equalSignupStatus(signupStatus))
+                        .where(equalApprovalStatus(approvalStatus))
                         .orderBy(user.createdAt.desc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize())
@@ -47,16 +47,16 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 queryFactory
                         .select(user.id.count())
                         .from(user)
-                        .where(equalSignupStatus(signupStatus));
+                        .where(equalApprovalStatus(approvalStatus));
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
-    private BooleanExpression equalSignupStatus(SignupStatus signupStatus) {
-        if (signupStatus == null) {
+    private BooleanExpression equalApprovalStatus(ApprovalStatus approvalStatus) {
+        if (approvalStatus == null) {
             return null;
         }
 
-        return user.signupStatus.eq(signupStatus);
+        return user.approvalStatus.eq(approvalStatus);
     }
 }

@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 public class UserFixture {
 
     public static User createUser() {
-        return User.createNormalUserOf(NAME, EMAIL, PASSWORD);
+        return User.of(NAME, EMAIL, PASSWORD);
     }
 
     public static User createPendingUser() {
@@ -16,12 +16,12 @@ public class UserFixture {
                 .email(EMAIL)
                 .password(PASSWORD)
                 .role(UserRole.MEDICAL_PERSON)
-                .signupStatus(SignupStatus.PENDING)
+                .approvalStatus(ApprovalStatus.PENDING)
                 .build();
     }
 
     public static User createUserWithId() {
-        User user = User.createNormalUserOf(NAME, EMAIL, PASSWORD);
+        User user = User.of(NAME, EMAIL, PASSWORD);
 
         try {
             Field field = User.class.getDeclaredField("id");

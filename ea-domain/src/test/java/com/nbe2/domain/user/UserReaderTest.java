@@ -115,8 +115,8 @@ class UserReaderTest {
                     new PageImpl<>(Collections.emptyList(), pageable, 0);
 
             // when
-            when(userRepository.findPageBySignupStatus(
-                            any(SignupStatus.class), any(Pageable.class)))
+            when(userRepository.findPageByApprovalStatus(
+                            any(ApprovalStatus.class), any(Pageable.class)))
                     .thenReturn(emptyPage);
             PageResult<UserProfileWithLicense> actual = userReader.read(pageable);
 
@@ -136,8 +136,8 @@ class UserReaderTest {
             Page<UserProfileWithLicense> page = new PageImpl<>(content, pageable, content.size());
 
             // when
-            when(userRepository.findPageBySignupStatus(
-                            any(SignupStatus.class), any(Pageable.class)))
+            when(userRepository.findPageByApprovalStatus(
+                            any(ApprovalStatus.class), any(Pageable.class)))
                     .thenReturn(page);
             PageResult<UserProfileWithLicense> actual = userReader.read(pageable);
 
@@ -157,8 +157,8 @@ class UserReaderTest {
             Page<UserProfileWithLicense> page = new PageImpl<>(content, pageable, content.size());
 
             // when
-            when(userRepository.findPageBySignupStatus(
-                            any(SignupStatus.class), any(Pageable.class)))
+            when(userRepository.findPageByApprovalStatus(
+                            any(ApprovalStatus.class), any(Pageable.class)))
                     .thenReturn(page);
             PageResult<UserProfileWithLicense> actual = userReader.read(pageable);
 

@@ -14,6 +14,12 @@ public class EmergencyRoomReader {
 
     private final EmergencyRoomRepository emergencyRoomRepository;
 
+    public EmergencyRoom read(Long id) {
+        return emergencyRoomRepository
+                .findById(id)
+                .orElseThrow(() -> EmergencyRoomNotFoundException.EXCEPTION);
+    }
+
     public EmergencyRoom read(String hospitalId) {
         return emergencyRoomRepository
                 .findByHpId(hospitalId)

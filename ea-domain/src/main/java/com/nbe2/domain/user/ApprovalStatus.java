@@ -1,6 +1,6 @@
 package com.nbe2.domain.user;
 
-public enum SignupStatus {
+public enum ApprovalStatus {
     PENDING,
     APPROVED
 }
