@@ -6,18 +6,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
+import com.nbe2.api.global.dto.Response;
+
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class test {
 
-    @GetMapping("/notices")
-    public void test1() {
-        System.out.println("성공입니다잉");
-    }
-
     @GetMapping("/my")
-    public void test2() {
-        System.out.println("성공입니다잉1");
+    public Response<Void> test() {
+        return Response.success();
     }
 }

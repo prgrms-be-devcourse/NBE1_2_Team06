@@ -14,6 +14,12 @@ public class EmergencyRoomReader {
 
     private final EmergencyRoomRepository emergencyRoomRepository;
 
+    public EmergencyRoom read(Long id) {
+        return emergencyRoomRepository
+                .findById(id)
+                .orElseThrow(() -> EmergencyRoomNotFoundException.EXCEPTION);
+    }
+
     public EmergencyRoom read(String hospitalId) {
         return emergencyRoomRepository
                 .findByHpId(hospitalId)
@@ -24,5 +30,16 @@ public class EmergencyRoomReader {
         return emergencyRoomRepository.findByHospitalNameContaining(hospitalName).stream()
                 .map(EmergencyRoom::getHpId)
                 .toList();
+    }
+
+    public Coordinate findByHospitalName(String hospitalName) {
+        return emergencyRoomRepository
+                .findByHospitalName(hospitalName)
+                .map(EmergencyRoom::getLocation)
+                .orElseThrow(() -> EmergencyRoomNotFoundException.EXCEPTION);
+    }
+
+    public List<EmergencyRoomMapInfo> read(Coordinate coordinate, double distance) {
+        return emergencyRoomRepository.findByCoordinateAndDistance(coordinate, distance);
     }
 }

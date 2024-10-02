@@ -40,7 +40,7 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
             UserPrincipal tokenUserPrincipal = jwtProvider.getTokenUserPrincipal(jwtToken);
             List<GrantedAuthority> grantedAuthorities =
                     convertorGrantedAuthority(String.valueOf(tokenUserPrincipal.role()));
-            setSecurityContextHolder(tokenUserPrincipal.userId(), grantedAuthorities);
+            setSecurityContextHolder(tokenUserPrincipal, grantedAuthorities);
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }
@@ -48,9 +48,10 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void setSecurityContextHolder(long userId, List<GrantedAuthority> grantedAuthorities) {
+    private void setSecurityContextHolder(
+            UserPrincipal userPrincipal, List<GrantedAuthority> grantedAuthorities) {
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(userId, null, grantedAuthorities);
+                new UsernamePasswordAuthenticationToken(userPrincipal, null, grantedAuthorities);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 

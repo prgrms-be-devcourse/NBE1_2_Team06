@@ -25,7 +25,7 @@ public class UserReader {
 
     public PageResult<UserProfileWithLicense> read(Pageable pageable) {
         Page<UserProfileWithLicense> userPage =
-                userRepository.findPageBySignupStatus(SignupStatus.PENDING, pageable);
+                userRepository.findPageByApprovalStatus(ApprovalStatus.PENDING, pageable);
         return new PageResult<>(
                 userPage.getContent(), userPage.getTotalPages(), userPage.hasNext());
     }

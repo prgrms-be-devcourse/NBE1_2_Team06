@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.nbe2.domain.emergencyroom.EmergencyRoom;
+import com.nbe2.domain.file.FileMetaData;
 
 @Entity
 @Getter
@@ -36,18 +37,20 @@ public class MedicalPersonInfo {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id")
-    private TempFile license;
+    private FileMetaData license;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emergency_room_id")
     private EmergencyRoom emergencyRoom;
 
-    public static MedicalPersonInfo create() {
-        return new MedicalPersonInfo();
-    }
-
-    public void assignParent(User user, EmergencyRoom emergencyRoom) {
+    private MedicalPersonInfo(User user, EmergencyRoom emergencyRoom, FileMetaData license) {
         this.user = user;
         this.emergencyRoom = emergencyRoom;
+        this.license = license;
+    }
+
+    public static MedicalPersonInfo of(
+            User user, EmergencyRoom emergencyRoom, FileMetaData license) {
+        return new MedicalPersonInfo(user, emergencyRoom, license);
     }
 }

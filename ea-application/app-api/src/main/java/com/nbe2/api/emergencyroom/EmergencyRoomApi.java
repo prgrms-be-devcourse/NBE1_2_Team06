@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
+import com.nbe2.api.emergencyroom.dto.EmergencyRoomDirectionsResponse;
+import com.nbe2.api.emergencyroom.dto.EmergencyRoomMapResponse;
 import com.nbe2.api.emergencyroom.dto.RealTimeEmergencyRoomResponse;
 import com.nbe2.api.global.dto.Response;
 import com.nbe2.domain.emergencyroom.Coordinate;
+import com.nbe2.domain.emergencyroom.EmergencyRoomDirectionsInfo;
 import com.nbe2.domain.emergencyroom.EmergencyRoomService;
 
 @RestController
@@ -40,10 +43,34 @@ public class EmergencyRoomApi {
     }
 
     @GetMapping("/search")
-    public Response<List<String>> saveSearEmergency(
-            @RequestParam("hospitalName") String hospitalName) {
+    public Response<List<String>> saveSearEmergency(@RequestParam String hospitalName) {
         List<String> emergencyRoomListForName =
                 emergencyRoomService.getEmergencyRoomListForName(hospitalName);
         return Response.success(emergencyRoomListForName);
+    }
+
+    @GetMapping("/directions")
+    public Response<EmergencyRoomDirectionsResponse> directionsEmergency(
+            @RequestParam("myLocation") String myLocation,
+            @RequestParam("hospitalName") String hospitalName) {
+        EmergencyRoomDirectionsInfo emergencyRoomDirectionsInfo =
+                emergencyRoomService.directionsEmergencyRoom(myLocation, hospitalName);
+        EmergencyRoomDirectionsResponse emergencyRoomDirectionsResponse =
+                EmergencyRoomDirectionsResponse.to(emergencyRoomDirectionsInfo);
+        return Response.success(emergencyRoomDirectionsResponse);
+    }
+
+    @GetMapping("/map")
+    public Response<List<EmergencyRoomMapResponse>> getEmergencyRooms(
+            @RequestParam Double longitude,
+            @RequestParam Double latitude,
+            @RequestParam Double distance) {
+        List<EmergencyRoomMapResponse> responses =
+                emergencyRoomService
+                        .getEmergencyRooms(Coordinate.of(longitude, latitude), distance)
+                        .stream()
+                        .map(EmergencyRoomMapResponse::from)
+                        .toList();
+        return Response.success(responses);
     }
 }

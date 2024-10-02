@@ -1,15 +1,9 @@
 package com.nbe2.api.auth;
 
-import java.util.Optional;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,11 +24,8 @@ public class AuthApi {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public Response<Void> signUp(
-            @RequestBody SignupRequest signupRequest,
-            @RequestParam(required = false) Optional<Long> emergencyRoomId,
-            @RequestParam(required = false) Optional<Long> licenseId) {
-        authService.signUp(signupRequest.toUserProfile(), emergencyRoomId, licenseId);
+    public Response<Void> signUp(@RequestBody SignupRequest signupRequest) {
+        authService.signUp(signupRequest.toUserProfile());
         return Response.success();
     }
 
@@ -46,7 +37,7 @@ public class AuthApi {
     }
 
     @DeleteMapping("/logout")
-    public Response<Void> logout(@RequestBody UserPrincipal userPrincipal) {
+    public Response<Void> logout(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         authService.logout(userPrincipal.userId());
         return Response.success();
     }

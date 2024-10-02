@@ -32,7 +32,7 @@ public class User extends BaseTimeEntity {
     private UserRole role;
 
     @Enumerated(value = EnumType.STRING)
-    private SignupStatus signupStatus;
+    private ApprovalStatus approvalStatus;
 
     @OneToOne(
             optional = false,
@@ -43,39 +43,35 @@ public class User extends BaseTimeEntity {
 
     @Builder
     public User(
-            String name, String email, String password, UserRole role, SignupStatus signupStatus) {
+            String name,
+            String email,
+            String password,
+            UserRole role,
+            ApprovalStatus approvalStatus) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.signupStatus = signupStatus;
+        this.approvalStatus = approvalStatus;
     }
 
-    public static User createNormalUserOf(String name, String email, String password) {
+    public static User of(String name, String email, String password) {
         return User.builder()
                 .name(name)
                 .email(email)
                 .password(password)
                 .role(UserRole.USER)
-                .signupStatus(SignupStatus.APPROVED)
+                .approvalStatus(ApprovalStatus.APPROVED)
                 .build();
     }
 
-    public static User createMedicalUserOf(String name, String email, String password) {
-        return User.builder()
-                .name(name)
-                .email(email)
-                .password(password)
-                .role(UserRole.MEDICAL_PERSON)
-                .signupStatus(SignupStatus.PENDING)
-                .build();
-    }
-
-    public void assignMedicalPerson(MedicalPersonInfo medicalPersonInfo) {
+    public void assignMedicalRole(MedicalPersonInfo medicalPersonInfo) {
         this.medicalPersonInfo = medicalPersonInfo;
+        this.role = UserRole.MEDICAL_PERSON;
+        this.approvalStatus = ApprovalStatus.PENDING;
     }
 
     public void approve() {
-        this.signupStatus = SignupStatus.APPROVED;
+        this.approvalStatus = ApprovalStatus.APPROVED;
     }
 }

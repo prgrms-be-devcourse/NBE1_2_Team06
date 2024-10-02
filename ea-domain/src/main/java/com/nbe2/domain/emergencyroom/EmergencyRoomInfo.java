@@ -25,6 +25,15 @@ public record EmergencyRoomInfo(
         int operatingRoomBedCount) {
 
     public EmergencyRoom toEmergencyRoom() {
+
+        Coordinate coordinate;
+
+        if (Double.parseDouble(longitude) < 90.0) {
+            coordinate = Coordinate.of(Double.parseDouble(latitude), Double.parseDouble(longitude));
+        } else {
+            coordinate = Coordinate.of(Double.parseDouble(longitude), Double.parseDouble(latitude));
+        }
+
         return EmergencyRoom.builder()
                 .hpId(id)
                 .hospitalName(hospitalName)
@@ -34,8 +43,7 @@ public record EmergencyRoomInfo(
                 .emergencyRoomContactNumber(emergencyRoomContactNumber)
                 .simpleMap(simpleMap)
                 .emergencyRoomAvailability(emergencyRoomAvailability)
-                .longitude(longitude)
-                .latitude(latitude)
+                .coordinate(coordinate)
                 .medicalDepartments(medicalDepartments)
                 .totalBedCount(totalBedCount)
                 .thoracicIcuBedCount(thoracicIcuBedCount)
