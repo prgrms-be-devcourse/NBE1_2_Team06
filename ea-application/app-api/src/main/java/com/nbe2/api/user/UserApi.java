@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.nbe2.api.global.dto.Response;
 import com.nbe2.api.user.dto.MedicalRequest;
+import com.nbe2.api.user.dto.ProfileResponse;
 import com.nbe2.domain.auth.UserPrincipal;
 import com.nbe2.domain.user.UserService;
 
@@ -24,5 +25,12 @@ public class UserApi {
         userService.requestMedicalAuthority(
                 userPrincipal.userId(), medicalRequest.toMedicalProfile());
         return Response.success();
+    }
+
+    @GetMapping("/my")
+    public Response<ProfileResponse> getMyProfile(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return Response.success(
+                ProfileResponse.from(userService.getMyProfile(userPrincipal.userId())));
     }
 }

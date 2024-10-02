@@ -27,4 +27,8 @@ public class UserService {
         User user = userReader.read(userId);
         userUpdater.requestMedicalRole(user, emergencyRoom, license);
     }
+
+    public MyProfile getMyProfile(long userId) {
+        return MyProfile.from(userReader.read(userId));
+    }
 }
