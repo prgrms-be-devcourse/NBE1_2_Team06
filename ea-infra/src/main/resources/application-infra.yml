@@ -5,14 +5,16 @@ spring:
 openapi:
   service-key: ${OPENAPI_SERVICE_KEY}
 
+
+
 ---
 spring:
   config:
     activate:
       on-profile: local
 redis:
-  host: localhost
-  port: 6379
+  host: ${REDIS_HOST}
+  port: ${REDIS_PORT}
 logging:
   level:
     org:
@@ -26,6 +28,11 @@ logging:
 
 kakao:
   rest-api-key: ${KAKAO_REST_API_KEY}
+
+naver:
+  directions-clinet-id: ${NAVER_MAP_CLIENT_ID}
+  directions-screat-key: ${NAVER_MAP_SCREAT_KEY}
+
 ---
 spring:
   config:

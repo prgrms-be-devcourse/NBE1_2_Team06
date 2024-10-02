@@ -16,6 +16,7 @@ public class EmergencyRoomService {
     private final DistanceCalculator distanceCalculator;
     private final EmergencyRoomInitializer emergencyRoomInitializer;
     private final EmergencyRoomReader emergencyRoomReader;
+    private final EmergencyRoomDirections emergencyRoomDirections;
 
     @Transactional
     public void init() {
@@ -31,6 +32,13 @@ public class EmergencyRoomService {
 
     public List<String> getEmergencyRoomListForName(String name) {
         return emergencyRoomReader.readByHospitalName(name);
+    }
+
+    public EmergencyRoomDirectionsInfo directionsEmergencyRoom(
+            String myLocation, String hospitalName) {
+        Coordinate byHospitalLocation = emergencyRoomReader.findByHospitalName(hospitalName);
+        String latitudeAndLongitude = byHospitalLocation.convertorLatitudeAndLongitude();
+        return emergencyRoomDirections.directionsEmergencyRoom(myLocation, latitudeAndLongitude);
     }
 
     public List<EmergencyRoomMapInfo> getEmergencyRooms(Coordinate coordinate, double distance) {

@@ -11,4 +11,6 @@ public interface EmergencyRoomRepository
     List<EmergencyRoom> findByHospitalNameContaining(String name);
 
     Optional<EmergencyRoom> findByHpId(String hpId);
+
+    Optional<EmergencyRoom> findByHospitalName(String hospitalName);
 }

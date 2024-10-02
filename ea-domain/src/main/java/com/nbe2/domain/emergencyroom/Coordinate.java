@@ -41,4 +41,8 @@ public final class Coordinate {
 
         return Math.round(EARTH_RADIUS_KM * c * 100) / 100.0;
     }
+
+    public String convertorLatitudeAndLongitude() {
+        return longitude + "," + latitude;
+    }
 }
