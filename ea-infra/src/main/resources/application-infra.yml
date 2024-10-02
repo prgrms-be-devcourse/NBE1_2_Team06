@@ -5,27 +5,16 @@ spring:
 openapi:
   service-key: ${OPENAPI_SERVICE_KEY}
 
+
+
 ---
 spring:
   config:
     activate:
       on-profile: local
-  datasource:
-    url: jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?useSSL=false&allowPublicKeyRetrieval=true
-    username: ${DATABASE_USER}
-    password: ${DATABASE_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        show-sql: true
-        format_sql: true
 redis:
-  host: localhost
-  port: 6379
-
+  host: ${REDIS_HOST}
+  port: ${REDIS_PORT}
 logging:
   level:
     org:
@@ -39,23 +28,16 @@ logging:
 
 kakao:
   rest-api-key: ${KAKAO_REST_API_KEY}
+
+naver:
+  directions-clinet-id: ${NAVER_MAP_CLIENT_ID}
+  directions-screat-key: ${NAVER_MAP_SCREAT_KEY}
+
 ---
 spring:
   config:
     activate:
       on-profile: dev
-  datasource:
-    url: jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?useSSL=false&allowPublicKeyRetrieval=true
-    username: ${DATABASE_USER}
-    password: ${DATABASE_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        show-sql: true
-        format_sql: true
 redis:
   host: ${REDIS_HOST}
   port: ${REDIS_PORT}

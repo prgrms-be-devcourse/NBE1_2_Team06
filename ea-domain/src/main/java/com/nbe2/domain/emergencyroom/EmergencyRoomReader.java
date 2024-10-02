@@ -31,4 +31,15 @@ public class EmergencyRoomReader {
                 .map(EmergencyRoom::getHpId)
                 .toList();
     }
+
+    public Coordinate findByHospitalName(String hospitalName) {
+        return emergencyRoomRepository
+                .findByHospitalName(hospitalName)
+                .map(EmergencyRoom::getLocation)
+                .orElseThrow(() -> EmergencyRoomNotFoundException.EXCEPTION);
+    }
+
+    public List<EmergencyRoomMapInfo> read(Coordinate coordinate, double distance) {
+        return emergencyRoomRepository.findByCoordinateAndDistance(coordinate, distance);
+    }
 }
