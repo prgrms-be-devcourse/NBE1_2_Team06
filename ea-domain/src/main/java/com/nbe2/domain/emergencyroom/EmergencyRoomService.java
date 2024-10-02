@@ -40,4 +40,8 @@ public class EmergencyRoomService {
         String latitudeAndLongitude = byHospitalLocation.convertorLatitudeAndLongitude();
         return emergencyRoomDirections.directionsEmergencyRoom(myLocation, latitudeAndLongitude);
     }
+
+    public List<EmergencyRoomMapInfo> getEmergencyRooms(Coordinate coordinate, double distance) {
+        return emergencyRoomReader.read(coordinate, distance);
+    }
 }

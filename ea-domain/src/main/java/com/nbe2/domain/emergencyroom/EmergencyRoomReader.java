@@ -32,4 +32,8 @@ public class EmergencyRoomReader {
                 .map(EmergencyRoom::getLocation)
                 .orElseThrow(() -> EmergencyRoomNotFoundException.EXCEPTION);
     }
+
+    public List<EmergencyRoomMapInfo> read(Coordinate coordinate, double distance) {
+        return emergencyRoomRepository.findByCoordinateAndDistance(coordinate, distance);
+    }
 }

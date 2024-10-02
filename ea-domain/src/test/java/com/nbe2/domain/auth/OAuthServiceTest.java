@@ -50,7 +50,7 @@ class OAuthServiceTest {
         when(oAuthClient.getOAuthProfile(anyString())).thenReturn(oAuthProfile);
         when(userValidator.isEmailExists(anyString())).thenReturn(false);
         when(userReader.read(anyString())).thenReturn(user);
-        when(tokenGenerator.generateToken(any(UserPrincipal.class))).thenReturn(expected);
+        when(tokenGenerator.generate(any(UserPrincipal.class))).thenReturn(expected);
 
         Tokens actual = oAuthService.login(code);
 
@@ -73,7 +73,7 @@ class OAuthServiceTest {
         when(oAuthClient.getOAuthProfile(anyString())).thenReturn(oAuthProfile);
         when(userValidator.isEmailExists(anyString())).thenReturn(true);
         when(userReader.read(anyString())).thenReturn(user);
-        when(tokenGenerator.generateToken(any(UserPrincipal.class))).thenReturn(expected);
+        when(tokenGenerator.generate(any(UserPrincipal.class))).thenReturn(expected);
 
         Tokens actual = oAuthService.login(code);
 
