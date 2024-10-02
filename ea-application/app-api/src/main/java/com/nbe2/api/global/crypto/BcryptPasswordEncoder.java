@@ -1,17 +1,17 @@
 package com.nbe2.api.global.crypto;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.domain.auth.PasswordCryptor;
+import com.nbe2.domain.auth.PasswordEncoder;
 
 @Component
 @RequiredArgsConstructor
-public class BCryptPasswordCryptor implements PasswordCryptor {
+public class BcryptPasswordEncoder implements PasswordEncoder {
 
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public String encode(String plainPassword) {

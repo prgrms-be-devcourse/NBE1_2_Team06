@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -101,5 +102,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/emergency-rooms/**")
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/reissue")
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/admin/reissue");
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bcryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
