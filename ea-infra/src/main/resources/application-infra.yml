@@ -1,6 +1,20 @@
 spring:
   jpa:
     open-in-view: false
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: ${CHAT_MODEL}
+          temperature: 0.3
+      embedding:
+        options:
+          model: ${EMBEDDING_MODEL}
+    vectorstore:
+      chroma:
+        collection-name: ${CHROMA_COLLECTION}
+        initialize-schema: true
 
 openapi:
   service-key: ${OPENAPI_SERVICE_KEY}
@@ -38,6 +52,12 @@ spring:
   config:
     activate:
       on-profile: dev
+  ai:
+    vectorstore:
+      chroma:
+        client:
+          host: ${CHROMADB_HOST}
+          port: ${CHROMADB_HOST}
 redis:
   host: ${REDIS_HOST}
   port: ${REDIS_PORT}
