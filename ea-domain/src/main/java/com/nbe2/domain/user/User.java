@@ -74,4 +74,9 @@ public class User extends BaseTimeEntity {
     public void approve() {
         this.approvalStatus = ApprovalStatus.APPROVED;
     }
+
+    public void update(UserProfile profile) {
+        this.name = profile.name();
+        this.email = email
+    }
 }

@@ -1,5 +1,6 @@
 package com.nbe2.api.user;
 
+import com.nbe2.api.user.dto.UpdateProfileRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,7 @@ import com.nbe2.domain.auth.UserPrincipal;
 import com.nbe2.domain.user.UserService;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/my")
 @RequiredArgsConstructor
 public class UserApi {
 
@@ -27,10 +28,16 @@ public class UserApi {
         return Response.success();
     }
 
-    @GetMapping("/my")
+    @GetMapping()
     public Response<ProfileResponse> getMyProfile(
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         return Response.success(
                 ProfileResponse.from(userService.getMyProfile(userPrincipal.userId())));
+    }
+
+    @PatchMapping()
+    public Response<Void> updateMyProfile(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdateProfileRequest request) {
+        userService.updateProfile(userPrincipal.userId(), request.toProfile());
+        return Response.success();
     }
 }

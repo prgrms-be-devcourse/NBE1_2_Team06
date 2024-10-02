@@ -31,4 +31,9 @@ public class UserService {
     public MyProfile getMyProfile(long userId) {
         return MyProfile.from(userReader.read(userId));
     }
+
+    public void updateProfile(long userId, UserProfile profile) {
+        User user = userReader.read(userId);
+        userUpdater.update(user, profile);
+    }
 }
