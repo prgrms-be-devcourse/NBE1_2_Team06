@@ -1,13 +1,6 @@
 package com.nbe2.domain.emergencyroom;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.WKTReader;
@@ -25,7 +18,11 @@ import com.nbe2.domain.global.BaseTimeEntity;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "emergency_rooms")
+@Table(
+        name = "emergency_rooms",
+        uniqueConstraints = {
+            @UniqueConstraint(columnNames = {"hospitalName", "longitude", "latitude"})
+        })
 public class EmergencyRoom extends BaseTimeEntity {
 
     @Id
