@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.nbe2.api.auth.dto.LoginRequest;
 import com.nbe2.api.auth.dto.SignupRequest;
+import com.nbe2.api.auth.dto.TokensRequest;
 import com.nbe2.api.global.dto.Response;
 import com.nbe2.api.global.util.TokenUtils;
 import com.nbe2.domain.auth.AuthService;
@@ -48,5 +49,10 @@ public class AuthApi {
     public Response<Void> logout(@RequestBody UserPrincipal userPrincipal) {
         authService.logout(userPrincipal.userId());
         return Response.success();
+    }
+
+    @PostMapping("/reissue")
+    public Response<Tokens> reissue(@RequestBody TokensRequest tokenRequestDto) {
+        return Response.success(authService.updateToken(tokenRequestDto.to()));
     }
 }

@@ -5,7 +5,8 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EmergencyRoomRepository extends JpaRepository<EmergencyRoom, Long> {
+public interface EmergencyRoomRepository
+        extends JpaRepository<EmergencyRoom, Long>, EmergencyRoomRepositoryCustom {
 
     List<EmergencyRoom> findByHospitalNameContaining(String name);
 

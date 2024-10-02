@@ -1,13 +1,9 @@
 package com.nbe2.domain.emergencyroom;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.WKTReader;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,12 +11,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import com.nbe2.domain.emergencyroom.exception.InvalidCoordinateException;
 import com.nbe2.domain.global.BaseTimeEntity;
 
 @Entity
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "emergency_rooms")
+@Table(
+        name = "emergency_rooms",
+        uniqueConstraints = {
+            @UniqueConstraint(columnNames = {"hospitalName", "longitude", "latitude"})
+        })
 public class EmergencyRoom extends BaseTimeEntity {
 
     @Id
@@ -46,9 +48,24 @@ public class EmergencyRoom extends BaseTimeEntity {
 
     private String medicalDepartments;
 
-    @Embedded private Coordinate location;
+    @Column(columnDefinition = "GEOMETRY")
+    private Point location;
 
     @Embedded private BedCount bedCount;
+
+    public static Point coordinateToPoint(Coordinate coordinate) {
+        String pointWKT =
+                String.format("POINT(%f %f)", coordinate.getLongitude(), coordinate.getLatitude());
+        try {
+            return (Point) new WKTReader().read(pointWKT);
+        } catch (Exception e) {
+            throw InvalidCoordinateException.EXCEPTION;
+        }
+    }
+
+    public Coordinate getLocation() {
+        return Coordinate.of(location.getX(), location.getY());
+    }
 
     @Embeddable
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -83,8 +100,7 @@ public class EmergencyRoom extends BaseTimeEntity {
             String emergencyRoomContactNumber,
             String simpleMap,
             boolean emergencyRoomAvailability,
-            String longitude,
-            String latitude,
+            Coordinate coordinate,
             String medicalDepartments,
             int totalBedCount,
             int thoracicIcuBedCount,
@@ -103,7 +119,7 @@ public class EmergencyRoom extends BaseTimeEntity {
         this.simpleMap = simpleMap;
         this.emergencyRoomAvailability = emergencyRoomAvailability;
         this.medicalDepartments = medicalDepartments;
-        this.location = Coordinate.of(Double.valueOf(longitude), Double.valueOf(latitude));
+        this.location = coordinateToPoint(coordinate);
         this.bedCount =
                 BedCount.builder()
                         .totalBedCount(totalBedCount)

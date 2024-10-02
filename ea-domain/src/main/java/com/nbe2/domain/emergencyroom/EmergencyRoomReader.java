@@ -25,4 +25,8 @@ public class EmergencyRoomReader {
                 .map(EmergencyRoom::getHpId)
                 .toList();
     }
+
+    public List<EmergencyRoomMapInfo> read(Coordinate coordinate, double distance) {
+        return emergencyRoomRepository.findByCoordinateAndDistance(coordinate, distance);
+    }
 }

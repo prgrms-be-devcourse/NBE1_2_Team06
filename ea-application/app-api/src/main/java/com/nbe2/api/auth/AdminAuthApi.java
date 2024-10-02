@@ -1,10 +1,6 @@
 package com.nbe2.api.auth;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,6 +10,7 @@ import com.nbe2.common.annotation.PageDefault;
 import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.auth.AdminAuthService;
+import com.nbe2.domain.auth.TokenManager;
 import com.nbe2.domain.user.UserProfileWithLicense;
 
 @RestController
@@ -22,6 +19,7 @@ import com.nbe2.domain.user.UserProfileWithLicense;
 public class AdminAuthApi {
 
     private final AdminAuthService adminAuthService;
+    private final TokenManager tokenManager;
 
     @GetMapping("/pendings")
     public Response<PageResult<PendingUserResponse>> searchPendingUsers(@PageDefault Page page) {

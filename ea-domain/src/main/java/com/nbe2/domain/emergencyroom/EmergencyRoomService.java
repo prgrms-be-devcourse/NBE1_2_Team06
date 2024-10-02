@@ -32,4 +32,8 @@ public class EmergencyRoomService {
     public List<String> getEmergencyRoomListForName(String name) {
         return emergencyRoomReader.readByHospitalName(name);
     }
+
+    public List<EmergencyRoomMapInfo> getEmergencyRooms(Coordinate coordinate, double distance) {
+        return emergencyRoomReader.read(coordinate, distance);
+    }
 }

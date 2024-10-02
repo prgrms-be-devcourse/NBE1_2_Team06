@@ -12,9 +12,14 @@ spring:
   config:
     activate:
       on-profile: local
+jwt:
+  screat-key: ${JWT_KEY}
 
 ---
 spring:
   config:
     activate:
       on-profile: dev
+
+jwt:
+  screat-key: ${JWT_KEY}

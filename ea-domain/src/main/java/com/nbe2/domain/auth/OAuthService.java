@@ -31,8 +31,7 @@ public class OAuthService {
         }
 
         User user = userReader.read(oAuthProfile.getEmail());
-        Tokens tokens =
-                tokenGenerator.generateToken(UserPrincipal.of(user.getId(), user.getRole()));
+        Tokens tokens = tokenGenerator.generate(UserPrincipal.of(user.getId(), user.getRole()));
         tokenManager.save(RefreshToken.of(user.getId(), tokens.refreshToken()));
 
         return tokens;
