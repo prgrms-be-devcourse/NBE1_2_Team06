@@ -1,4 +1,4 @@
-package com.nbe2.api.global.crypto;
+package com.nbe2.security.crypto;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;

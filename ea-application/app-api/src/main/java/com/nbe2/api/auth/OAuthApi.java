@@ -11,9 +11,9 @@ import lombok.RequiredArgsConstructor;
 
 import com.nbe2.api.auth.dto.OAuthConnectionResponse;
 import com.nbe2.api.global.dto.Response;
+import com.nbe2.api.global.util.TokenUtils;
 import com.nbe2.domain.auth.OAuthService;
 import com.nbe2.domain.auth.Tokens;
-import com.nbe2.security.utils.TokenUtils;
 
 @RestController
 @RequestMapping("/api/v1/oauth")
