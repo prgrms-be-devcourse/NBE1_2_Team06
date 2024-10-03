@@ -11,6 +11,6 @@ public class NoticeDeleter {
     private final NoticeReader noticeReader;
 
     public void deleteNotice(Long noticeId) {
-        noticeRepository.delete(noticeReader.findByNoticeId(noticeId));
+        noticeRepository.delete(noticeReader.readNotice(noticeId));
     }
 }

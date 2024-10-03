@@ -14,7 +14,7 @@ public class NoticeUpdater {
 
     public void updateNotice(NoticeUpdateInfo updateInfo, Long noticeId) {
         noticeInfoValidator.validateUpdateNotice(updateInfo);
-        Notice before = noticeReader.findByNoticeId(noticeId);
+        Notice before = noticeReader.readNotice(noticeId);
         before.updateNotice(updateInfo.title().get(), updateInfo.content().get());
         noticeRepository.save(before);
     }

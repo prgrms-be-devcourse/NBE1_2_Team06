@@ -33,7 +33,7 @@ public class NoticeReader {
                 searchTitles.getContent(), searchTitles.getTotalPages(), searchTitles.hasNext());
     }
 
-    public Notice findByNoticeId(Long noticeId) {
+    public Notice readNotice(Long noticeId) {
         return noticeRepository
                 .findById(noticeId)
                 .orElseThrow(() -> NoticeNotFoundNoticeIdException.EXCEPTION);

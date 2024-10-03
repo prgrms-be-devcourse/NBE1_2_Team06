@@ -21,7 +21,6 @@ import com.nbe2.api.notice.dto.NoticteCreateRequest;
 import com.nbe2.common.annotation.PageDefault;
 import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
-import com.nbe2.domain.file.FileMetaDataService;
 import com.nbe2.domain.notice.NoticeInfo;
 import com.nbe2.domain.notice.NoticeReadInfo;
 import com.nbe2.domain.notice.NoticeService;
@@ -32,7 +31,6 @@ import com.nbe2.domain.notice.NoticeUpdateInfo;
 @RequestMapping("/api/v1/notices")
 public class NoticeApi {
     private final NoticeService noticeService;
-    private final FileMetaDataService fileMetaDataService;
 
     @PostMapping // insert
     public Response<Void> createNotice(
