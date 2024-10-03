@@ -19,7 +19,6 @@ import com.nbe2.domain.global.BaseTimeEntity;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "emergency_rooms")
 public class EmergencyRoom extends BaseTimeEntity {
