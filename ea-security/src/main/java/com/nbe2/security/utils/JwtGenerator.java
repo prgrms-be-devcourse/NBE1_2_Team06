@@ -19,8 +19,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtGenerator implements TokenGenerator {
-    private static final long ACCESS_EXPIRATION_TIME = 3600; // 1시간 (3600초)
-    private static final long REFRESH_EXPIRATION_TIME = 1209600; // 2주 (1209600초)
+    private static final long ACCESS_EXPIRATION_TIME = 36; // 1시간 (3600초)
+    private static final long REFRESH_EXPIRATION_TIME = 1; // 2주 (1209600초)
 
     private static String SECRET_KEY;
 
@@ -79,7 +79,7 @@ public class JwtGenerator implements TokenGenerator {
 
     private static Map<String, Object> setClaims(UserPrincipal principal) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("ROLE", principal.role().name());
+        claims.put("ROLE", principal.role().getRole());
         return claims;
     }
 

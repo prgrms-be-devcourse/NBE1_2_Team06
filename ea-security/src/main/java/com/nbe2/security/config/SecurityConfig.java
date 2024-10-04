@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import lombok.RequiredArgsConstructor;
 
+import com.nbe2.security.constants.SecurityUrlEndPoint;
 import com.nbe2.security.utils.JwtProvider;
 
 @EnableWebSecurity
@@ -44,40 +45,34 @@ public class SecurityConfig {
                         UsernamePasswordAuthenticationFilter.class)
                 // 접근 제어 설정
                 .authorizeHttpRequests(
-                        authorizationManagerRequestMatcherRegistry ->
-                                authorizationManagerRequestMatcherRegistry
-                                        // 비회원 접근 허용
-                                        // 가입 관련
-                                        .requestMatchers(HttpMethod.POST, "/api/v1/oauth/**")
-                                        .permitAll()
-                                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/**")
-                                        .permitAll()
-                                        // 응급실 관련
-                                        .requestMatchers(HttpMethod.GET, "/api/v1/notices/**")
-                                        .permitAll()
-                                        .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**")
-                                        .permitAll()
-                                        .requestMatchers(HttpMethod.GET, "/api/v1/directions")
-                                        .permitAll()
-                                        .requestMatchers(
-                                                HttpMethod.GET, "/api/v1/emergency-rooms/**")
-                                        .permitAll()
-                                        // 커뮤 관련
-                                        .requestMatchers(HttpMethod.GET, "/api/v1/posts/**")
-                                        .permitAll()
-                                        // 의료 관계자 접근 설정
-                                        .requestMatchers(HttpMethod.POST, "/api/v1/notices")
-                                        .hasRole("MEDICAL_PERSON")
-                                        .requestMatchers(HttpMethod.PUT, "/api/v1/notices")
-                                        .hasRole("MEDICAL_PERSON")
-                                        .requestMatchers(HttpMethod.DELETE, "/api/v1/notices")
-                                        .hasRole("MEDICAL_PERSON")
-                                        // 관리자 접근 설정
-                                        .requestMatchers("/api/v1/admin/pendings")
-                                        .hasRole("ADMIN")
-                                        // 그 외 회원 인증 필요
-                                        .anyRequest()
-                                        .authenticated());
+                        authorizationManagerRequestMatcherRegistry -> {
+                            // All
+                            for (SecurityUrlEndPoint securityUrlEndPoint :
+                                    SecurityUrlEndPoint.values()) {
+                                if (securityUrlEndPoint.getUserRole() == null) {
+                                    authorizationManagerRequestMatcherRegistry
+                                            .requestMatchers(
+                                                    securityUrlEndPoint.getMethod(),
+                                                    securityUrlEndPoint.getUrl())
+                                            .permitAll();
+                                }
+                            }
+
+                            for (SecurityUrlEndPoint securityUrlEndPoint :
+                                    SecurityUrlEndPoint.values()) {
+                                if (securityUrlEndPoint.getUserRole() != null) {
+                                    authorizationManagerRequestMatcherRegistry
+                                            .requestMatchers(
+                                                    securityUrlEndPoint.getMethod(),
+                                                    securityUrlEndPoint.getUrl())
+                                            .hasRole(securityUrlEndPoint.getUserRole().getRole());
+                                    System.out.println(
+                                            "ROLE :: "
+                                                    + securityUrlEndPoint.getUserRole().getRole());
+                                }
+                            }
+                            authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
+                        });
 
         httpSecurity.exceptionHandling(
                 httpSecurityExceptionHandlingConfigurer ->
