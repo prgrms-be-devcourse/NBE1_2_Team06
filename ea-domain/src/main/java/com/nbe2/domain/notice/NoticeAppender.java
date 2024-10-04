@@ -32,7 +32,7 @@ public class NoticeAppender {
     public Notice createNotice(NoticeInfo newNoticeInfo, Long userId) {
         EmergencyRoom emergencyRoom = emergencyRoomReader.read(newNoticeInfo.hpId());
         User user = userReader.read(userId);
-        noticeInfoValidator.validateNotice(newNoticeInfo);
+        noticeInfoValidator.validate(newNoticeInfo.title(), newNoticeInfo.content());
         return Notice.from(newNoticeInfo, user, emergencyRoom);
     }
 

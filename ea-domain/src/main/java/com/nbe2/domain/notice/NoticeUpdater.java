@@ -13,7 +13,7 @@ public class NoticeUpdater {
     private final NoticeReader noticeReader;
 
     public void updateNotice(NoticeUpdateInfo updateInfo, Long noticeId) {
-        noticeInfoValidator.validateUpdateNotice(updateInfo);
+        noticeInfoValidator.validate(updateInfo.title(), updateInfo.content());
         Notice before = noticeReader.readNotice(noticeId);
         before.updateNotice(updateInfo.title().get(), updateInfo.content().get());
         noticeRepository.save(before);
