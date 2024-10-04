@@ -1,4 +1,4 @@
-package com.nbe2.api.global.config;
+package com.nbe2.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.api.global.jwt.JwtProvider;
+import com.nbe2.security.utils.JwtProvider;
 
 @EnableWebSecurity
 @Configuration
@@ -104,7 +104,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/admin/reissue");
     }
 
-    @Bean
+    @Bean(name = "customBcryptPasswordEncoder")
     public BCryptPasswordEncoder bcryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }

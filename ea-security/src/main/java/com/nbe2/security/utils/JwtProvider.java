@@ -1,4 +1,4 @@
-package com.nbe2.api.global.jwt;
+package com.nbe2.security.utils;
 
 import java.security.Key;
 
@@ -7,11 +7,11 @@ import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.nbe2.api.global.exception.JwtExpriedException;
-import com.nbe2.api.global.exception.JwtUnsupportedException;
 import com.nbe2.domain.auth.TokenProvider;
 import com.nbe2.domain.auth.UserPrincipal;
 import com.nbe2.domain.user.UserRole;
+import com.nbe2.security.exception.JwtExpriedException;
+import com.nbe2.security.exception.JwtUnsupportedException;
 
 import io.jsonwebtoken.*;
 

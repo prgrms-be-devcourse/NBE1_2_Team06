@@ -1,4 +1,4 @@
-package com.nbe2.api.global.jwt;
+package com.nbe2.security.utils;
 
 import java.security.Key;
 import java.util.Date;
@@ -19,8 +19,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtGenerator implements TokenGenerator {
-    private static final long ACCESS_EXPIRATION_TIME = 860000000; // -> 약 10분의 토큰 유효 기간
-    private static final long REFRESH_EXPIRATION_TIME = 860000000; // -> 약 하루의 토큰 유효 기간
+    private static final long ACCESS_EXPIRATION_TIME = 3600; // 1시간 (3600초)
+    private static final long REFRESH_EXPIRATION_TIME = 1209600; // 2주 (1209600초)
 
     private static String SECRET_KEY;
 
