@@ -53,18 +53,6 @@ public class PostApi {
         return Response.success(postPage);
     }
 
-    // 내 게시글 조회 Api
-    // TODO : UserApi 로 이동
-    // @GetMapping("/api/v1/my/posts")
-    @GetMapping("/my")
-    public Response<PageResult<PostListInfo>> getMyPostPage(
-            @AuthenticationPrincipal final UserPrincipal userPrincipal,
-            @PageDefault final Page page) {
-        PageResult<PostListInfo> postPage =
-                postService.findListPageByUserId(page, userPrincipal.userId());
-        return Response.success(postPage);
-    }
-
     @GetMapping("/{postsId}")
     public Response<PostResponse> getPostDetails(@PathVariable("postsId") final Long postsId) {
         PostDetailsInfo postDetailsInfo = postService.findDetails(postsId);
