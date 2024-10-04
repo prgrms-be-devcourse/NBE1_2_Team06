@@ -36,13 +36,12 @@ public class NoticeAppender {
     }
 
     public void addFileIds(Notice newNotice, List<Long> fileIds) {
-        if (!fileIds.isEmpty()) {
-            List<FileMetaData> files = fileMetaDataReader.readAll(fileIds);
-            List<NoticeFile> noticeFiles =
-                    files.stream()
-                            .map(fileMetaData -> NoticeFile.of(fileMetaData, newNotice))
-                            .toList();
-            newNotice.addFiles(noticeFiles);
+        if (fileIds.isEmpty()) {
+            return;
         }
+        List<FileMetaData> files = fileMetaDataReader.readAll(fileIds);
+        List<NoticeFile> noticeFiles =
+                files.stream().map(fileMetaData -> NoticeFile.of(fileMetaData, newNotice)).toList();
+        newNotice.addFiles(noticeFiles);
     }
 }
