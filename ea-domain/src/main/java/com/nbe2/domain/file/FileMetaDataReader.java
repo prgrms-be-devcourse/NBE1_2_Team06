@@ -1,5 +1,7 @@
 package com.nbe2.domain.file;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -16,5 +18,9 @@ public class FileMetaDataReader {
         return fileMetaDateRepository
                 .findById(fileId)
                 .orElseThrow(() -> FileMetaDataNotFoundException.EXCEPTION);
+    }
+
+    public List<FileMetaData> readAll(List<Long> fileIds) {
+        return fileMetaDateRepository.findAllById(fileIds);
     }
 }

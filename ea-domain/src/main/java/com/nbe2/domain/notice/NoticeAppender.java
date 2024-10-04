@@ -1,6 +1,5 @@
 package com.nbe2.domain.notice;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -37,16 +36,13 @@ public class NoticeAppender {
     }
 
     public void addFileIds(Notice newNotice, List<Long> fileIds) {
-        List<NoticeFile> noticeFiles = new ArrayList<>();
         if (!fileIds.isEmpty()) {
-            for (Long fileId : fileIds) {
-                if (fileId != null) {
-                    // 파일들을 Notice_files 테이블에 저장
-                    FileMetaData fileMetaData = fileMetaDataReader.read(fileId);
-                    noticeFiles.add(NoticeFile.of(fileMetaData, newNotice));
-                }
-            }
+            List<FileMetaData> files = fileMetaDataReader.readAll(fileIds);
+            List<NoticeFile> noticeFiles =
+                    files.stream()
+                            .map(fileMetaData -> NoticeFile.of(fileMetaData, newNotice))
+                            .toList();
+            newNotice.addFiles(noticeFiles);
         }
-        newNotice.addFiles(noticeFiles);
     }
 }
