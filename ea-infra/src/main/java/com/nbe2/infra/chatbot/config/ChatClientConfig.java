@@ -6,12 +6,18 @@ import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chroma.ChromaApi;
+import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 public class ChatClientConfig {
     private static final String PROMPT_BLUEPRINT =
             """
@@ -23,9 +29,20 @@ public class ChatClientConfig {
             You should answer in Korean.
         """;
 
+    private final EmbeddingModel embeddingModel;
+    private final ChromaApi chromaApi;
+
+    @Value("${spring.ai.vectorstore.chroma.collection-name}")
+    private String collectionName;
+
     @Bean
     public ChatMemory chatMemory() {
         return new InMemoryChatMemory();
+    }
+
+    @Bean
+    public CustomChromaVectorStore customChromaVectorStore() {
+        return new CustomChromaVectorStore(embeddingModel, chromaApi, collectionName, true);
     }
 
     @Bean
@@ -35,7 +52,8 @@ public class ChatClientConfig {
                 .defaultSystem(PROMPT_BLUEPRINT)
                 .defaultAdvisors(
                         new PromptChatMemoryAdvisor(chatMemory),
-                        new QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults()))
+                        new QuestionAnswerAdvisor(
+                                vectorStore, SearchRequest.defaults().withTopK(1)))
                 .build();
     }
 }
