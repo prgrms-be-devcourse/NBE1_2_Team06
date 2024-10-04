@@ -66,9 +66,6 @@ public class SecurityConfig {
                                                     securityUrlEndPoint.getMethod(),
                                                     securityUrlEndPoint.getUrl())
                                             .hasRole(securityUrlEndPoint.getUserRole().getRole());
-                                    System.out.println(
-                                            "ROLE :: "
-                                                    + securityUrlEndPoint.getUserRole().getRole());
                                 }
                             }
                             authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();

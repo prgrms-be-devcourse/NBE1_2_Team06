@@ -19,6 +19,8 @@ public enum SecurityUrlEndPoint {
     GUEST_EMERGENCY_DIRECTIONS_GET(HttpMethod.GET, "/api/v1/directions"),
     GUEST_EMERGENCY_ROOMS_GET(HttpMethod.GET, "/api/v1/emergency-rooms/**"),
     GUEST_POST_GET(HttpMethod.GET, "/api/v1/posts/**"),
+    CHAT_POST(HttpMethod.POST, "/api/v1/chatbot/**"),
+    CHAT_DELETE(HttpMethod.DELETE, "/api/v1/chatbot/**"),
 
     // Medical Person
     MEDICAL_PERSON_NOTICES_PUT(HttpMethod.PUT, "/api/v1/notices", UserRole.MEDICAL_PERSON),
