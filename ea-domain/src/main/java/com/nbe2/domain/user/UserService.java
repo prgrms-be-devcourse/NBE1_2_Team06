@@ -32,8 +32,13 @@ public class UserService {
         return MyProfile.from(userReader.read(userId));
     }
 
-    public void updateProfile(long userId, UserProfile profile) {
+    public void updateProfile(long userId, UpdateProfile profile) {
         User user = userReader.read(userId);
         userUpdater.update(user, profile);
+    }
+
+    public void changePassword(long userId, UpdatePassword password) {
+        User user = userReader.read(userId);
+        userUpdater.update(user, password);
     }
 }

@@ -1,10 +1,10 @@
 package com.nbe2.api.user.dto;
 
-import com.nbe2.domain.user.UserProfile;
+import com.nbe2.domain.user.UpdateProfile;
 
-public record UpdateProfileRequest(String name, String email, String password) {
+public record UpdateProfileRequest(String name, String email) {
 
-    public UserProfile toProfile() {
-        return new UserProfile(name, email, password);
+    public UpdateProfile toProfile() {
+        return new UpdateProfile(name, email);
     }
 }

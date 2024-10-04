@@ -1,6 +1,5 @@
 package com.nbe2.api.user;
 
-import com.nbe2.api.user.dto.UpdateProfileRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import com.nbe2.api.global.dto.Response;
 import com.nbe2.api.user.dto.MedicalRequest;
 import com.nbe2.api.user.dto.ProfileResponse;
+import com.nbe2.api.user.dto.UpdatePasswordRequest;
+import com.nbe2.api.user.dto.UpdateProfileRequest;
 import com.nbe2.domain.auth.UserPrincipal;
 import com.nbe2.domain.user.UserService;
 
@@ -28,16 +29,26 @@ public class UserApi {
         return Response.success();
     }
 
-    @GetMapping()
+    @GetMapping
     public Response<ProfileResponse> getMyProfile(
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         return Response.success(
                 ProfileResponse.from(userService.getMyProfile(userPrincipal.userId())));
     }
 
-    @PatchMapping()
-    public Response<Void> updateMyProfile(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UpdateProfileRequest request) {
+    @PatchMapping
+    public Response<Void> updateMyProfile(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestBody UpdateProfileRequest request) {
         userService.updateProfile(userPrincipal.userId(), request.toProfile());
+        return Response.success();
+    }
+
+    @PatchMapping("/password")
+    public Response<Void> changePassword(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestBody UpdatePasswordRequest request) {
+        userService.changePassword(userPrincipal.userId(), request.toPassword());
         return Response.success();
     }
 }

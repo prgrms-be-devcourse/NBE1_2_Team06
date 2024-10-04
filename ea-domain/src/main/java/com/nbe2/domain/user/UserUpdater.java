@@ -1,12 +1,13 @@
 package com.nbe2.domain.user;
 
-import com.nbe2.domain.auth.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
+import com.nbe2.domain.auth.PasswordEncoder;
 import com.nbe2.domain.emergencyroom.EmergencyRoom;
 import com.nbe2.domain.file.FileMetaData;
+import com.nbe2.domain.user.exception.InvalidPasswordException;
 
 @Component
 @RequiredArgsConstructor
@@ -21,8 +22,17 @@ public class UserUpdater {
         userRepository.save(user);
     }
 
-    public void update(User user, UserProfile profile) {
-        user.update(UserProfile.of(profile.name(), profile.email(), passwordEncoder.encode(profile.password())));
+    public void update(User user, UpdateProfile profile) {
+        user.update(profile);
+        userRepository.save(user);
+    }
+
+    public void update(User user, UpdatePassword password) {
+        if (passwordEncoder.isPasswordUnmatched(password.previous(), user.getPassword())) {
+            throw InvalidPasswordException.EXCEPTION;
+        }
+
+        user.changePassword(passwordEncoder.encode(password.toChange()));
         userRepository.save(user);
     }
 }
