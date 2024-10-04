@@ -14,7 +14,7 @@ spring:
     vectorstore:
       chroma:
         collection-name: ${CHROMA_COLLECTION}
-        initialize-schema: true
+        initialize-schema: false
 
 openapi:
   service-key: ${OPENAPI_SERVICE_KEY}

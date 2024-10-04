@@ -14,6 +14,7 @@ public enum JwtErrorCode implements BaseErrorCode {
     TOKEN_NOT_VALIDATE(UNAUTHORIZED, "TOKEN_401", "유효하지 않은 토큰"),
     TOKEN_BAD_SIGNATURE(UNAUTHORIZED, "TOKEN_401", "서명 불일치"),
     ACCESS_TOKEN_NOT_FOUNT(NOT_FOUND, "TOKEN_404", "ACCESS TOKEN이 없음"),
+
     UNKNOWN_EXCEPTION(INTERNAL_SERVER, "TOKEN_900", "알 수 없는 오류 발생");
 
     private final Integer status;

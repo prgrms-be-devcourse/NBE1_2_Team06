@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum UserRole {
-    USER("ROLE_USER"),
-    MEDICAL_PERSON("ROLE_MEDICAL_PERSON"),
-    ADMIN("ROLE_ADMIN");
+    USER("USER"),
+    MEDICAL_PERSON("MEDICAL_PERSON"),
+    ADMIN("ADMIN");
 
     private final String role;
 }
