@@ -1,5 +1,8 @@
 package com.nbe2.domain.posts.entity;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 import lombok.AccessLevel;
@@ -32,9 +35,10 @@ public class Post extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private City city;
 
-    //    @OneToMany(mappedBy = "", cascade = CascadeType.ALL, orphanRemoval = true)
-    //    private List<Comments> comments = new LinkedList<>();
-    //    private Long commentCount;
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
+    private final List<Comment> comments = new LinkedList<>();
+
+    private Long commentCount = 0L;
 
     //    @OneToMany(mappedBy = "", cascade = CascadeType.ALL, orphanRemoval = true)
     //    private List<Likes> likes = new LinkedList<>();
@@ -51,11 +55,30 @@ public class Post extends BaseTimeEntity {
         this.city = city;
     }
 
+    public String getWriterName() {
+        return user.getName();
+    }
+
+    // ** 연관관계 편의 메서드 **//
+    public void addComment(final Comment comment) {
+        comments.add(comment);
+    }
+
     // ** business logic **//
+
     public Long update(final String title, final String content, final City city) {
         this.title = title;
         this.content = content;
         this.city = city;
         return id;
+    }
+
+    public void increaseCommentCount() {
+        commentCount++;
+    }
+
+    public void decreaseCommentCount() {
+        if (commentCount <= 0) return;
+        commentCount--;
     }
 }

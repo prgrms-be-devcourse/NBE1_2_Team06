@@ -14,7 +14,9 @@ import com.nbe2.domain.posts.service.component.PostAppender;
 import com.nbe2.domain.posts.service.component.PostDeleter;
 import com.nbe2.domain.posts.service.component.PostReader;
 import com.nbe2.domain.posts.service.component.PostUpdater;
-import com.nbe2.domain.posts.service.dto.*;
+import com.nbe2.domain.posts.service.dto.PostDefaultInfo;
+import com.nbe2.domain.posts.service.dto.PostDetailsInfo;
+import com.nbe2.domain.posts.service.dto.PostListInfo;
 import com.nbe2.domain.user.User;
 import com.nbe2.domain.user.UserReader;
 
