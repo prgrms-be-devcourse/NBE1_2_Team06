@@ -20,7 +20,7 @@ import com.nbe2.domain.user.User;
 public class Post extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private Long id;
 
@@ -38,11 +38,11 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     private final List<Comment> comments = new LinkedList<>();
 
-    private Long commentCount = 0L;
+    private Long commentCount;
 
     //    @OneToMany(mappedBy = "", cascade = CascadeType.ALL, orphanRemoval = true)
     //    private List<Likes> likes = new LinkedList<>();
-    //    private Long likeCount;
+    private Long likeCount;
 
     //    @OneToMany(mappedBy = "", cascade = CascadeType.ALL, orphanRemoval = true)
     //    private List<PostFiles> postFiles = new LinkedList<>();
@@ -53,6 +53,8 @@ public class Post extends BaseTimeEntity {
         this.title = title;
         this.content = content;
         this.city = city;
+        commentCount = 0L;
+        likeCount = 0L;
     }
 
     public String getWriterName() {
@@ -80,5 +82,14 @@ public class Post extends BaseTimeEntity {
     public void decreaseCommentCount() {
         if (commentCount <= 0) return;
         commentCount--;
+    }
+
+    public void increaseLikeCount() {
+        likeCount++;
+    }
+
+    public void decreaseLikeCount() {
+        if (likeCount <= 0) return;
+        likeCount--;
     }
 }

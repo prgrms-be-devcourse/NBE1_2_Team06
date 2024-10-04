@@ -50,6 +50,7 @@ public class PostReader {
                                         post.getWriterName(),
                                         post.getTitle(),
                                         post.getContent(),
+                                        post.getLikeCount(),
                                         post.getCommentCount()))
                 .toList();
     }
