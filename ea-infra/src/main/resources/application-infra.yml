@@ -48,6 +48,7 @@ naver:
   directions-screat-key: ${NAVER_MAP_SCREAT_KEY}
 
 ---
+
 spring:
   config:
     activate:
@@ -58,6 +59,7 @@ spring:
         client:
           host: ${CHROMADB_HOST}
           port: ${CHROMADB_HOST}
+
 redis:
   host: ${REDIS_HOST}
   port: ${REDIS_PORT}
