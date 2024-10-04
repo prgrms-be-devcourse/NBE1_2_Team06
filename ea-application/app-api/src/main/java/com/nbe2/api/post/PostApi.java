@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.nbe2.api.global.dto.Response;
 import com.nbe2.api.post.dto.PostRegisterRequest;
+import com.nbe2.api.post.dto.PostResponse;
 import com.nbe2.api.post.dto.PostUpdateRequest;
 import com.nbe2.common.annotation.PageDefault;
 import com.nbe2.common.dto.Page;
@@ -59,9 +60,9 @@ public class PostApi {
     }
 
     @GetMapping("/{postsId}")
-    public Response<PostDetailsInfo> getPostDetails(@PathVariable("postsId") final Long postsId) {
-        PostDetailsInfo postDetails = postService.findDetails(postsId);
-        return Response.success(postDetails);
+    public Response<PostResponse> getPostDetails(@PathVariable("postsId") final Long postsId) {
+        PostDetailsInfo postDetailsInfo = postService.findDetails(postsId);
+        return Response.success(PostResponse.from(postDetailsInfo));
     }
 
     @PutMapping("/{postsId}")

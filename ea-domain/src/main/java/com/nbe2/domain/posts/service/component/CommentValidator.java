@@ -9,7 +9,7 @@ import com.nbe2.domain.posts.exception.CommentWriterMismatchException;
 public class CommentValidator {
 
     public void isOwnerId(final Long userId, final Comment comment) {
-        Long commentWriterId = comment.getUserId();
+        Long commentWriterId = comment.getWriterId();
         if (!userId.equals(commentWriterId)) throw CommentWriterMismatchException.EXCEPTION;
     }
 }

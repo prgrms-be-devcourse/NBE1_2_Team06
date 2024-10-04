@@ -8,7 +8,7 @@ public record PostDetailsInfo(
 
         return new PostDetailsInfo(
                 post.getId(),
-                post.getUserName(),
+                post.getWriterName(),
                 post.getTitle(),
                 post.getContent(),
                 post.getCommentCount());

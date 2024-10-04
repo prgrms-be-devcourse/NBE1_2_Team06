@@ -16,7 +16,7 @@ public class CommentAppender {
     private final CommentRepository commentRepository;
 
     public Long append(final Post post, final User user, final CommentInfo info) {
-        Comment comment = Comment.builder().post(post).user(user).content(info.content()).build();
+        Comment comment = Comment.create(post, user, info.content());
         Comment saveComment = commentRepository.save(comment);
         return saveComment.getId();
     }

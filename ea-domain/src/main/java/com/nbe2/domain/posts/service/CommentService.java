@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import com.nbe2.domain.posts.entity.Comment;
 import com.nbe2.domain.posts.entity.Post;
@@ -17,6 +18,7 @@ import com.nbe2.domain.user.UserReader;
 
 @Service
 @Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class CommentService {
     private final UserReader userReader;
@@ -36,7 +38,7 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommentReadInfo> findPostComments(final Long postId) {
+    public List<CommentReadInfo> getPostComments(final Long postId) {
         Post post = postReader.read(postId);
         List<Comment> comments = commentReader.read(post);
         return comments.stream().map(CommentReadInfo::from).toList();
@@ -49,11 +51,10 @@ public class CommentService {
         return comment.getPostId();
     }
 
-    public Long delete(final Long commentsId) {
+    public void delete(final Long commentsId) {
         Comment comment = commentReader.read(commentsId);
         Post post = postReader.readWithPessimisticWriteLock(comment.getPostId());
         commentDeleter.delete(comment);
         post.decreaseCommentCount();
-        return comment.getPostId();
     }
 }

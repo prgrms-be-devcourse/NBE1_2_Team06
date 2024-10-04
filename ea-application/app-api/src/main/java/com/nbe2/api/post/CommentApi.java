@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.nbe2.api.global.dto.Response;
 import com.nbe2.api.post.dto.CommentRegisterRequest;
+import com.nbe2.api.post.dto.CommentResponse;
 import com.nbe2.api.post.dto.CommentUpdateRequest;
 import com.nbe2.domain.auth.UserPrincipal;
 import com.nbe2.domain.posts.service.CommentService;
@@ -41,9 +42,11 @@ public class CommentApi {
     }
 
     @GetMapping
-    Response<List<CommentReadInfo>> getPostComments(@RequestParam("postsId") Long postId) {
-        List<CommentReadInfo> commentReadInfos = commentService.findPostComments(postId);
-        return Response.success(commentReadInfos);
+    Response<List<CommentResponse>> getPostComments(@RequestParam("postsId") Long postId) {
+        List<CommentReadInfo> commentReadInfos = commentService.getPostComments(postId);
+        List<CommentResponse> commentResponses =
+                commentReadInfos.stream().map(CommentResponse::from).toList();
+        return Response.success(commentResponses);
     }
 
     @PutMapping("/{commentsId}")
@@ -63,8 +66,8 @@ public class CommentApi {
     }
 
     @DeleteMapping("{commentsId}")
-    public Response<Long> deleteComment(@PathVariable("commentsId") final Long commentsId) {
-        Long postId = commentService.delete(commentsId);
-        return Response.success(postId);
+    public Response<Void> deleteComment(@PathVariable("commentsId") final Long commentsId) {
+        commentService.delete(commentsId);
+        return Response.success();
     }
 }

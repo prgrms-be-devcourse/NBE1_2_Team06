@@ -3,7 +3,6 @@ package com.nbe2.domain.posts.entity;
 import jakarta.persistence.*;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,26 +30,35 @@ public class Comment extends BaseTimeEntity {
 
     private String content;
 
-    @Builder
     private Comment(final Post post, final User user, final String content) {
-        this.post = post;
+        setPost(post);
         this.user = user;
         this.content = content;
+    }
+
+    public static Comment create(final Post post, final User user, final String content) {
+        return new Comment(post, user, content);
     }
 
     public Long getPostId() {
         return post.getId();
     }
 
-    public Long getUserId() {
+    public Long getWriterId() {
         return user.getId();
     }
 
-    public String getUserName() {
+    public String getWriterName() {
         return user.getName();
     }
 
-    // business logic **//
+    // ** 연관관계 편의 메서드**//
+    private void setPost(final Post post) {
+        this.post = post;
+        post.addComment(this);
+    }
+
+    // ** business logic **//
     public Long update(final String content) {
         this.content = content;
         return id;

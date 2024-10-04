@@ -47,7 +47,7 @@ public class PostReader {
                         post ->
                                 new PostListInfo(
                                         post.getId(),
-                                        post.getUserName(),
+                                        post.getWriterName(),
                                         post.getTitle(),
                                         post.getContent(),
                                         post.getCommentCount()))
