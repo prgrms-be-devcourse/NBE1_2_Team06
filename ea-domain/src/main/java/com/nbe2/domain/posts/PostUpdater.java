@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PostUpdater {
 
-    public Long update(final Post post, final PostDefaultInfo info) {
+    public Long update(final Post post, final PostWriteInfo info) {
         return post.update(info.title(), info.content(), info.city());
     }
 }

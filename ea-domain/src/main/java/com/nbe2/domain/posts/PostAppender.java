@@ -9,8 +9,7 @@ import lombok.RequiredArgsConstructor;
 public class PostAppender {
     private final PostRepository postRepository;
 
-    public Long append(final Post post) {
-        Post savePost = postRepository.save(post);
-        return savePost.getId();
+    public Post append(final Post post) {
+        return postRepository.save(post);
     }
 }

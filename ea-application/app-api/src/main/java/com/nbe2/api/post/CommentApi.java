@@ -29,13 +29,10 @@ public class CommentApi {
     @PostMapping
     public Response<Long> postComment(
             @RequestBody @Validated final CommentRegisterRequest request,
-            @AuthenticationPrincipal final UserPrincipal userPrincipal
-            //            @RequestParam("id") final Long id
-            ) {
+            @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         Long postId =
                 commentService.save(
                         request.postsId(),
-                        //                        id
                         CommentWriteInfo.create(
                                 userPrincipal.userId(), CommentInfo.of(request.content())));
         return Response.success(postId);

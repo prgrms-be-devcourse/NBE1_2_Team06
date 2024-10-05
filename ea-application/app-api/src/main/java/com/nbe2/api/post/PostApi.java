@@ -1,5 +1,8 @@
 package com.nbe2.api.post;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,14 +33,14 @@ public class PostApi {
     @PostMapping
     public Response<Long> postPost(
             @RequestBody @Validated final PostRegisterRequest request,
-            @AuthenticationPrincipal final UserPrincipal userPrincipal
-            //            @RequestParam("id") final Long id
-            ) {
+            @AuthenticationPrincipal final UserPrincipal userPrincipal,
+            @RequestParam(name = "file", required = false) List<Long> fileIds) {
         Long postId =
                 postService.save(
                         userPrincipal.userId(),
-                        //                        id,
-                        PostDefaultInfo.create(request.title(), request.content(), request.city()));
+                        PostWriteInfo.create(request.title(), request.content(), request.city()),
+                        Optional.ofNullable(fileIds));
+
         return Response.success(postId);
     }
 
@@ -74,7 +77,7 @@ public class PostApi {
         Long postId =
                 postService.update(
                         postsId,
-                        PostDefaultInfo.create(request.title(), request.content(), request.city()));
+                        PostWriteInfo.create(request.title(), request.content(), request.city()));
         return Response.success(postId);
     }
 
