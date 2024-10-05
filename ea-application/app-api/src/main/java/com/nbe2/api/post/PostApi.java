@@ -40,7 +40,6 @@ public class PostApi {
                         userPrincipal.userId(),
                         PostWriteInfo.create(request.title(), request.content(), request.city()),
                         Optional.ofNullable(fileIds));
-
         return Response.success(postId);
     }
 
@@ -56,7 +55,6 @@ public class PostApi {
     // @GetMapping("/api/v1/my/posts")
     @GetMapping("/my")
     public Response<PageResult<PostListInfo>> getMyPostPage(
-            //            @RequestParam("id") final Long id
             @AuthenticationPrincipal final UserPrincipal userPrincipal,
             @PageDefault final Page page) {
         PageResult<PostListInfo> postPage =
