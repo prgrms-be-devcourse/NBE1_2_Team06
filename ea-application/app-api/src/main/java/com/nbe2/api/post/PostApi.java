@@ -38,8 +38,11 @@ public class PostApi {
         Long postId =
                 postService.save(
                         userPrincipal.userId(),
-                        PostWriteInfo.create(request.title(), request.content(), request.city()),
-                        Optional.ofNullable(fileIds));
+                        PostWriteInfo.create(
+                                request.title(),
+                                request.content(),
+                                request.city(),
+                                Optional.ofNullable(fileIds)));
         return Response.success(postId);
     }
 
@@ -71,11 +74,16 @@ public class PostApi {
     @PutMapping("/{postsId}")
     public Response<Long> putPost(
             @PathVariable("postsId") final Long postsId,
-            @RequestBody @Validated final PostUpdateRequest request) {
+            @RequestBody @Validated final PostUpdateRequest request,
+            @RequestParam(name = "file", required = false) List<Long> fileIds) {
         Long postId =
                 postService.update(
                         postsId,
-                        PostWriteInfo.create(request.title(), request.content(), request.city()));
+                        PostWriteInfo.create(
+                                request.title(),
+                                request.content(),
+                                request.city(),
+                                Optional.ofNullable(fileIds)));
         return Response.success(postId);
     }
 

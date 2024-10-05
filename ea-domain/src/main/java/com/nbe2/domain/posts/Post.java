@@ -76,11 +76,11 @@ public class Post extends BaseTimeEntity {
     }
 
     // ** business logic **//
-    public Long update(final String title, final String content, final City city) {
+    public Post update(final String title, final String content, final City city) {
         this.title = title;
         this.content = content;
         this.city = city;
-        return id;
+        return this;
     }
 
     public void addFile(PostFile postFile) {

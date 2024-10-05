@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 
 import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
-import com.nbe2.domain.file.FileMetaData;
-import com.nbe2.domain.file.FileMetaDataReader;
 import com.nbe2.domain.global.util.PagingUtil;
 import com.nbe2.domain.user.User;
 import com.nbe2.domain.user.UserReader;
@@ -26,19 +24,17 @@ public class PostService {
     private final PostUpdater postUpdater;
     private final PostDeleter postDeleter;
     private final UserReader userReader;
-    private final FileMetaDataReader fileMetaDataReader;
-    private final PostFileAppender postFileAppender;
+    private final PostFileSetter postFileSetter;
 
     @Transactional
-    public Long save(
-            final Long userId, final PostWriteInfo info, final Optional<List<Long>> fileIdList) {
+    public Long save(final Long userId, final PostWriteInfo info) {
         User user = userReader.read(userId);
-        Post savedPost = postAppender.append(info.toEntity(user));
-        if (fileIdList.isPresent()) {
-            List<FileMetaData> fileMetaData = fileMetaDataReader.readAll(fileIdList.get());
-            postFileAppender.append(savedPost, fileMetaData);
-        }
-        return savedPost.getId();
+        Post post = Post.create(user, info.title(), info.content(), info.city());
+
+        Optional<List<Long>> fileIdList = info.fileIdList();
+        fileIdList.ifPresent(list -> postFileSetter.set(post, list));
+
+        return postAppender.append(post);
     }
 
     public PageResult<PostListInfo> findListPageByCity(final Page page, final City city) {
