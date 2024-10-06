@@ -34,4 +34,8 @@ public class ReviewService {
     public void updateReview(ReviewUpdateInfo updateInfo, Long reviewId) {
         reviewUpdater.updateReview(updateInfo, reviewId);
     }
+
+    public PageResult<ReviewReadInfo> searchByEmail(Long userId, Page page) {
+        return reviewReader.searchUserId(PagingUtil.toPageRequest(page), userId);
+    }
 }

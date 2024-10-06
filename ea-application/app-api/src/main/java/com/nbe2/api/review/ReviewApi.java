@@ -57,6 +57,13 @@ public class ReviewApi {
                 reviewReadInfoPageResult.map(ReviewReadResponse::fromReviewReadInfo));
     }
 
+    @GetMapping("/search/{userId}") // search userId
+    public Response<PageResult<ReviewReadResponse>> searchReview(
+            @PathVariable Long userId, @PageDefault Page page) {
+        PageResult<ReviewReadInfo> reviewReadPageResult = reviewService.searchByEmail(userId, page);
+        return Response.success(reviewReadPageResult.map(ReviewReadResponse::fromReviewReadInfo));
+    }
+
     @PutMapping("/{reviewId}") // update
     public Response<Void> updateReview(
             @PathVariable Long reviewId,
