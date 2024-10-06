@@ -62,4 +62,11 @@ public class Review extends BaseTimeEntity {
                 .facilityScore(reviewInfo.facilityScore())
                 .build();
     }
+
+    public void updateReview(ReviewUpdateInfo reviewUpdateInfo) {
+        this.content = reviewUpdateInfo.content();
+        this.speedScore = reviewUpdateInfo.speedScore();
+        this.kindScore = reviewUpdateInfo.kindScore();
+        this.facilityScore = reviewUpdateInfo.facilityScore();
+    }
 }
