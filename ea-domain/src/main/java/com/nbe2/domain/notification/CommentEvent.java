@@ -6,6 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommentEvent {
+    public static final String EVENT_NAME = "COMMENT_NOTIFICATION";
     private static final int POST_TITLE_LENGTH_LIMIT = 10;
     @Getter private Long ownerId;
     private String postTitle;

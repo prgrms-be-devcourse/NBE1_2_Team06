@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NotificationEventHandler {
 
+    private final EventSender eventSender;
     private final NotificationService notificationService;
 
     @Async
@@ -19,5 +20,6 @@ public class NotificationEventHandler {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleCommentEvent(CommentEvent event) {
         notificationService.sendNotification(event);
+        eventSender.send(event);
     }
 }
