@@ -7,10 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import com.nbe2.domain.global.BaseTimeEntity;
-import com.nbe2.domain.user.User;
 
 @Getter
 @Entity
+@Table(name = "notifications", indexes = @Index(name = "idx_owner_id", columnList = "owner_id"))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Notification extends BaseTimeEntity {
 
@@ -18,9 +18,8 @@ public class Notification extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User owner;
+    @Column(nullable = false)
+    private Long ownerId;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String title;
@@ -28,13 +27,13 @@ public class Notification extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private NotificationType type;
 
-    private Notification(User user, String title, NotificationType type) {
-        this.owner = user;
+    private Notification(Long ownerId, String title, NotificationType type) {
+        this.ownerId = ownerId;
         this.title = title;
         this.type = type;
     }
 
-    public static Notification of(User owner, String title, NotificationType type) {
-        return new Notification(owner, title, type);
+    public static Notification of(Long ownerId, String title, NotificationType type) {
+        return new Notification(ownerId, title, type);
     }
 }
