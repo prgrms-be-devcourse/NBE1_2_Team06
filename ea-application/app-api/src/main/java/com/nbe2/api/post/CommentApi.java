@@ -50,12 +50,9 @@ public class CommentApi {
     public Response<Long> putComment(
             @PathVariable("commentsId") final Long commentsId,
             @RequestBody final CommentUpdateRequest request,
-            @AuthenticationPrincipal final UserPrincipal userPrincipal
-            //            @RequestParam("id") final Long id
-            ) {
+            @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         Long postId =
                 commentService.update(
-                        //                        id
                         commentsId,
                         CommentWriteInfo.create(
                                 userPrincipal.userId(), CommentInfo.of(request.content())));

@@ -1,8 +1,5 @@
 package com.nbe2.domain.posts;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,17 +21,11 @@ public class PostService {
     private final PostUpdater postUpdater;
     private final PostDeleter postDeleter;
     private final UserReader userReader;
-    private final PostFileSetter postFileSetter;
 
     @Transactional
-    public Long save(final Long userId, final PostWriteInfo info) {
+    public Long save(final Long userId, final PostWriteInfo postWriteInfo) {
         User user = userReader.read(userId);
-        Post post = Post.create(user, info.title(), info.content(), info.city());
-
-        Optional<List<Long>> fileIdList = info.fileIdList();
-        fileIdList.ifPresent(list -> postFileSetter.set(post, list));
-
-        return postAppender.append(post);
+        return postAppender.append(user, postWriteInfo);
     }
 
     public PageResult<PostListInfo> findListPageByCity(final Page page, final City city) {
@@ -52,9 +43,9 @@ public class PostService {
     }
 
     @Transactional
-    public Long update(final Long postsId, final PostWriteInfo info) {
+    public Long update(final Long postsId, final PostWriteInfo postWriteInfo) {
         Post post = postReader.read(postsId);
-        return postUpdater.update(post, info);
+        return postUpdater.update(post, postWriteInfo);
     }
 
     @Transactional

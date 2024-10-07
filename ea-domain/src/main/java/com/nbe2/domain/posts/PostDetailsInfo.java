@@ -1,5 +1,7 @@
 package com.nbe2.domain.posts;
 
+import java.util.List;
+
 public record PostDetailsInfo(
         Long id,
         String name,
