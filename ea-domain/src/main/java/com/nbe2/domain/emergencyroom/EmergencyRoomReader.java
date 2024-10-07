@@ -42,4 +42,12 @@ public class EmergencyRoomReader {
     public List<EmergencyRoomMapInfo> read(Coordinate coordinate, double distance) {
         return emergencyRoomRepository.findByCoordinateAndDistance(coordinate, distance);
     }
+
+    public EmergencyRoomDetailInfo readDetail(Long emergencyRoomId) {
+        EmergencyRoom emergencyRoom =
+                emergencyRoomRepository
+                        .findById(emergencyRoomId)
+                        .orElseThrow(() -> EmergencyRoomNotFoundException.EXCEPTION);
+        return EmergencyRoomDetailInfo.from(emergencyRoom);
+    }
 }

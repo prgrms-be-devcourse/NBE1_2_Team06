@@ -44,4 +44,8 @@ public class EmergencyRoomService {
     public List<EmergencyRoomMapInfo> getEmergencyRooms(Coordinate coordinate, double distance) {
         return emergencyRoomReader.read(coordinate, distance);
     }
+
+    public EmergencyRoomDetailInfo getEmergencyRoomDetail(Long emergencyRoomId) {
+        return emergencyRoomReader.readDetail(emergencyRoomId);
+    }
 }

@@ -3,6 +3,7 @@ package com.nbe2.api.emergencyroom;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import com.nbe2.api.emergencyroom.dto.EmergencyRoomMapResponse;
 import com.nbe2.api.emergencyroom.dto.RealTimeEmergencyRoomResponse;
 import com.nbe2.api.global.dto.Response;
 import com.nbe2.domain.emergencyroom.Coordinate;
+import com.nbe2.domain.emergencyroom.EmergencyRoomDetailInfo;
 import com.nbe2.domain.emergencyroom.EmergencyRoomDirectionsInfo;
 import com.nbe2.domain.emergencyroom.EmergencyRoomService;
 
@@ -72,5 +74,13 @@ public class EmergencyRoomApi {
                         .map(EmergencyRoomMapResponse::from)
                         .toList();
         return Response.success(responses);
+    }
+
+    @GetMapping("/{emergencyRoomId}")
+    public Response<EmergencyRoomDetailInfo> getEmergencyRoomDetail(
+            @PathVariable Long emergencyRoomId) {
+        EmergencyRoomDetailInfo emergencyRoomDetail =
+                emergencyRoomService.getEmergencyRoomDetail(emergencyRoomId);
+        return Response.success(emergencyRoomDetail);
     }
 }
