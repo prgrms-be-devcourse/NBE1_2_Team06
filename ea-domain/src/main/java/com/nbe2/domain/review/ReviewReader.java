@@ -20,9 +20,8 @@ public class ReviewReader {
 
     public PageResult<ReviewReadInfo> readAll(Pageable pageable, Long emergencyRoomId) {
         Page<ReviewReadInfo> readReviews =
-                validator
-                        .validateRead(
-                                reviewRepository.findByEmergencyRoomId(emergencyRoomId, pageable))
+                reviewRepository
+                        .findByEmergencyRoomId(emergencyRoomId, pageable)
                         .map(ReviewReadInfo::convertToReviewInfo);
         return new PageResult<>(
                 readReviews.getContent(), readReviews.getTotalPages(), readReviews.hasNext());
@@ -36,8 +35,8 @@ public class ReviewReader {
 
     public PageResult<ReviewReadInfo> searchUserId(PageRequest pageRequest, Long userId) {
         Page<ReviewReadInfo> readReviews =
-                validator
-                        .validateRead(reviewRepository.findByUserId(userId, pageRequest))
+                reviewRepository
+                        .findByUserId(userId, pageRequest)
                         .map(ReviewReadInfo::convertToReviewInfo);
         return new PageResult<>(
                 readReviews.getContent(), readReviews.getTotalPages(), readReviews.hasNext());
