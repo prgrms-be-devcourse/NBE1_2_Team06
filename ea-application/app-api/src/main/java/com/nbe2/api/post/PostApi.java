@@ -1,5 +1,8 @@
 package com.nbe2.api.post;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +18,10 @@ import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.auth.UserPrincipal;
 import com.nbe2.domain.posts.City;
-import com.nbe2.domain.posts.PostDefaultInfo;
 import com.nbe2.domain.posts.PostDetailsInfo;
 import com.nbe2.domain.posts.PostListInfo;
 import com.nbe2.domain.posts.PostService;
+import com.nbe2.domain.posts.PostWriteInfo;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,14 +33,16 @@ public class PostApi {
     @PostMapping
     public Response<Long> postPost(
             @RequestBody @Validated final PostRegisterRequest request,
-            @AuthenticationPrincipal final UserPrincipal userPrincipal
-            //            @RequestParam("id") final Long id
-            ) {
+            @AuthenticationPrincipal final UserPrincipal userPrincipal,
+            @RequestParam(name = "file", required = false) List<Long> fileIds) {
         Long postId =
                 postService.save(
                         userPrincipal.userId(),
-                        //                        id,
-                        PostDefaultInfo.create(request.title(), request.content(), request.city()));
+                        PostWriteInfo.create(
+                                request.title(),
+                                request.content(),
+                                request.city(),
+                                Optional.ofNullable(fileIds)));
         return Response.success(postId);
     }
 
@@ -53,7 +58,6 @@ public class PostApi {
     // @GetMapping("/api/v1/my/posts")
     @GetMapping("/my")
     public Response<PageResult<PostListInfo>> getMyPostPage(
-            //            @RequestParam("id") final Long id
             @AuthenticationPrincipal final UserPrincipal userPrincipal,
             @PageDefault final Page page) {
         PageResult<PostListInfo> postPage =
@@ -70,11 +74,16 @@ public class PostApi {
     @PutMapping("/{postsId}")
     public Response<Long> putPost(
             @PathVariable("postsId") final Long postsId,
-            @RequestBody @Validated final PostUpdateRequest request) {
+            @RequestBody @Validated final PostUpdateRequest request,
+            @RequestParam(name = "file", required = false) List<Long> fileIds) {
         Long postId =
                 postService.update(
                         postsId,
-                        PostDefaultInfo.create(request.title(), request.content(), request.city()));
+                        PostWriteInfo.create(
+                                request.title(),
+                                request.content(),
+                                request.city(),
+                                Optional.ofNullable(fileIds)));
         return Response.success(postId);
     }
 
