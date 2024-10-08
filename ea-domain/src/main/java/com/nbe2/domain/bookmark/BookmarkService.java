@@ -17,6 +17,7 @@ public class BookmarkService {
     private final BookmarkReader bookmarkReader;
     private final BookmarkDeleter bookmarkDeleter;
     private final UserReader userReader;
+    private final BookmarkValidator bookmarkValidator;
 
     public void saveBookmark(Long emergencyRoomId, UserPrincipal userPrincipal) {
         bookmarkAppender.save(emergencyRoomId, userPrincipal.userId());
@@ -32,11 +33,8 @@ public class BookmarkService {
     public void deleteBookmark(Long emergencyRoomId, UserPrincipal userPrincipal) {
         User user = userReader.read(userPrincipal.userId());
         Bookmark bookmark = bookmarkReader.readByEmergencyRoomId(emergencyRoomId);
-        // 유저가 추가한 즐겨찾기가 맞는지 검증 -> 테스트하고 Validate.class로 빼기
-        if (!user.getId().equals(bookmark.getUser().getId())) {
-            return;
-        }
-        // 즐겨찾기한 병원이 맞는지?
-        bookmarkDeleter.deleteBookmark(bookmarkId);
+        bookmarkValidator.validateUser(user.getId(), bookmark); // 로그인한 유저가 추가한 즐겨찾기가 맞는가?
+
+        bookmarkDeleter.deleteBookmark(bookmark);
     }
 }
