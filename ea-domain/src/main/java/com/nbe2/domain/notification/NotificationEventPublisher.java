@@ -14,6 +14,6 @@ public class NotificationEventPublisher {
     private final ApplicationEventPublisher eventPublisher;
 
     public void publish(Post post) {
-        eventPublisher.publishEvent(CommentEvent.of(post.getUser(), post.getTitle()));
+        eventPublisher.publishEvent(CommentEvent.from(post));
     }
 }

@@ -14,6 +14,7 @@ public class NotificationAppender {
         Notification notification =
                 Notification.of(
                         commentEvent.getOwner(),
+                        commentEvent.getPostId(),
                         commentEvent.getPostTitle(),
                         NotificationType.COMMENT);
         notificationRepository.save(notification);

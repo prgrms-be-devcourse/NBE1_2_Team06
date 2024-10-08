@@ -24,19 +24,23 @@ public class Notification extends BaseTimeEntity {
     @JoinColumn(name = "owner_id")
     private User owner;
 
+    @Column(nullable = false)
+    private Long refId;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String title;
 
     @Enumerated(value = EnumType.STRING)
     private NotificationType type;
 
-    private Notification(User owner, String title, NotificationType type) {
+    private Notification(User owner, Long refId, String title, NotificationType type) {
         this.owner = owner;
+        this.refId = refId;
         this.title = title;
         this.type = type;
     }
 
-    public static Notification of(User owner, String title, NotificationType type) {
-        return new Notification(owner, title, type);
+    public static Notification of(User owner, Long refId, String title, NotificationType type) {
+        return new Notification(owner, refId, title, type);
     }
 }
