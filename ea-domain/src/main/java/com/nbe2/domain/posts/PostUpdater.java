@@ -7,11 +7,11 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class PostUpdater {
-    private final PostFileSetter postFileSetter;
+    private final PostFileRegisterer postFileRegisterer;
 
     public Long update(final Post post, final PostWriteInfo info) {
+        postFileRegisterer.register(post, info.fileIdList());
         Post updated = post.update(info.title(), info.content(), info.city());
-        postFileSetter.set(updated, info.fileIdList());
         return updated.getId();
     }
 }
