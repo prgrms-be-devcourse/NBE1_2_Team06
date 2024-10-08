@@ -21,6 +21,10 @@ public class PostReader {
         return postRepository.findById(id).orElseThrow(() -> PostNotFoundException.EXCEPTION);
     }
 
+    public Post readDetail(Long id) {
+        return postRepository.findDetailById(id).orElseThrow(() -> PostNotFoundException.EXCEPTION);
+    }
+
     public Post readWithPessimisticWriteLock(Long id) {
         return postRepository
                 .findByIdWithPessimisticWriteLock(id)

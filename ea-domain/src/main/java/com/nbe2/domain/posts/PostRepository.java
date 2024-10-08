@@ -21,6 +21,16 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("select p from Post p where p.id = :postId")
     Optional<Post> findByIdWithPessimisticWriteLock(Long postId);
 
+    @Query(
+            """
+    select distinct post
+     from Post post
+     join fetch post.user
+     join fetch post.postFiles postFiles
+     join fetch postFiles.fileMetaData
+    """)
+    Optional<Post> findDetailById(Long postId);
+
     @EntityGraph(attributePaths = {"user"})
     @Query("select p from Post p")
     Page<Post> findByCity(City city, Pageable pageable);

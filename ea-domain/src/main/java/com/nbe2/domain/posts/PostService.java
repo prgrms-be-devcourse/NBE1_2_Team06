@@ -40,7 +40,7 @@ public class PostService {
     }
 
     public PostDetailsInfo findDetails(final Long postsId) {
-        Post post = postReader.read(postsId);
+        Post post = postReader.readDetail(postsId);
         return PostDetailsInfo.from(post);
     }
 
