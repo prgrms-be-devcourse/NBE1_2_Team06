@@ -1,7 +1,5 @@
-package com.nbe2.domain.posts.service.dto;
+package com.nbe2.domain.posts;
 
-import com.nbe2.domain.posts.entity.City;
-import com.nbe2.domain.posts.entity.Post;
 import com.nbe2.domain.user.User;
 
 // create, update 에 사용되는 정보

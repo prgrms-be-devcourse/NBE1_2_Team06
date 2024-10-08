@@ -1,4 +1,4 @@
-package com.nbe2.domain.posts.service;
+package com.nbe2.domain.posts;
 
 import java.util.List;
 
@@ -8,11 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import com.nbe2.domain.posts.entity.Comment;
-import com.nbe2.domain.posts.entity.Post;
-import com.nbe2.domain.posts.service.component.*;
-import com.nbe2.domain.posts.service.dto.CommentReadInfo;
-import com.nbe2.domain.posts.service.dto.CommentWriteInfo;
 import com.nbe2.domain.user.User;
 import com.nbe2.domain.user.UserReader;
 

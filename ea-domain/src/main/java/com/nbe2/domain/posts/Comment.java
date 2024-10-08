@@ -1,4 +1,4 @@
-package com.nbe2.domain.posts.entity;
+package com.nbe2.domain.posts;
 
 import jakarta.persistence.*;
 
@@ -16,7 +16,7 @@ import com.nbe2.domain.user.User;
 public class Comment extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private Long id;
 

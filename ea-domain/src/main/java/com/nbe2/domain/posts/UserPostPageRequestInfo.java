@@ -1,4 +1,4 @@
-package com.nbe2.domain.posts.service.dto;
+package com.nbe2.domain.posts;
 
 import com.nbe2.common.dto.Page;
 

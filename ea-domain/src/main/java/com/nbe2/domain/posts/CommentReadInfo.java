@@ -1,6 +1,4 @@
-package com.nbe2.domain.posts.service.dto;
-
-import com.nbe2.domain.posts.entity.Comment;
+package com.nbe2.domain.posts;
 
 public record CommentReadInfo(String name, CommentInfo info) {
 

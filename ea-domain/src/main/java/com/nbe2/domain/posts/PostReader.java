@@ -1,4 +1,4 @@
-package com.nbe2.domain.posts.service.component;
+package com.nbe2.domain.posts;
 
 import java.util.List;
 
@@ -9,11 +9,7 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 
 import com.nbe2.common.dto.PageResult;
-import com.nbe2.domain.posts.entity.City;
-import com.nbe2.domain.posts.entity.Post;
 import com.nbe2.domain.posts.exception.PostNotFoundException;
-import com.nbe2.domain.posts.repository.PostRepository;
-import com.nbe2.domain.posts.service.dto.PostListInfo;
 import com.nbe2.domain.user.User;
 
 @Component
@@ -50,6 +46,7 @@ public class PostReader {
                                         post.getWriterName(),
                                         post.getTitle(),
                                         post.getContent(),
+                                        post.getLikeCount(),
                                         post.getCommentCount()))
                 .toList();
     }
