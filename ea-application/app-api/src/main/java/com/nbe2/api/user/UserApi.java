@@ -10,11 +10,7 @@ import com.nbe2.api.user.dto.MedicalRequest;
 import com.nbe2.api.user.dto.ProfileResponse;
 import com.nbe2.api.user.dto.UpdatePasswordRequest;
 import com.nbe2.api.user.dto.UpdateProfileRequest;
-import com.nbe2.common.annotation.PageDefault;
-import com.nbe2.common.dto.Page;
-import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.auth.UserPrincipal;
-import com.nbe2.domain.posts.service.dto.PostListInfo;
 import com.nbe2.domain.user.UserService;
 
 @RestController
@@ -54,13 +50,5 @@ public class UserApi {
             @RequestBody UpdatePasswordRequest request) {
         userService.changePassword(userPrincipal.userId(), request.toPassword());
         return Response.success();
-    }
-
-    @GetMapping("/posts")
-    public Response<PageResult<PostListInfo>> getMyPostPage(
-            @AuthenticationPrincipal final UserPrincipal userPrincipal,
-            @PageDefault final Page page) {
-        PageResult<PostListInfo> postPage = userService.getMyPosts(page, userPrincipal.userId());
-        return Response.success(postPage);
     }
 }

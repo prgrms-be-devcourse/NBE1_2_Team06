@@ -32,7 +32,7 @@ public class PostService {
         return postReader.readListPage(PagingUtil.toPageRequest(page), city);
     }
 
-    public PageResult<PostListInfo> findListPageByUserId(final Page page, final Long userId) {
+    public PageResult<PostListInfo> getUserPostPages(Page page, Long userId) {
         User user = userReader.read(userId);
         return postReader.readListPage(PagingUtil.toPageRequest(page), user);
     }

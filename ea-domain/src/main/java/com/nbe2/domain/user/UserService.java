@@ -6,15 +6,10 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.common.dto.Page;
-import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.emergencyroom.EmergencyRoom;
 import com.nbe2.domain.emergencyroom.EmergencyRoomReader;
 import com.nbe2.domain.file.FileMetaData;
 import com.nbe2.domain.file.FileMetaDataReader;
-import com.nbe2.domain.global.util.PagingUtil;
-import com.nbe2.domain.posts.service.component.PostReader;
-import com.nbe2.domain.posts.service.dto.PostListInfo;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +19,6 @@ public class UserService {
     private final FileMetaDataReader fileMetaDataReader;
     private final UserReader userReader;
     private final UserUpdater userUpdater;
-    private final PostReader postReader;
 
     @Transactional
     public void requestMedicalAuthority(Long userId, MedicalProfile medicalProfile) {
@@ -46,10 +40,5 @@ public class UserService {
     public void changePassword(long userId, UpdatePassword password) {
         User user = userReader.read(userId);
         userUpdater.update(user, password);
-    }
-
-    public PageResult<PostListInfo> getMyPosts(Page page, long userId) {
-        User user = userReader.read(userId);
-        return postReader.readListPage(PagingUtil.toPageRequest(page), user);
     }
 }

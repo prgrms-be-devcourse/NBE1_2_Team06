@@ -53,6 +53,15 @@ public class PostApi {
         return Response.success(postPage);
     }
 
+    @GetMapping("/my")
+    public Response<PageResult<PostListInfo>> getUserPostPage(
+            @AuthenticationPrincipal final UserPrincipal userPrincipal,
+            @PageDefault final Page page) {
+        PageResult<PostListInfo> postPage =
+                postService.getUserPostPages(page, userPrincipal.userId());
+        return Response.success(postPage);
+    }
+
     @GetMapping("/{postsId}")
     public Response<PostResponse> getPostDetails(@PathVariable("postsId") final Long postsId) {
         PostDetailsInfo postDetailsInfo = postService.findDetails(postsId);
