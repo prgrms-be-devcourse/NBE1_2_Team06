@@ -21,7 +21,8 @@ public class NotificationService {
     public CursorResult<NotificationDetail> getNotificationHistory(Long userId, Cursor cursor) {
         List<NotificationDetail> notifications = notificationReader.read(userId, cursor);
         Long nextCursor =
-                notificationReader.getNextCursor(userId, notifications.getLast().notificationId());
+                notificationReader.getNextCursor(
+                        userId, notifications.get(notifications.size() - 1).notificationId());
         notificationUpdater.readAllUnreadNotifications(userId);
         return new CursorResult<>(notifications, nextCursor);
     }
