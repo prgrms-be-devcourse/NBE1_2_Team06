@@ -14,9 +14,11 @@ import com.nbe2.common.annotation.PageDefault;
 import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.auth.UserPrincipal;
-import com.nbe2.domain.posts.entity.City;
-import com.nbe2.domain.posts.service.PostService;
-import com.nbe2.domain.posts.service.dto.*;
+import com.nbe2.domain.posts.City;
+import com.nbe2.domain.posts.PostDefaultInfo;
+import com.nbe2.domain.posts.PostDetailsInfo;
+import com.nbe2.domain.posts.PostListInfo;
+import com.nbe2.domain.posts.PostService;
 
 @RestController
 @RequiredArgsConstructor

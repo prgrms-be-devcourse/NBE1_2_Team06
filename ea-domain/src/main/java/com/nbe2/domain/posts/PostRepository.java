@@ -1,4 +1,4 @@
-package com.nbe2.domain.posts.repository;
+package com.nbe2.domain.posts;
 
 import java.util.Optional;
 
@@ -11,8 +11,6 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.nbe2.domain.posts.entity.City;
-import com.nbe2.domain.posts.entity.Post;
 import com.nbe2.domain.user.User;
 
 @Repository

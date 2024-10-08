@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.nbe2.domain.posts.service.component.PostAppender;
+import com.nbe2.domain.posts.PostAppender;
 
 @SpringBootTest
 @Transactional

@@ -1,9 +1,6 @@
-package com.nbe2.domain.posts.service.component;
+package com.nbe2.domain.posts;
 
 import org.springframework.stereotype.Component;
-
-import com.nbe2.domain.posts.entity.Comment;
-import com.nbe2.domain.posts.service.dto.CommentInfo;
 
 @Component
 public class CommentUpdater {

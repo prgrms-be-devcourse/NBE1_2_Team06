@@ -1,4 +1,4 @@
-package com.nbe2.domain.posts.entity;
+package com.nbe2.domain.posts;
 
 public enum City {
     SEOUL,
