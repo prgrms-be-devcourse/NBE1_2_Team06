@@ -18,15 +18,13 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
 
     @Override
     public List<Notification> findByUserIdWithCursor(long userId, long cursor, int size) {
-        List<Notification> content =
-                queryFactory
-                        .selectFrom(notification)
-                        .where(notification.owner.id.eq(userId))
-                        .where(notification.id.loe(cursor))
-                        .orderBy(notification.id.desc())
-                        .limit(size)
-                        .fetch();
-        return content;
+        return queryFactory
+                .selectFrom(notification)
+                .where(notification.target.id.eq(userId))
+                .where(notification.id.loe(cursor))
+                .orderBy(notification.id.desc())
+                .limit(size)
+                .fetch();
     }
 
     @Override
@@ -34,7 +32,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
         return queryFactory
                 .select(notification.id)
                 .from(notification)
-                .where(notification.owner.id.eq(userId))
+                .where(notification.target.id.eq(userId))
                 .where(notification.id.lt(lastCursor))
                 .orderBy(notification.id.desc())
                 .fetchFirst();
@@ -45,7 +43,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
         queryFactory
                 .update(notification)
                 .set(notification.isRead, isRead)
-                .where(notification.owner.id.eq(userId))
+                .where(notification.target.id.eq(userId))
                 .where(notification.isRead.eq(!isRead))
                 .execute();
     }

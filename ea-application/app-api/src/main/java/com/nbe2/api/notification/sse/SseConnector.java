@@ -7,30 +7,25 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.api.notification.sse.exception.SseConnectionException;
-import com.nbe2.domain.notification.CommentEvent;
-
 @Component
 @RequiredArgsConstructor
 public class SseConnector {
-    public static final long TIMEOUT = Long.MAX_VALUE;
+    public static final String CONNECTION_NAME = "CONNECT";
+    public static final long TIMEOUT = 30 * 60 * 1000L;
 
     private final SseEmitterRepository sseEmitterRepository;
 
     public SseEmitter connect(Long userId) {
         SseEmitter emitter = new SseEmitter(TIMEOUT);
         sseEmitterRepository.save(userId, emitter);
-        emitter.onTimeout(emitter::complete);
+        emitter.onTimeout(() -> sseEmitterRepository.remove(userId));
         emitter.onCompletion(() -> sseEmitterRepository.remove(userId));
 
         try {
-            emitter.send(
-                    SseEmitter.event()
-                            .id("")
-                            .name(CommentEvent.EVENT_NAME)
-                            .data("emitter connected"));
+            emitter.send(SseEmitter.event().id("").name(CONNECTION_NAME).data("emitter connected"));
         } catch (IOException e) {
-            throw SseConnectionException.EXCEPTION;
+            sseEmitterRepository.remove(userId);
+            emitter.completeWithError(e);
         }
 
         return emitter;

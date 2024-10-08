@@ -3,6 +3,7 @@ package com.nbe2.domain.notification;
 import jakarta.persistence.*;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,10 +23,10 @@ public class Notification extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
-    private User owner;
+    private User target;
 
     @Column(nullable = false)
-    private Long refId;
+    private String referenceUri;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String title;
@@ -35,15 +36,22 @@ public class Notification extends BaseTimeEntity {
 
     private boolean isRead;
 
-    private Notification(User owner, Long refId, String title, NotificationType type) {
-        this.owner = owner;
-        this.refId = refId;
+    @Builder
+    private Notification(User target, String referenceUri, String title, NotificationType type) {
+        this.target = target;
+        this.referenceUri = referenceUri;
         this.title = title;
         this.type = type;
         this.isRead = false;
     }
 
-    public static Notification of(User owner, Long refId, String title, NotificationType type) {
-        return new Notification(owner, refId, title, type);
+    public static Notification of(
+            User target, String referenceUri, String title, NotificationType type) {
+        return Notification.builder()
+                .target(target)
+                .referenceUri(referenceUri)
+                .title(title)
+                .type(type)
+                .build();
     }
 }

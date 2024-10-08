@@ -27,6 +27,6 @@ public class NotificationReader {
     }
 
     public boolean hasUnreadNotification(Long userId) {
-        return notificationRepository.existsByOwnerIdAndIsRead(userId, false);
+        return notificationRepository.existsByTargetIdAndIsRead(userId, false);
     }
 }

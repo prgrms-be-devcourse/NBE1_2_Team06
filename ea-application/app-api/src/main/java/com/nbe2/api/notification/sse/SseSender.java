@@ -8,16 +8,16 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.domain.notification.CommentEvent;
 import com.nbe2.domain.notification.EventSender;
+import com.nbe2.domain.notification.NotificationEvent;
 
 @Component
 @RequiredArgsConstructor
 public class SseSender implements EventSender {
     private final SseEmitterRepository sseEmitterRepository;
 
-    public void send(CommentEvent event) {
-        Optional<SseEmitter> emitter = sseEmitterRepository.findById(event.getOwner().getId());
+    public void send(NotificationEvent event) {
+        Optional<SseEmitter> emitter = sseEmitterRepository.findById(event.targetId());
 
         if (emitter.isEmpty()) return;
 
@@ -26,10 +26,11 @@ public class SseSender implements EventSender {
                     .send(
                             SseEmitter.event()
                                     .id("")
-                                    .name(CommentEvent.EVENT_NAME)
-                                    .data(event.getPostTitle()));
+                                    .name(event.notificationType().name())
+                                    .data(event.referenceUri()));
         } catch (IOException e) {
-            sseEmitterRepository.remove(event.getOwner().getId());
+            sseEmitterRepository.remove(event.targetId());
+            emitter.get().completeWithError(e);
         }
     }
 }

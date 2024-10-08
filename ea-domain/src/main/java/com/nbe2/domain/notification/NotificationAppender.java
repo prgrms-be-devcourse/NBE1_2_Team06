@@ -4,18 +4,21 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
+import com.nbe2.domain.user.UserReader;
+
 @Component
 @RequiredArgsConstructor
 public class NotificationAppender {
 
+    private final UserReader userReader;
     private final NotificationRepository notificationRepository;
 
-    public void append(CommentEvent commentEvent) {
+    public void append(NotificationEvent event) {
         Notification notification =
                 Notification.of(
-                        commentEvent.getOwner(),
-                        commentEvent.getPostId(),
-                        commentEvent.getPostTitle(),
+                        userReader.read(event.targetId()),
+                        event.referenceUri(),
+                        event.title(),
                         NotificationType.COMMENT);
         notificationRepository.save(notification);
     }
