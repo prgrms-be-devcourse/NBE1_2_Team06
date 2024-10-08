@@ -23,7 +23,6 @@ import com.nbe2.security.utils.JwtProvider;
 public class SecurityConfig {
 
     private final JwtProvider jwtProvider;
-
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
 

@@ -19,14 +19,23 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtGenerator implements TokenGenerator {
-    private static final long ACCESS_EXPIRATION_TIME = 36; // 1시간 (3600초)
-    private static final long REFRESH_EXPIRATION_TIME = 1; // 2주 (1209600초)
 
-    private static String SECRET_KEY;
+    @Value("${jwt.access-expiration-time}")
+    private static long ACCESS_EXPIRATION_TIME;
+
+    @Value("${jwt.refresh-expiration-time}")
+    private static long REFRESH_EXPIRATION_TIME;
 
     @Value("${jwt.screat-key}")
-    public void setSecretKey(String secretKey) {
+    private static String SECRET_KEY;
+
+    public JwtGenerator(
+            @Value("${jwt.screat-key}") String secretKey,
+            @Value("${jwt.refresh-expiration-time}") long refreshExpirationTime,
+            @Value("${jwt.access-expiration-time}") long accessExpirationTime) {
         SECRET_KEY = secretKey;
+        ACCESS_EXPIRATION_TIME = accessExpirationTime;
+        REFRESH_EXPIRATION_TIME = refreshExpirationTime;
     }
 
     private static Key getKey() {
