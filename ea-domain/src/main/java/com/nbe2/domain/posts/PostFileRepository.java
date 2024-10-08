@@ -12,17 +12,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PostFileRepository {
     private final JdbcTemplate jdbcTemplate;
+    private static final String DELETE_ALL = "DELETE FROM post_files";
+    private static final String SAVE_ALL =
+            """
+            INSERT INTO post_files (file_id, post_id)
+             VALUES (?, ?)
+            """;
 
     public void deleteAllInBatch() {
-        jdbcTemplate.update("DELETE FROM post_files");
+        jdbcTemplate.update(DELETE_ALL);
     }
 
     public void saveAll(final List<PostFile> postFiles) {
         jdbcTemplate.batchUpdate(
-                """
-                        INSERT INTO post_files (file_id, post_id)
-                         VALUES (?, ?)
-                        """,
+                SAVE_ALL,
                 postFiles,
                 postFiles.size(),
                 (PreparedStatement ps, PostFile postFile) -> {

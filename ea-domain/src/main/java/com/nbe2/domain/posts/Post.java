@@ -14,6 +14,7 @@ import com.nbe2.domain.user.User;
 
 @Entity
 @Getter
+// @BatchSize(size = 500)
 @Table(name = "posts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseTimeEntity {
