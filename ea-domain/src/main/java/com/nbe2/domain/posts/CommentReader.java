@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 
 import com.nbe2.domain.posts.exception.CommentNotFoundException;
-import com.nbe2.domain.user.User;
 
 @Component
 @RequiredArgsConstructor
@@ -21,10 +20,6 @@ public class CommentReader {
     }
 
     public List<Comment> read(final Post post) {
-        return commentRepository.findByPost(post);
-    }
-
-    public List<Comment> read(final User user) {
-        return commentRepository.findByUser(user);
+        return commentRepository.findByPostId(post.getId());
     }
 }

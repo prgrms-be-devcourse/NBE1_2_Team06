@@ -12,8 +12,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PostFileRepository {
     private final JdbcTemplate jdbcTemplate;
-    private static final String DELETE_ALL = "DELETE FROM post_files";
-    private static final String SAVE_ALL =
+    private final String DELETE_ALL = "DELETE FROM post_files";
+    private final String SAVE_ALL =
             """
             INSERT INTO post_files (file_id, post_id)
              VALUES (?, ?)
