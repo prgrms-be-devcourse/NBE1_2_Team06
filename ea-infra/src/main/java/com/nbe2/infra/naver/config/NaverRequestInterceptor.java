@@ -7,7 +7,7 @@ import feign.RequestTemplate;
 
 public class NaverRequestInterceptor implements RequestInterceptor {
 
-    @Value("${naver.directions-clinet-id}")
+    @Value("${naver.directions-client-id}")
     private String clientKey;
 
     @Value("${naver.directions-secret-key}")

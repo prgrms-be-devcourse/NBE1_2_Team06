@@ -44,7 +44,7 @@ kakao:
   rest-api-key: ${KAKAO_REST_API_KEY}
 
 naver:
-  directions-clinet-id: ${NAVER_MAP_CLIENT_ID}
+  directions-client-id: ${NAVER_MAP_CLIENT_ID}
   directions-secret-key: ${NAVER_MAP_SECRET_KEY}
 
 ---
