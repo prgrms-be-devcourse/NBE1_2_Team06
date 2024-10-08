@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import com.nbe2.api.global.dto.Response;
 import com.nbe2.api.post.dto.LikeRequest;
 import com.nbe2.domain.auth.UserPrincipal;
-import com.nbe2.domain.posts.service.LikeService;
-import com.nbe2.domain.posts.service.dto.LikeInfo;
+import com.nbe2.domain.posts.LikeInfo;
+import com.nbe2.domain.posts.LikeService;
 
 @RestController
 @RequiredArgsConstructor
