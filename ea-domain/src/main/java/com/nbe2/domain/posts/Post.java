@@ -41,7 +41,7 @@ public class Post extends BaseTimeEntity {
 
     private Long likeCount;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", orphanRemoval = true)
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
     private final List<PostFile> postFiles = new LinkedList<>();
 
     private Post(final User user, final String title, final String content, final City city) {

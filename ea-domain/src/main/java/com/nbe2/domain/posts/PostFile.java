@@ -42,6 +42,10 @@ public class PostFile {
         return fileMetaData.getId();
     }
 
+    public Long getPostId() {
+        return post.getId();
+    }
+
     // ** 연관관계 편의 메서드**//
     public void setPost(final Post post) {
         this.post = post;
