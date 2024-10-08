@@ -13,7 +13,7 @@ public class NotificationAppender {
     public void append(CommentEvent commentEvent) {
         Notification notification =
                 Notification.of(
-                        commentEvent.getOwnerId(),
+                        commentEvent.getOwner(),
                         commentEvent.getPostTitle(),
                         NotificationType.COMMENT);
         notificationRepository.save(notification);

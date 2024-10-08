@@ -4,15 +4,18 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import com.nbe2.domain.user.User;
+
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommentEvent {
     public static final String EVENT_NAME = "COMMENT_NOTIFICATION";
     private static final int POST_TITLE_LENGTH_LIMIT = 10;
-    @Getter private Long ownerId;
+
+    @Getter private User owner;
     private String postTitle;
 
-    public static CommentEvent of(Long ownerId, String postTitle) {
-        return new CommentEvent(ownerId, postTitle);
+    public static CommentEvent of(User owner, String postTitle) {
+        return new CommentEvent(owner, postTitle);
     }
 
     public String getPostTitle() {

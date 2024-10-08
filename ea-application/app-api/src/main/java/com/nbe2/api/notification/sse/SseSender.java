@@ -17,14 +17,19 @@ public class SseSender implements EventSender {
     private final SseEmitterRepository sseEmitterRepository;
 
     public void send(CommentEvent event) {
-        Optional<SseEmitter> emitter = sseEmitterRepository.findById(event.getOwnerId());
+        Optional<SseEmitter> emitter = sseEmitterRepository.findById(event.getOwner().getId());
 
         if (emitter.isEmpty()) return;
 
         try {
-            emitter.get().send(SseEmitter.event().id("").name(CommentEvent.EVENT_NAME).data(event));
+            emitter.get()
+                    .send(
+                            SseEmitter.event()
+                                    .id("")
+                                    .name(CommentEvent.EVENT_NAME)
+                                    .data(event.getPostTitle()));
         } catch (IOException e) {
-            sseEmitterRepository.remove(event.getOwnerId());
+            sseEmitterRepository.remove(event.getOwner().getId());
         }
     }
 }
