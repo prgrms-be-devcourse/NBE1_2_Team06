@@ -14,12 +14,19 @@ public class NotificationReader {
 
     private final NotificationRepository notificationRepository;
 
-    public List<Notification> read(Long userId, Cursor cursor) {
-        return notificationRepository.findByUserIdWithCursor(
-                userId, cursor.cursor(), cursor.size());
+    public List<NotificationDetail> read(Long userId, Cursor cursor) {
+        return notificationRepository
+                .findByUserIdWithCursor(userId, cursor.cursor(), cursor.size())
+                .stream()
+                .map(NotificationDetail::from)
+                .toList();
     }
 
     public Long getNextCursor(Long userId, Long lastCursor) {
         return notificationRepository.findNextCursor(userId, lastCursor);
+    }
+
+    public boolean hasUnreadNotification(Long userId) {
+        return notificationRepository.existsByOwnerIdAndIsRead(userId, false);
     }
 }

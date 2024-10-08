@@ -3,7 +3,6 @@ package com.nbe2.domain.notification;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,21 +13,18 @@ import com.nbe2.common.dto.CursorResult;
 @RequiredArgsConstructor
 public class NotificationService {
 
-    private final NotificationAppender notificationAppender;
+    private final NotificationEventPublisher notificationEventPublisher;
     private final NotificationReader notificationReader;
 
-    public void sendNotification(CommentEvent event) {
-        notificationAppender.append(event);
-    }
-
-    @Transactional(readOnly = true)
     public CursorResult<NotificationDetail> getNotificationHistory(Long userId, Cursor cursor) {
-        List<NotificationDetail> notifications =
-                notificationReader.read(userId, cursor).stream()
-                        .map(NotificationDetail::from)
-                        .toList();
+        List<NotificationDetail> notifications = notificationReader.read(userId, cursor);
         Long nextCursor =
                 notificationReader.getNextCursor(userId, notifications.getLast().notificationId());
+        notificationEventPublisher.publish(userId);
         return new CursorResult<>(notifications, nextCursor);
+    }
+
+    public boolean hasUnreadNotification(Long userId) {
+        return notificationReader.hasUnreadNotification(userId);
     }
 }

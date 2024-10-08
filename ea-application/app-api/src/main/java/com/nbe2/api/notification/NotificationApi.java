@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.nbe2.api.global.dto.Response;
 import com.nbe2.api.notification.dto.NotificationDetailResponse;
+import com.nbe2.api.notification.dto.UnreadResponse;
 import com.nbe2.api.notification.sse.SseConnector;
 import com.nbe2.common.annotation.CursorDefault;
 import com.nbe2.common.dto.Cursor;
@@ -41,5 +42,13 @@ public class NotificationApi {
         CursorResult<NotificationDetail> history =
                 notificationService.getNotificationHistory(userPrincipal.userId(), cursor);
         return Response.success(history.map(NotificationDetailResponse::from));
+    }
+
+    @GetMapping("/my/unread")
+    public Response<UnreadResponse> getUnreadNotificationExistence(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return Response.success(
+                UnreadResponse.of(
+                        notificationService.hasUnreadNotification(userPrincipal.userId())));
     }
 }

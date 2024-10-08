@@ -7,4 +7,6 @@ public interface NotificationRepositoryCustom {
     List<Notification> findByUserIdWithCursor(long userId, long cursor, int size);
 
     Long findNextCursor(long userId, long lastCursor);
+
+    void setIsRead(long userId, boolean isRead);
 }

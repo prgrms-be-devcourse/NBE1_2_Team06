@@ -33,11 +33,14 @@ public class Notification extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private NotificationType type;
 
+    private boolean isRead;
+
     private Notification(User owner, Long refId, String title, NotificationType type) {
         this.owner = owner;
         this.refId = refId;
         this.title = title;
         this.type = type;
+        this.isRead = false;
     }
 
     public static Notification of(User owner, Long refId, String title, NotificationType type) {

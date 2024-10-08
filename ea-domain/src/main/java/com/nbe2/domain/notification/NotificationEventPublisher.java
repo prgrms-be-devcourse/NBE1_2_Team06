@@ -16,4 +16,8 @@ public class NotificationEventPublisher {
     public void publish(Post post) {
         eventPublisher.publishEvent(CommentEvent.from(post));
     }
+
+    public void publish(Long userId) {
+        eventPublisher.publishEvent(ReadEvent.of(userId));
+    }
 }
