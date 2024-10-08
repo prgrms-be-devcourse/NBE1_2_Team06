@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.domain.posts.entity.Post;
+import com.nbe2.domain.posts.Post;
 
 @Component
 @RequiredArgsConstructor
