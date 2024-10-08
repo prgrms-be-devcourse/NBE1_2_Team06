@@ -45,7 +45,7 @@ kakao:
 
 naver:
   directions-clinet-id: ${NAVER_MAP_CLIENT_ID}
-  directions-screat-key: ${NAVER_MAP_SCREAT_KEY}
+  directions-secret-key: ${NAVER_MAP_SECRET_KEY}
 
 ---
 spring:

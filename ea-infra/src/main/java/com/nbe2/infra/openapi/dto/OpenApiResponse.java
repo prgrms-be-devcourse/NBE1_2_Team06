@@ -1,6 +1,8 @@
 package com.nbe2.infra.openapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.nbe2.infra.openapi.config.ItemDeserializer;
 
 public record OpenApiResponse<T>(@JsonProperty("response") Response<T> response) {
 
@@ -12,7 +14,8 @@ public record OpenApiResponse<T>(@JsonProperty("response") Response<T> response)
                 @JsonProperty("resultMsg") String resultMessage) {}
 
         public record Body<T>(
-                @JsonProperty("items") Items<T> items,
+                @JsonProperty("items") @JsonDeserialize(using = ItemDeserializer.class)
+                        Items<T> items,
                 @JsonProperty("numOfRows") int numOfRows,
                 @JsonProperty("pageNo") int pageNo,
                 @JsonProperty("totalCount") int totalCount) {
