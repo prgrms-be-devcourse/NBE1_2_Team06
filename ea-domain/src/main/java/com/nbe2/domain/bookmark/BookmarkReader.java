@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class BookmarkReader {
+
     private final BookmarkRepository bookmarkRepository;
     private final BookmarkValidator bookmarkValidator;
 

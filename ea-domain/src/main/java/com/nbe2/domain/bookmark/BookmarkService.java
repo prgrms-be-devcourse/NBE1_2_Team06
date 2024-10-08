@@ -33,7 +33,7 @@ public class BookmarkService {
     public void deleteBookmark(Long emergencyRoomId, UserPrincipal userPrincipal) {
         User user = userReader.read(userPrincipal.userId());
         Bookmark bookmark = bookmarkReader.readByEmergencyRoomId(emergencyRoomId);
-        bookmarkValidator.validateUser(user.getId(), bookmark); // 로그인한 유저가 추가한 즐겨찾기가 맞는가?
+        bookmarkValidator.validateUser(user.getId(), bookmark);
 
         bookmarkDeleter.deleteBookmark(bookmark);
     }

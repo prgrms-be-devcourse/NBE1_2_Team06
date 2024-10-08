@@ -15,7 +15,6 @@ public class BookmarkAppender {
     private final BookmarkRepository bookmarkRepository;
     private final UserReader userReader;
     private final EmergencyRoomReader emergencyRoomReader;
-    private final BookmarkReader bookmarkReader;
 
     public void save(Long emergencyRoomId, Long userId) {
         EmergencyRoom emergencyRoom = emergencyRoomReader.read(emergencyRoomId);

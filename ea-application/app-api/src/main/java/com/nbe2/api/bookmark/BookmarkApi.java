@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
+import com.nbe2.api.bookmark.dto.BookmarkReadResponse;
 import com.nbe2.api.global.dto.Response;
 import com.nbe2.domain.auth.UserPrincipal;
-import com.nbe2.domain.bookmark.BookmarkReadInfo;
 import com.nbe2.domain.bookmark.BookmarkService;
 
 @RestController
@@ -31,9 +31,11 @@ public class BookmarkApi {
     }
 
     @GetMapping
-    public Response<BookmarkReadInfo> getBookmark(
+    public Response<BookmarkReadResponse> getBookmark(
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        return Response.success(bookmarkService.readBookmark(userPrincipal));
+        BookmarkReadResponse bookmarkReadResponse =
+                BookmarkReadResponse.from(bookmarkService.readBookmark(userPrincipal));
+        return Response.success(bookmarkReadResponse);
     }
 
     @DeleteMapping("/{emergencyRommId}")
