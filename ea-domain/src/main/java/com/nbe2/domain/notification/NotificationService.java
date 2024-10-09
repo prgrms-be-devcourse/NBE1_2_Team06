@@ -20,14 +20,19 @@ public class NotificationService {
     @Transactional
     public CursorResult<NotificationDetail> getNotificationHistory(Long userId, Cursor cursor) {
         List<NotificationDetail> notifications = notificationReader.read(userId, cursor);
-        Long nextCursor =
-                notificationReader.getNextCursor(
-                        userId, notifications.get(notifications.size() - 1).notificationId());
+        Long nextCursor = getNextCursor(userId, notifications);
         notificationUpdater.readAllUnreadNotifications(userId);
         return new CursorResult<>(notifications, nextCursor);
     }
 
     public boolean hasUnreadNotification(Long userId) {
         return notificationReader.hasUnreadNotification(userId);
+    }
+
+    private Long getNextCursor(Long userId, List<NotificationDetail> notifications) {
+        if (notifications.isEmpty()) return null;
+
+        return notificationReader.getNextCursor(
+                userId, notifications.get(notifications.size() - 1).notificationId());
     }
 }
