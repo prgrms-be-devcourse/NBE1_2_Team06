@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.global.util.PagingUtil;
+import com.nbe2.domain.review.exception.ReviewNoAccessAuthority;
 import com.nbe2.domain.user.User;
 import com.nbe2.domain.user.UserReader;
 
@@ -19,6 +20,7 @@ public class ReviewService {
     private final ReviewDeleter reviewDeleter;
     private final ReviewUpdater reviewUpdater;
     private final UserReader userReader;
+    private final ReviewValidator reviewValidator;
 
     public void writeReview(ReviewInfo reviewInfo, Long userId) {
         Review newReview = reviewAppender.createReview(reviewInfo, userId);
@@ -30,11 +32,17 @@ public class ReviewService {
         return reviewReader.readAll(PagingUtil.toPageRequest(page), emergencyRoomId);
     }
 
-    public void deleteReview(Long reviewId) {
+    public void deleteReview(Long reviewId, Long userId) {
+        if (!reviewValidator.isValid(reviewId, userId)) {
+            throw ReviewNoAccessAuthority.EXCEPTION;
+        }
         reviewDeleter.deleteReview(reviewId);
     }
 
-    public void updateReview(ReviewUpdateInfo updateInfo, Long reviewId) {
+    public void updateReview(ReviewUpdateInfo updateInfo, Long reviewId, Long userId) {
+        if (!reviewValidator.isValid(reviewId, userId)) {
+            throw ReviewNoAccessAuthority.EXCEPTION;
+        }
         reviewUpdater.updateReview(updateInfo, reviewId);
     }
 

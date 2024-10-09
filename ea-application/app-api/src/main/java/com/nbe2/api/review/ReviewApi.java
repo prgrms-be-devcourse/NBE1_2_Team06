@@ -53,7 +53,7 @@ public class ReviewApi {
                 reviewReadInfoPageResult.map(ReviewReadResponse::fromReviewReadInfo));
     }
 
-    @GetMapping("/search") // search userId
+    @GetMapping("/search") // search email
     public Response<PageResult<ReviewReadResponse>> searchReview(
             @RequestParam("email") String email, @PageDefault Page page) {
         PageResult<ReviewReadInfo> reviewReadPageResult = reviewService.searchByEmail(email, page);
@@ -66,14 +66,14 @@ public class ReviewApi {
             @Valid @RequestBody ReviewUpdateRequest request,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         ReviewUpdateInfo updateInfo = request.toReviewUpdateInfo();
-        reviewService.updateReview(updateInfo, reviewId);
+        reviewService.updateReview(updateInfo, reviewId, userPrincipal.userId());
         return Response.success();
     }
 
     @DeleteMapping("/{reviewId}") // delete
     public Response<Void> deleteReview(
             @PathVariable Long reviewId, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        reviewService.deleteReview(reviewId);
+        reviewService.deleteReview(reviewId, userPrincipal.userId());
         return Response.success();
     }
 }
