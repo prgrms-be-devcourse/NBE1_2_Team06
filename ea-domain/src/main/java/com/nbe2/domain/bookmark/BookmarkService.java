@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.domain.auth.UserPrincipal;
-import com.nbe2.domain.user.User;
 import com.nbe2.domain.user.UserReader;
 
 @Service
@@ -17,24 +15,18 @@ public class BookmarkService {
     private final BookmarkReader bookmarkReader;
     private final BookmarkDeleter bookmarkDeleter;
     private final UserReader userReader;
-    private final BookmarkValidator bookmarkValidator;
 
-    public void saveBookmark(Long emergencyRoomId, UserPrincipal userPrincipal) {
-        bookmarkAppender.save(emergencyRoomId, userPrincipal.userId());
+    public void saveBookmark(Long emergencyRoomId, Long userId) {
+        bookmarkAppender.save(emergencyRoomId, userId);
     }
 
-    public BookmarkReadInfo readBookmark(UserPrincipal userPrincipal) {
-        User user = userReader.read(userPrincipal.userId());
-        List<Bookmark> bookmarks = bookmarkReader.readByUserId(user.getId());
-
+    public BookmarkReadInfo readBookmark(Long userId) {
+        List<Bookmark> bookmarks = bookmarkReader.readByUserId(userId);
         return BookmarkReadInfo.from(bookmarks);
     }
 
-    public void deleteBookmark(Long emergencyRoomId, UserPrincipal userPrincipal) {
-        User user = userReader.read(userPrincipal.userId());
-        Bookmark bookmark = bookmarkReader.readByEmergencyRoomId(emergencyRoomId);
-        bookmarkValidator.validateUser(user.getId(), bookmark);
-
+    public void deleteBookmark(Long emergencyRoomId, Long userId) {
+        Bookmark bookmark = bookmarkReader.readByEmergencyRoomIdAndUserId(emergencyRoomId, userId);
         bookmarkDeleter.deleteBookmark(bookmark);
     }
 }

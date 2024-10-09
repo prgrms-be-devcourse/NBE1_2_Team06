@@ -11,7 +11,6 @@ import com.nbe2.common.exception.ErrorReason;
 @RequiredArgsConstructor
 public enum BookmarkErrorCode implements BaseErrorCode {
     BOOKMARK_NOT_FOUND_EMERGENCY_ROOM_ID(NOT_FOUND, "BOOKMARK_404_1", "즐겨찾기한 병원이 아닙니다."),
-    BOOKMARK_NOT_YOURS(BAD_REQUEST, "BOOKMARK_400_1", "회원님이 추가한 즐겨찾기가 아닙니다."),
     BOOKMARK_DUPLICATED(BAD_REQUEST, "BOOKMARK_400_2", "이미 추가된 병원입니다.");
     private final Integer status;
     private final String errorCode;

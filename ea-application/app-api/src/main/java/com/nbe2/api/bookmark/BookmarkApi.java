@@ -26,7 +26,7 @@ public class BookmarkApi {
     public Response<Void> addBookmark(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @RequestParam Long emergencyRoomId) {
-        bookmarkService.saveBookmark(emergencyRoomId, userPrincipal);
+        bookmarkService.saveBookmark(emergencyRoomId, userPrincipal.userId());
         return Response.success();
     }
 
@@ -34,7 +34,7 @@ public class BookmarkApi {
     public Response<BookmarkReadResponse> getBookmark(
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         BookmarkReadResponse bookmarkReadResponse =
-                BookmarkReadResponse.from(bookmarkService.readBookmark(userPrincipal));
+                BookmarkReadResponse.from(bookmarkService.readBookmark(userPrincipal.userId()));
         return Response.success(bookmarkReadResponse);
     }
 
@@ -42,7 +42,7 @@ public class BookmarkApi {
     public Response<Void> deleteBookmark(
             @PathVariable Long emergencyRommId,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
-        bookmarkService.deleteBookmark(emergencyRommId, userPrincipal);
+        bookmarkService.deleteBookmark(emergencyRommId, userPrincipal.userId());
         return Response.success();
     }
 }

@@ -6,21 +6,23 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
+import com.nbe2.domain.bookmark.exception.BookmarkNotFoundEmergencyRoomIdException;
+
 @Component
 @RequiredArgsConstructor
 public class BookmarkReader {
 
     private final BookmarkRepository bookmarkRepository;
-    private final BookmarkValidator bookmarkValidator;
 
     public List<Bookmark> readByUserId(Long userId) {
         return bookmarkRepository.findByUserId(userId);
     }
 
-    public Bookmark readByEmergencyRoomId(Long emergencyRoomId) {
+    public Bookmark readByEmergencyRoomIdAndUserId(Long emergencyRoomId, Long userId) {
         Bookmark bookmark =
-                bookmarkValidator.validateBookmark(
-                        bookmarkRepository.findByEmergencyRoomId(emergencyRoomId));
+                bookmarkRepository
+                        .findByEmergencyRoomIdAndUserId(emergencyRoomId, userId)
+                        .orElseThrow(() -> BookmarkNotFoundEmergencyRoomIdException.EXCEPTOPN);
         return bookmark;
     }
 }
