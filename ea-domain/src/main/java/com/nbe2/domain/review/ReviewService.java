@@ -33,14 +33,14 @@ public class ReviewService {
     }
 
     public void deleteReview(Long reviewId, Long userId) {
-        if (!reviewValidator.isValid(reviewId, userId)) {
+        if (!reviewValidator.isValidUserId(reviewId, userId)) {
             throw ReviewNoAccessAuthority.EXCEPTION;
         }
         reviewDeleter.deleteReview(reviewId);
     }
 
     public void updateReview(ReviewUpdateInfo updateInfo, Long reviewId, Long userId) {
-        if (!reviewValidator.isValid(reviewId, userId)) {
+        if (!reviewValidator.isValidUserId(reviewId, userId)) {
             throw ReviewNoAccessAuthority.EXCEPTION;
         }
         reviewUpdater.updateReview(updateInfo, reviewId);

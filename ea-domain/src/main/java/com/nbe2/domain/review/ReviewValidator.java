@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 public class ReviewValidator {
     private final ReviewReader reviewReader;
 
-    public boolean isValid(Long reviewId, Long userId) {
+    public boolean isValidUserId(Long reviewId, Long userId) {
         Review review = reviewReader.readReview(reviewId);
 
         if (review.getUser().getId().equals(userId)) {
