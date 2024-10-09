@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.global.util.PagingUtil;
+import com.nbe2.domain.user.User;
+import com.nbe2.domain.user.UserReader;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +18,7 @@ public class ReviewService {
     private final ReviewReader reviewReader;
     private final ReviewDeleter reviewDeleter;
     private final ReviewUpdater reviewUpdater;
+    private final UserReader userReader;
 
     public void writeReview(ReviewInfo reviewInfo, Long userId) {
         Review newReview = reviewAppender.createReview(reviewInfo, userId);
@@ -35,7 +38,9 @@ public class ReviewService {
         reviewUpdater.updateReview(updateInfo, reviewId);
     }
 
-    public PageResult<ReviewReadInfo> searchByEmail(Long userId, Page page) {
-        return reviewReader.searchUserId(PagingUtil.toPageRequest(page), userId);
+    @Transactional(readOnly = true)
+    public PageResult<ReviewReadInfo> searchByEmail(String email, Page page) {
+        User user = userReader.read(email);
+        return reviewReader.searchUserId(PagingUtil.toPageRequest(page), user.getId());
     }
 }

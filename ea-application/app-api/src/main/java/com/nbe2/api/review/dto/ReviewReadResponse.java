@@ -4,6 +4,7 @@ import com.nbe2.domain.review.ReviewReadInfo;
 
 public record ReviewReadResponse(
         Long emergencyRoomId,
+        String email,
         String content,
         Double speedScore,
         Double kindScore,
@@ -12,6 +13,7 @@ public record ReviewReadResponse(
         return new ReviewReadResponse(
                 reviewReadInfo.emergencyRoomId(),
                 reviewReadInfo.content(),
+                reviewReadInfo.email(),
                 reviewReadInfo.speedScore(),
                 reviewReadInfo.kindScore(),
                 reviewReadInfo.facilityScore());

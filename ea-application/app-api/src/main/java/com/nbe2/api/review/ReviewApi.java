@@ -23,10 +23,8 @@ import com.nbe2.common.annotation.PageDefault;
 import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.auth.UserPrincipal;
-import com.nbe2.domain.review.ReviewDeleter;
 import com.nbe2.domain.review.ReviewInfo;
 import com.nbe2.domain.review.ReviewReadInfo;
-import com.nbe2.domain.review.ReviewReader;
 import com.nbe2.domain.review.ReviewService;
 import com.nbe2.domain.review.ReviewUpdateInfo;
 
@@ -36,8 +34,6 @@ import com.nbe2.domain.review.ReviewUpdateInfo;
 public class ReviewApi {
 
     private final ReviewService reviewService;
-    private final ReviewReader reviewReader;
-    private final ReviewDeleter reviewDeleter;
 
     @PostMapping // insert
     public Response<Void> createReview(
@@ -57,10 +53,10 @@ public class ReviewApi {
                 reviewReadInfoPageResult.map(ReviewReadResponse::fromReviewReadInfo));
     }
 
-    @GetMapping("/search/{userId}") // search userId
+    @GetMapping("/search") // search userId
     public Response<PageResult<ReviewReadResponse>> searchReview(
-            @PathVariable Long userId, @PageDefault Page page) {
-        PageResult<ReviewReadInfo> reviewReadPageResult = reviewService.searchByEmail(userId, page);
+            @RequestParam("email") String email, @PageDefault Page page) {
+        PageResult<ReviewReadInfo> reviewReadPageResult = reviewService.searchByEmail(email, page);
         return Response.success(reviewReadPageResult.map(ReviewReadResponse::fromReviewReadInfo));
     }
 

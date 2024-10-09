@@ -3,6 +3,7 @@ package com.nbe2.domain.review;
 public record ReviewReadInfo(
         Long emergencyRoomId,
         Long userId,
+        String email,
         String content,
         Double speedScore,
         Double kindScore,
@@ -11,6 +12,7 @@ public record ReviewReadInfo(
         return new ReviewReadInfo(
                 review.getEmergencyRoom().getId(),
                 review.getUser().getId(),
+                review.getUser().getEmail(),
                 review.getContent(),
                 review.getSpeedScore(),
                 review.getKindScore(),
