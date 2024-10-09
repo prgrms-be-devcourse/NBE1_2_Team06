@@ -26,8 +26,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     select distinct post
      from Post post
      join fetch post.user
-     join fetch post.postFiles postFiles
-     join fetch postFiles.fileMetaData
+     left join fetch post.postFiles postFiles
+     where post.id = :postId
     """)
     Optional<Post> findDetailById(Long postId);
 

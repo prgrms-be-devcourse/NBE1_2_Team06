@@ -17,7 +17,7 @@ public class PostFileRegisterer {
     private final FileMetaDataReader fileMetaDataReader;
 
     public void register(final Post post, final Optional<List<Long>> fileIdList) {
-        postFileRepository.deleteAllInBatch();
+        postFileRepository.deleteByPostId(post.getId());
         fileIdList.ifPresent(
                 (fileIds) -> {
                     List<FileMetaData> fileMetaDatas = fileMetaDataReader.readAll(fileIds);
