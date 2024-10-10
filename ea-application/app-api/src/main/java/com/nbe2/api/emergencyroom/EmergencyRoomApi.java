@@ -76,14 +76,14 @@ public class EmergencyRoomApi {
         return Response.success(responses);
     }
 
-    @GetMapping("/{emergencyRoomId}")
+    @GetMapping("/{hospitalId}")
     public Response<EmergencyRoomDetailInfo> getEmergencyRoomDetail(
-            @PathVariable Long emergencyRoomId,
+            @PathVariable String hospitalId,
             @RequestParam Double longitude,
             @RequestParam Double latitude) {
         EmergencyRoomDetailInfo emergencyRoomDetail =
                 emergencyRoomService.getEmergencyRoomDetail(
-                        emergencyRoomId, Coordinate.of(longitude, latitude));
+                        hospitalId, Coordinate.of(longitude, latitude));
         return Response.success(emergencyRoomDetail);
     }
 }

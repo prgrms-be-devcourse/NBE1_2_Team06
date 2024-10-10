@@ -7,8 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.domain.emergencyroom.exception.RealTimeEmergencyRoomInfoNotFoundException;
-
 @Service
 @RequiredArgsConstructor
 public class EmergencyRoomService {
@@ -49,13 +47,17 @@ public class EmergencyRoomService {
     }
 
     public EmergencyRoomDetailInfo getEmergencyRoomDetail(
-            Long emergencyRoomId, Coordinate coordinate) {
-        EmergencyRoom emergencyRoom = emergencyRoomReader.read(emergencyRoomId);
+            String hospitalId, Coordinate coordinate) {
+        EmergencyRoom emergencyRoom = emergencyRoomReader.read(hospitalId);
 
+        RealTimeEmergencyRoomInfo realTimeCachingFlag =
+                realTimeEmergencyRoomInfoCacheManager.getInfo(emergencyRoom.getHpId()).orElse(null);
+
+        if (realTimeCachingFlag == null) { // real-time 정보가 캐싱이 안됐을 때
+            realTimeInfoFetcher.reloadRealTimeEmergencyRooms(coordinate);
+        }
         RealTimeEmergencyRoomInfo realTimeEmergencyRoomInfo =
-                realTimeEmergencyRoomInfoCacheManager
-                        .getInfo(emergencyRoom.getHpId())
-                        .orElseThrow(() -> RealTimeEmergencyRoomInfoNotFoundException.EXCEPTION);
+                realTimeEmergencyRoomInfoCacheManager.getInfo(emergencyRoom.getHpId()).get();
 
         RealTimeEmergencyRoomWithDistance realTimeEmergencyRoomWithDistance =
                 distanceCalculator.calculateDistance(coordinate, realTimeEmergencyRoomInfo);
