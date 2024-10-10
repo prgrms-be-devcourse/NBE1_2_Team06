@@ -7,11 +7,14 @@ import lombok.RequiredArgsConstructor;
 
 import com.nbe2.api.global.dto.Response;
 import com.nbe2.api.user.dto.MedicalRequest;
+import com.nbe2.api.user.dto.ProfileResponse;
+import com.nbe2.api.user.dto.UpdatePasswordRequest;
+import com.nbe2.api.user.dto.UpdateProfileRequest;
 import com.nbe2.domain.auth.UserPrincipal;
 import com.nbe2.domain.user.UserService;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/my")
 @RequiredArgsConstructor
 public class UserApi {
 
@@ -23,6 +26,29 @@ public class UserApi {
             @RequestBody MedicalRequest medicalRequest) {
         userService.requestMedicalAuthority(
                 userPrincipal.userId(), medicalRequest.toMedicalProfile());
+        return Response.success();
+    }
+
+    @GetMapping
+    public Response<ProfileResponse> getMyProfile(
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return Response.success(
+                ProfileResponse.from(userService.getMyProfile(userPrincipal.userId())));
+    }
+
+    @PatchMapping
+    public Response<Void> updateMyProfile(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestBody UpdateProfileRequest request) {
+        userService.updateProfile(userPrincipal.userId(), request.toProfile());
+        return Response.success();
+    }
+
+    @PatchMapping("/password")
+    public Response<Void> changePassword(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestBody UpdatePasswordRequest request) {
+        userService.changePassword(userPrincipal.userId(), request.toPassword());
         return Response.success();
     }
 }
