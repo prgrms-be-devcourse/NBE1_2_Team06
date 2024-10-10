@@ -39,7 +39,7 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
             // 유효하지 않으면 Refresh Token을 이용해 새 AccessToken 발급
             UserPrincipal tokenUserPrincipal = jwtProvider.getTokenUserPrincipal(jwtToken);
             List<GrantedAuthority> grantedAuthorities =
-                    convertorGrantedAuthority(String.valueOf(tokenUserPrincipal.role()));
+                    convertorGrantedAuthority(tokenUserPrincipal.role().getRole());
             setSecurityContextHolder(tokenUserPrincipal, grantedAuthorities);
         } catch (Exception e) {
             request.setAttribute("exception", e);
