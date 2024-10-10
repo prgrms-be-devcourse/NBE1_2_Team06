@@ -1,0 +1,15 @@
+services:
+  chroma:
+    command: "--workers 1 --host 0.0.0.0 --port 8000 --proxy-headers --log-config chromadb/log_config.yml --timeout-keep-alive 30"
+    image: chromadb/chroma
+    ports:
+      - 8000:8000
+    healthcheck:
+      # Adjust below to match your container port
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - ./db:/chroma/chroma
+    restart: on-failure
