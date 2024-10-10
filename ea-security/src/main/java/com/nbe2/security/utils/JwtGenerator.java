@@ -25,7 +25,7 @@ public class JwtGenerator implements TokenGenerator {
 
     private static String SECRET_KEY;
 
-    @Value("${jwt.screat-key}")
+    @Value("${jwt.secret-key}")
     public void setSecretKey(String secretKey) {
         SECRET_KEY = secretKey;
     }
