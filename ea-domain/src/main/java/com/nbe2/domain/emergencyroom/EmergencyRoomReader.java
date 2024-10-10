@@ -32,7 +32,7 @@ public class EmergencyRoomReader {
                 .toList();
     }
 
-    public Coordinate findByHospitalName(String hospitalName) {
+    public Coordinate readCoordinate(String hospitalName) {
         return emergencyRoomRepository
                 .findByHospitalName(hospitalName)
                 .map(EmergencyRoom::getLocation)
