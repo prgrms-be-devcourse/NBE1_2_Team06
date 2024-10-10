@@ -20,7 +20,7 @@ public class JwtProvider implements TokenProvider {
 
     private static String SECRET_KEY;
 
-    @Value("${jwt.screat-key}")
+    @Value("${jwt.secret-key}")
     public void setSecretKey(String secretKey) {
         SECRET_KEY = secretKey;
     }
@@ -29,16 +29,10 @@ public class JwtProvider implements TokenProvider {
         return new SecretKeySpec(SECRET_KEY.getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 
-    //    public UserPrincipal getAccessTokenUserPrincipal(String token) {
-    //        long userId = Long.parseLong(getUserId(token));
-    //        String roleName = getUserRole(token);
-    //        return (UserPrincipal) getTokenClaims(getKey(), token).get("UserPrincpal");
-    //    }
-
     public UserPrincipal getTokenUserPrincipal(String token) {
         String roleName = getUserRole(token);
         long userId = Long.parseLong(getUserId(token));
-        return UserPrincipal.of(userId, UserRole.valueOf(roleName));
+        return UserPrincipal.of(userId, UserRole.findByRole(roleName));
     }
 
     private String getUserId(String token) {

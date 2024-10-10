@@ -14,10 +14,10 @@ import com.nbe2.api.post.dto.CommentRegisterRequest;
 import com.nbe2.api.post.dto.CommentResponse;
 import com.nbe2.api.post.dto.CommentUpdateRequest;
 import com.nbe2.domain.auth.UserPrincipal;
-import com.nbe2.domain.posts.service.CommentService;
-import com.nbe2.domain.posts.service.dto.CommentInfo;
-import com.nbe2.domain.posts.service.dto.CommentReadInfo;
-import com.nbe2.domain.posts.service.dto.CommentWriteInfo;
+import com.nbe2.domain.posts.CommentInfo;
+import com.nbe2.domain.posts.CommentReadInfo;
+import com.nbe2.domain.posts.CommentService;
+import com.nbe2.domain.posts.CommentWriteInfo;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,13 +29,10 @@ public class CommentApi {
     @PostMapping
     public Response<Long> postComment(
             @RequestBody @Validated final CommentRegisterRequest request,
-            @AuthenticationPrincipal final UserPrincipal userPrincipal
-            //            @RequestParam("id") final Long id
-            ) {
+            @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         Long postId =
                 commentService.save(
                         request.postsId(),
-                        //                        id
                         CommentWriteInfo.create(
                                 userPrincipal.userId(), CommentInfo.of(request.content())));
         return Response.success(postId);
@@ -53,12 +50,9 @@ public class CommentApi {
     public Response<Long> putComment(
             @PathVariable("commentsId") final Long commentsId,
             @RequestBody final CommentUpdateRequest request,
-            @AuthenticationPrincipal final UserPrincipal userPrincipal
-            //            @RequestParam("id") final Long id
-            ) {
+            @AuthenticationPrincipal final UserPrincipal userPrincipal) {
         Long postId =
                 commentService.update(
-                        //                        id
                         commentsId,
                         CommentWriteInfo.create(
                                 userPrincipal.userId(), CommentInfo.of(request.content())));
