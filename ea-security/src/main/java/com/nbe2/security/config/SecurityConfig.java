@@ -28,6 +28,7 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        System.out.println("필터작동");
         httpSecurity
                 // CSRF 비활성화: JWT를 사용할 경우 CSRF 공격을 방지할 필요가 없음
                 .csrf(AbstractHttpConfigurer::disable)
@@ -42,9 +43,11 @@ public class SecurityConfig {
                 .addFilterBefore(
                         new CustomSecurityFilter(jwtProvider),
                         UsernamePasswordAuthenticationFilter.class)
+
                 // 접근 제어 설정
                 .authorizeHttpRequests(
                         authorizationManagerRequestMatcherRegistry -> {
+                            System.out.println("접근제어설정");
                             // All
                             for (SecurityUrlEndPoint securityUrlEndPoint :
                                     SecurityUrlEndPoint.values()) {
@@ -83,9 +86,10 @@ public class SecurityConfig {
     // 특정 URI 필터 제외
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
+        System.out.println("특정필터제외라인");
         return web ->
                 web.ignoring()
-                        .requestMatchers("/api/v1/oauth/**")
+                        //                        .requestMatchers("/api/v1/oauth/**")
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/**")
                         .requestMatchers(HttpMethod.GET, "/api/v1/notices/**")
                         .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**")

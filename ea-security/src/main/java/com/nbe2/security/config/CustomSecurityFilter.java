@@ -35,16 +35,18 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
             String jwtToken = reversToken(request);
+            System.out.println("token :: " + jwtToken);
             // AccessToken(JWT) 유효한지 검사
             // 유효하지 않으면 Refresh Token을 이용해 새 AccessToken 발급
             UserPrincipal tokenUserPrincipal = jwtProvider.getTokenUserPrincipal(jwtToken);
+            System.out.println("role :: " + tokenUserPrincipal.role());
             List<GrantedAuthority> grantedAuthorities =
                     convertorGrantedAuthority(String.valueOf(tokenUserPrincipal.role()));
             setSecurityContextHolder(tokenUserPrincipal, grantedAuthorities);
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }
-
+        System.out.println("다음으로 이동");
         filterChain.doFilter(request, response);
     }
 

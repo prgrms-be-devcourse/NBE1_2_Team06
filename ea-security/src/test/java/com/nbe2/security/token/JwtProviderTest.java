@@ -2,7 +2,7 @@ package com.nbe2.security.token;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,16 +22,15 @@ import com.nbe2.security.utils.JwtProvider;
  * 각각의 쓰임새에 맞게 새로운 객체로 생성하여 사용한다.
  */
 @ExtendWith(MockitoExtension.class)
-public class JwtTokenProviderTest {
+public class JwtProviderTest {
 
     @InjectMocks private static JwtProvider jwtProvider;
 
     private static final String TEST_SECRET_KEY =
             "fegwhgogjqgeonri3noi523niefaenpffegwhgogjqgeonri3noi523niefaenpf";
 
-    @BeforeAll
-    static void setUp() {
-
+    @BeforeEach
+    void setUp() {
         jwtProvider = new JwtProvider(TEST_SECRET_KEY);
     }
 
@@ -42,7 +41,7 @@ public class JwtTokenProviderTest {
 
     // 만료된 토큰 생성
     private static JwtGenerator expiredJwtGenerator() {
-        return new JwtGenerator(TEST_SECRET_KEY, 1L, 1L);
+        return new JwtGenerator(TEST_SECRET_KEY, -10L, -10L);
     }
 
     @Test
@@ -86,11 +85,9 @@ public class JwtTokenProviderTest {
     void createToken() {
         // given
         UserPrincipal userPrincipal = UserPrincipal.of(3L, UserRole.USER);
-
-        // when
         Tokens generate = jwtGenerator().generate(userPrincipal);
 
-        // then
+        // then & when
         assertNotNull(generate);
     }
 

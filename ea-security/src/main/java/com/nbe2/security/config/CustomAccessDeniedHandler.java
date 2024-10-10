@@ -30,6 +30,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
             HttpServletResponse response,
             AccessDeniedException accessDeniedException)
             throws IOException, ServletException {
+        System.out.println("권한없어요");
         resolver.resolveException(request, response, null, NoPermissionException.EXCEPTION);
     }
 }
