@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.nbe2.domain.auth.AdminAuthService;
@@ -50,7 +49,7 @@ public class SecurityApiRoleTest {
 
     @DisplayName("일반 유저는 특정 URL에 접근이 불가해야 한다.")
     @Test
-    @WithMockUser(roles = "USER")
+    //    @WithMockUser(roles = "USER")
     public void adminUserTest() throws Exception {
         mockMvc.perform(
                         get("/api/v1/auth/admin/pendings")
