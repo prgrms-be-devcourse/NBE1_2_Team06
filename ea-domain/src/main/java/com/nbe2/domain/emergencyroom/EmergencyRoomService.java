@@ -26,8 +26,8 @@ public class EmergencyRoomService {
 
     public List<RealTimeEmergencyRoomWithDistance> getRealTimeEmergencyRooms(
             Coordinate currentCoordinate) {
-        Region region = coordinateConverter.convert(currentCoordinate);
-        List<RealTimeEmergencyRoomInfo> realTimeInfos = realTimeInfoFetcher.fetch(region);
+        List<RealTimeEmergencyRoomInfo> realTimeInfos =
+                realTimeInfoFetcher.fetch(currentCoordinate);
         return distanceCalculator.calculate(realTimeInfos, currentCoordinate);
     }
 
@@ -50,14 +50,13 @@ public class EmergencyRoomService {
             String hospitalId, Coordinate coordinate) {
         EmergencyRoom emergencyRoom = emergencyRoomReader.read(hospitalId);
 
-        RealTimeEmergencyRoomInfo realTimeCachingFlag =
-                realTimeEmergencyRoomInfoCacheManager.getInfo(emergencyRoom.getHpId()).orElse(null);
-
-        if (realTimeCachingFlag == null) { // real-time 정보가 캐싱이 안됐을 때
-            realTimeInfoFetcher.reloadRealTimeEmergencyRooms(coordinate);
-        }
         RealTimeEmergencyRoomInfo realTimeEmergencyRoomInfo =
-                realTimeEmergencyRoomInfoCacheManager.getInfo(emergencyRoom.getHpId()).get();
+                realTimeEmergencyRoomInfoCacheManager
+                        .getInfo(emergencyRoom.getHpId())
+                        .orElseGet(
+                                () ->
+                                        realTimeInfoFetcher.reloadRealTimeEmergencyRooms(
+                                                coordinate, hospitalId));
 
         RealTimeEmergencyRoomWithDistance realTimeEmergencyRoomWithDistance =
                 distanceCalculator.calculateDistance(coordinate, realTimeEmergencyRoomInfo);

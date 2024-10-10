@@ -13,16 +13,21 @@ public class RealTimeEmergencyRoomInfoFetcher {
     private final EmergencyRoomClient realTimeClient;
     private final RealTimeEmergencyRoomInfoCacheManager cacheManager;
     private final RealTimeEmergencyRoomInfoCacheManager realTimeEmergencyRoomInfoCacheManager;
-    private final CoordinateToRegionConverter coordinateToRegionConverter;
+    private final CoordinateToRegionConverter coordinateConverter;
 
-    public List<RealTimeEmergencyRoomInfo> fetch(Region region) {
+    public List<RealTimeEmergencyRoomInfo> fetch(Coordinate currentCoordinate) {
+        Region region = coordinateConverter.convert(currentCoordinate);
         List<RealTimeEmergencyRoomInfo> realTimeInfo = realTimeClient.getRealTimeInfo(region);
         cacheManager.cache(realTimeInfo);
         return realTimeInfo;
     }
 
-    public void reloadRealTimeEmergencyRooms(Coordinate currentLocation) {
-        Region region = coordinateToRegionConverter.convert(currentLocation);
-        fetch(region);
+    // @TODO 기존의 fetch가 아니라 hpId로 캐싱해주는 로직이 필요함
+    public RealTimeEmergencyRoomInfo reloadRealTimeEmergencyRooms(
+            Coordinate currentLocation, String hospitalId) {
+        fetch(currentLocation);
+        RealTimeEmergencyRoomInfo realTimeEmergencyRoomInfo =
+                realTimeEmergencyRoomInfoCacheManager.getInfo(hospitalId).get();
+        return realTimeEmergencyRoomInfo;
     }
 }
