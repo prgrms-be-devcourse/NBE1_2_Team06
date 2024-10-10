@@ -41,11 +41,7 @@ public class Post extends BaseTimeEntity {
 
     private Long likeCount;
 
-    @OneToMany(
-            fetch = FetchType.LAZY,
-            mappedBy = "post",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
     private final List<PostFile> postFiles = new LinkedList<>();
 
     private Post(final User user, final String title, final String content, final City city) {
@@ -66,10 +62,6 @@ public class Post extends BaseTimeEntity {
         return user.getName();
     }
 
-    public void resetPostFiles() {
-        postFiles.clear();
-    }
-
     // ** 연관관계 편의 메서드 **//
     public void addComment(final Comment comment) {
         comments.add(comment);
@@ -83,8 +75,8 @@ public class Post extends BaseTimeEntity {
         return this;
     }
 
-    public void addFile(PostFile postFile) {
-        postFiles.add(postFile);
+    public void addFile(final PostFile file) {
+        postFiles.add(file);
     }
 
     public void increaseCommentCount() {

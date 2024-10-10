@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
@@ -14,6 +15,7 @@ import com.nbe2.domain.user.UserReader;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
 
     private final PostAppender postAppender;
@@ -38,7 +40,7 @@ public class PostService {
     }
 
     public PostDetailsInfo findDetails(final Long postsId) {
-        Post post = postReader.read(postsId);
+        Post post = postReader.readDetail(postsId);
         return PostDetailsInfo.from(post);
     }
 
