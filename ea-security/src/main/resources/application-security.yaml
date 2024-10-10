@@ -1,0 +1,16 @@
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+jwt:
+  secret-key: ${JWT_KEY}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+jwt:
+  secret-key: ${JWT_KEY}
