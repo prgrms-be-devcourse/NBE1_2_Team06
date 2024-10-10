@@ -19,6 +19,12 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtGenerator implements TokenGenerator {
+<<<<<<< HEAD
+=======
+    private static final long ACCESS_EXPIRATION_TIME = 1000 * 60 * 60; // 1시간 (3600초)
+    private static final long REFRESH_EXPIRATION_TIME =
+            ACCESS_EXPIRATION_TIME * 24 * 14; // 2주 (1209600초)
+>>>>>>> d0ff520140e3b5144b9515b2d5a24f81bf5698bf
 
     @Value("${jwt.access-expiration-time}")
     private static long ACCESS_EXPIRATION_TIME;

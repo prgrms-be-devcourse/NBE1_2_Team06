@@ -23,16 +23,16 @@ public class PostService {
     private final UserReader userReader;
 
     @Transactional
-    public Long save(final Long userId, final PostDefaultInfo info) {
+    public Long save(final Long userId, final PostWriteInfo postWriteInfo) {
         User user = userReader.read(userId);
-        return postAppender.append(info.toEntity(user));
+        return postAppender.append(user, postWriteInfo);
     }
 
     public PageResult<PostListInfo> findListPageByCity(final Page page, final City city) {
         return postReader.readListPage(PagingUtil.toPageRequest(page), city);
     }
 
-    public PageResult<PostListInfo> findListPageByUserId(final Page page, final Long userId) {
+    public PageResult<PostListInfo> getUserPostPages(Page page, Long userId) {
         User user = userReader.read(userId);
         return postReader.readListPage(PagingUtil.toPageRequest(page), user);
     }
@@ -43,9 +43,9 @@ public class PostService {
     }
 
     @Transactional
-    public Long update(final Long postsId, final PostDefaultInfo info) {
+    public Long update(final Long postsId, final PostWriteInfo postWriteInfo) {
         Post post = postReader.read(postsId);
-        return postUpdater.update(post, info);
+        return postUpdater.update(post, postWriteInfo);
     }
 
     @Transactional

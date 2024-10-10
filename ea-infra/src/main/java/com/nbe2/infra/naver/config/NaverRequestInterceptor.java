@@ -10,7 +10,7 @@ public class NaverRequestInterceptor implements RequestInterceptor {
     @Value("${naver.directions-clinet-id}")
     private String clientKey;
 
-    @Value("${naver.directions-screat-key}")
+    @Value("${naver.directions-secret-key}")
     private String serviceKey;
 
     @Override

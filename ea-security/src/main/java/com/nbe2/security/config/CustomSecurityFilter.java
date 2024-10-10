@@ -41,7 +41,7 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
             UserPrincipal tokenUserPrincipal = jwtProvider.getTokenUserPrincipal(jwtToken);
             System.out.println("role :: " + tokenUserPrincipal.role());
             List<GrantedAuthority> grantedAuthorities =
-                    convertorGrantedAuthority(String.valueOf(tokenUserPrincipal.role()));
+                    convertorGrantedAuthority(tokenUserPrincipal.role().getRole());
             setSecurityContextHolder(tokenUserPrincipal, grantedAuthorities);
         } catch (Exception e) {
             request.setAttribute("exception", e);
