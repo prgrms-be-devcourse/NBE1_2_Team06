@@ -17,6 +17,10 @@ public class RealTimeEmergencyRoomInfoCacheManager {
         info.forEach(cacheRepository::cache);
     }
 
+    public void cache(RealTimeEmergencyRoomInfo info) {
+        cacheRepository.cache(info);
+    }
+
     public Optional<RealTimeEmergencyRoomInfo> getInfo(String hpId) {
         return cacheRepository.findById(hpId);
     }
