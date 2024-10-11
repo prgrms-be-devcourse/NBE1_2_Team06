@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
+import com.nbe2.domain.auth.UserPrincipal;
 import com.nbe2.domain.emergencyroom.EmergencyRoom;
 import com.nbe2.domain.emergencyroom.EmergencyRoomReader;
 import com.nbe2.domain.file.FileMetaData;
@@ -27,10 +28,13 @@ public class NoticeAppender {
         return noticeRepository.save(newNotice);
     }
 
-    public Notice createNotice(NoticeInfo newNoticeInfo, Long userId) {
+    public Notice createNotice(NoticeInfo newNoticeInfo, UserPrincipal userPrincipal) {
+        noticeInfoValidator.validateRole(userPrincipal);
+
         EmergencyRoom emergencyRoom = emergencyRoomReader.read(newNoticeInfo.hpId());
-        User user = userReader.read(userId);
-        noticeInfoValidator.validate(newNoticeInfo.title(), newNoticeInfo.content());
+        User user = userReader.read(userPrincipal.userId());
+        // 제목, 내용 null 검사
+        noticeInfoValidator.validateNull(newNoticeInfo.title(), newNoticeInfo.content());
         return Notice.from(newNoticeInfo, user, emergencyRoom);
     }
 

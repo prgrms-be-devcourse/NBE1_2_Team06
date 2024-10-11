@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
+import com.nbe2.domain.auth.UserPrincipal;
 import com.nbe2.domain.global.util.PagingUtil;
 
 @Service
@@ -22,19 +23,22 @@ public class NoticeService {
 
     @Transactional
     public void writeNoticeWithFile(
-            NoticeInfo newNoticeInfo, Long userId, List<Long> fileIds) { // Notice 파일 추가
-        Notice newNotice = noticeAppender.createNotice(newNoticeInfo, userId);
+            NoticeInfo newNoticeInfo,
+            UserPrincipal userPrincipal,
+            List<Long> fileIds) { // Notice 파일 추가
+
+        Notice newNotice = noticeAppender.createNotice(newNoticeInfo, userPrincipal);
 
         noticeAppender.addFileIds(newNotice, fileIds);
         noticeAppender.append(newNotice);
     }
 
-    public void deleteNotice(Long noticeId) {
-        noticeDeleter.deleteNotice(noticeId);
+    public void deleteNotice(Long noticeId, Long userId) {
+        noticeDeleter.deleteNotice(noticeId, userId);
     }
 
-    public void updateNotice(NoticeUpdateInfo updateInfo, Long noticeId) {
-        noticeUpdater.updateNotice(updateInfo, noticeId);
+    public void updateNotice(NoticeUpdateInfo updateInfo, Long noticeId, Long userId) {
+        noticeUpdater.updateNotice(updateInfo, noticeId, userId);
     }
 
     @Transactional(readOnly = true)
