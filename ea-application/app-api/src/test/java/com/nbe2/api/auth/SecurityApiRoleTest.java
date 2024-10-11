@@ -24,9 +24,8 @@ import com.nbe2.security.config.SecurityConfig;
 import com.nbe2.security.utils.JwtProvider;
 
 @WebMvcTest(value = AdminAuthApi.class)
-
 //        includeFilters = @ComponentScan.Filter(classes = {CustomSecurityFilter.class})
-@Import({SecurityConfig.class})
+@Import(SecurityConfig.class)
 public class SecurityApiRoleTest {
 
     @MockBean private AdminAuthService authService;

@@ -31,7 +31,7 @@ public class PostFile {
     private PostFile(final FileMetaData fileMetaData, final Post post) {
         this.postFilePk = PostFilePk.of(fileMetaData.getId(), post.getId());
         this.fileMetaData = fileMetaData;
-        this.post = post;
+        setPost(post);
     }
 
     public static PostFile of(final FileMetaData fileMetaData, final Post post) {
@@ -40,5 +40,15 @@ public class PostFile {
 
     public Long getFileMetaDataId() {
         return fileMetaData.getId();
+    }
+
+    public Long getPostId() {
+        return post.getId();
+    }
+
+    // ** 연관관계 편의 메서드**//
+    public void setPost(final Post post) {
+        this.post = post;
+        post.addFile(this);
     }
 }

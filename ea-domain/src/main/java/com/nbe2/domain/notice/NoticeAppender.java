@@ -24,7 +24,6 @@ public class NoticeAppender {
     private final FileMetaDataReader fileMetaDataReader;
 
     public Notice append(Notice newNotice) { // insert
-        System.out.println("content : " + newNotice.getContent());
         return noticeRepository.save(newNotice);
     }
 

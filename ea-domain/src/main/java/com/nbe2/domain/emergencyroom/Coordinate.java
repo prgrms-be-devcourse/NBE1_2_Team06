@@ -1,5 +1,7 @@
 package com.nbe2.domain.emergencyroom;
 
+import java.util.Objects;
+
 import jakarta.persistence.Embeddable;
 
 import lombok.AllArgsConstructor;
@@ -44,5 +46,22 @@ public final class Coordinate {
 
     public String convertorLatitudeAndLongitude() {
         return longitude + "," + latitude;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Coordinate that)) {
+            return false;
+        }
+        return Objects.equals(getLongitude(), that.getLongitude())
+                && Objects.equals(getLatitude(), that.getLatitude());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getLongitude(), getLatitude());
     }
 }

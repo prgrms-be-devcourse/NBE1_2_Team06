@@ -31,7 +31,7 @@ public class ChatbotApi {
     }
 
     @PostMapping("/query")
-    public Flux<ServerSentEvent<String>> openAiTest2(@RequestBody QuestionRequest request) {
+    public Flux<ServerSentEvent<String>> sendQuestion(@RequestBody QuestionRequest request) {
         return Flux.<String>create(
                         emitter ->
                                 chatbotService.getResponse(
@@ -59,7 +59,7 @@ public class ChatbotApi {
     // Postman에서 SSE 스트리밍 응답은 보기가 불편해서
     // 임시로 로컬 테스트 용 API 추가, 추후에 프론트 연결 시 제거할 예정
     @PostMapping("/test")
-    public Flux<String> openAiTest3(@RequestBody QuestionRequest request) {
+    public Flux<String> testForLocal(@RequestBody QuestionRequest request) {
         return Flux.create(
                 emitter ->
                         chatbotService.getResponse(
