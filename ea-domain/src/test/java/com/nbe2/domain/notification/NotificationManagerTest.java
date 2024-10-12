@@ -29,7 +29,7 @@ class NotificationManagerTest {
         NotificationEvent event = NotificationFixture.createCommentNotificationEvent();
 
         // when
-        notificationManager.sendCommentNotification(event);
+        notificationManager.send(event);
 
         // then
         verify(notificationAppender).append(event);
@@ -47,8 +47,6 @@ class NotificationManagerTest {
 
         // then
         verify(eventSender, never()).send(event);
-        assertThrows(
-                UserNotFoundException.class,
-                () -> notificationManager.sendCommentNotification(event));
+        assertThrows(UserNotFoundException.class, () -> notificationManager.send(event));
     }
 }

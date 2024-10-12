@@ -4,8 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum NotificationType {
-    COMMENT("comment");
+    COMMENT("comment"),
+    NOTICE("notice");
 
+    public static final String CHANNEL_ID = "notification";
     private final String channelId;
 
     NotificationType(String channelId) {

@@ -11,7 +11,7 @@ public class NotificationManager {
     private final NotificationAppender notificationAppender;
     private final EventSender eventSender;
 
-    public void sendCommentNotification(NotificationEvent event) {
+    public void send(NotificationEvent event) {
         notificationAppender.append(event);
         eventSender.send(event);
     }

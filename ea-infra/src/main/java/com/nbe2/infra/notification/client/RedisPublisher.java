@@ -6,18 +6,18 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.domain.notification.MessagePublisher;
-import com.nbe2.domain.notification.NotificationMessage;
+import com.nbe2.domain.notification.EventPublisher;
+import com.nbe2.domain.notification.NotificationEvent;
 
 @Component
 @RequiredArgsConstructor
-public class RedisPublisher implements MessagePublisher {
+public class RedisPublisher implements EventPublisher {
 
-    private final RedisTemplate<String, NotificationMessage> notificationTemplate;
+    private final RedisTemplate<String, NotificationEvent> notificationTemplate;
 
     @Override
-    public void publish(NotificationMessage message) {
-        ChannelTopic topic = new ChannelTopic(message.channelId());
-        notificationTemplate.convertAndSend(topic.getTopic(), message);
+    public void publish(NotificationEvent event) {
+        ChannelTopic topic = new ChannelTopic("notification");
+        notificationTemplate.convertAndSend(topic.getTopic(), event);
     }
 }
