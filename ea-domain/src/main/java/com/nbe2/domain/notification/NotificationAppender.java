@@ -19,7 +19,7 @@ public class NotificationAppender {
                         userReader.read(event.targetId()),
                         event.referenceUri(),
                         event.title(),
-                        NotificationType.COMMENT);
+                        event.notificationType());
         notificationRepository.save(notification);
     }
 }
