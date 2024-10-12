@@ -25,4 +25,8 @@ public class BookmarkReader {
                         .orElseThrow(() -> BookmarkNotFoundEmergencyRoomIdException.EXCEPTOPN);
         return bookmark;
     }
+
+    public List<Long> readUserIdsByEmergencyRoomId(Long emergencyRoomId) {
+        return bookmarkRepository.findUserIdsByEmergencyRoomId(emergencyRoomId);
+    }
 }
