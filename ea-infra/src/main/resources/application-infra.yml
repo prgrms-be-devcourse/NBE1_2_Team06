@@ -58,7 +58,7 @@ spring:
       chroma:
         client:
           host: ${CHROMADB_HOST}
-          port: ${CHROMADB_HOST}
+          port: ${CHROMADB_PORT}
 
 redis:
   host: ${REDIS_HOST}
