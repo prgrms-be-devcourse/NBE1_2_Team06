@@ -50,7 +50,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
     }
 
     @Override
-    public void removeByCreatedAtBetween(LocalDateTime from, LocalDateTime to) {
-        queryFactory.delete(notification).where(notification.createdAt.between(from, to)).execute();
+    public void removeByCreatedAtBefore(LocalDateTime at) {
+        queryFactory.delete(notification).where(notification.createdAt.before(at)).execute();
     }
 }

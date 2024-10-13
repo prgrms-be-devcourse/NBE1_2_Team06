@@ -15,7 +15,7 @@ public class NotificationDeleter {
     private final NotificationRepository notificationRepository;
 
     public void deleteOutdatedNotifications() {
-        LocalDateTime now = LocalDateTime.now();
-        notificationRepository.removeByCreatedAtBetween(now.minusDays(OUTDATED_CRITERIA), now);
+        notificationRepository.removeByCreatedAtBefore(
+                LocalDateTime.now().minusDays(OUTDATED_CRITERIA));
     }
 }

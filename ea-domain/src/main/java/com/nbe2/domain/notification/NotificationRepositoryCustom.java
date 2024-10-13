@@ -11,5 +11,5 @@ public interface NotificationRepositoryCustom {
 
     void setIsRead(long userId, boolean isRead);
 
-    void removeByCreatedAtBetween(LocalDateTime from, LocalDateTime to);
+    void removeByCreatedAtBefore(LocalDateTime at);
 }
