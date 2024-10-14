@@ -20,7 +20,7 @@ public class NoticeAppender {
 
     private final UserReader userReader;
     private final NoticeRepository noticeRepository;
-    private final NoticeInfoValidator noticeInfoValidator;
+    private final NoticeValidator noticeValidator;
     private final EmergencyRoomReader emergencyRoomReader;
     private final FileMetaDataReader fileMetaDataReader;
 
@@ -29,12 +29,11 @@ public class NoticeAppender {
     }
 
     public Notice createNotice(NoticeInfo newNoticeInfo, UserPrincipal userPrincipal) {
-        noticeInfoValidator.validateRole(userPrincipal);
+        noticeValidator.validateRole(userPrincipal);
 
         EmergencyRoom emergencyRoom = emergencyRoomReader.read(newNoticeInfo.hpId());
         User user = userReader.read(userPrincipal.userId());
-        // 제목, 내용 null 검사
-        noticeInfoValidator.validateNull(newNoticeInfo.title(), newNoticeInfo.content());
+
         return Notice.from(newNoticeInfo, user, emergencyRoom);
     }
 

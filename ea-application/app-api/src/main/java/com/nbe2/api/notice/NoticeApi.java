@@ -2,6 +2,8 @@ package com.nbe2.api.notice;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,10 +38,9 @@ public class NoticeApi {
 
     @PostMapping // insert
     public Response<Void> createNotice(
-            @RequestBody NoticteCreateRequest request,
+            @Valid @RequestBody NoticteCreateRequest request,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @RequestParam(name = "file", required = false) List<Long> fileIds) {
-        // @TODO 의료 관계자만 등록할 수 있게 해야 함
         NoticeInfo newNoticeinfo = request.toNoticeInfo();
         // 파일 Id등록
         noticeService.writeNoticeWithFile(newNoticeinfo, userPrincipal, fileIds);
@@ -49,7 +50,7 @@ public class NoticeApi {
     @PutMapping("/{noticeId}") // update
     public Response<Void> updateNotice(
             @PathVariable Long noticeId,
-            @RequestBody NoticeUpdateReqeust updateReqeust,
+            @Valid @RequestBody NoticeUpdateReqeust updateReqeust,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
         NoticeUpdateInfo updateInfo = updateReqeust.toNoticeUpdateInfo();
         noticeService.updateNotice(updateInfo, noticeId, userPrincipal.userId());
