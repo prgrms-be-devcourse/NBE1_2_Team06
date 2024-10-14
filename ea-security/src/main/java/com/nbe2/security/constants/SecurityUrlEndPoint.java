@@ -12,6 +12,7 @@ import com.nbe2.domain.user.UserRole;
 public enum SecurityUrlEndPoint {
 
     // All
+    HEALTH_CHECK_GET(HttpMethod.GET, "/health"),
     GUEST_OAUTH_POST(HttpMethod.POST, "/api/v1/oauth/**"),
     GUEST_AUTH_POST(HttpMethod.POST, "/api/v1/auth/**"),
     GUEST_NOTICES_GET(HttpMethod.GET, "/api/v1/notices/**"),
