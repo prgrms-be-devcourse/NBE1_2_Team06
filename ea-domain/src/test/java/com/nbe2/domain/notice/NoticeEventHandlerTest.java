@@ -1,4 +1,4 @@
-package com.nbe2.domain.notification;
+package com.nbe2.domain.notice;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.nbe2.domain.bookmark.BookmarkReader;
-import com.nbe2.domain.notice.NoticeFixture;
 
 @ExtendWith(MockitoExtension.class)
 class NoticeEventHandlerTest {
@@ -24,13 +23,13 @@ class NoticeEventHandlerTest {
 
     @Mock private BookmarkReader bookmarkReader;
 
-    @Mock private EventPublisher eventPublisher;
+    @Mock private NoticeEventPublisher eventPublisher;
 
     @Test
     @DisplayName("병원을 즐겨찾기한 사용자 수만큼 알림 이벤트를 발행한다.")
     void givenNoticeEvent_whenBookmarkedUserExist_thenShouldPublishMultipleEvents() {
         // given
-        NoticeEvent event = NoticeEvent.of(NoticeFixture.create());
+        NewNoticeEvent event = NewNoticeEvent.from(NoticeFixture.create());
         List<Long> targetIds = List.of(1L, 2L);
 
         // when
@@ -38,14 +37,15 @@ class NoticeEventHandlerTest {
         noticeEventHandler.handle(event);
 
         // then
-        verify(eventPublisher, times(targetIds.size())).publish(any(NotificationEvent.class));
+        verify(eventPublisher, times(targetIds.size()))
+                .publish(any(NewNoticeOfBookmarkedHospitalEvent.class));
     }
 
     @Test
     @DisplayName("즐겨찾기한 사용자가 없으면 알림 이벤트를 발행하지 않는다.")
     void givenNoticeEvent_whenBookmarkedUserNotExist_thenShouldNotPublishEvent() {
         // given
-        NoticeEvent event = NoticeEvent.of(NoticeFixture.create());
+        NewNoticeEvent event = NewNoticeEvent.from(NoticeFixture.create());
         List<Long> targetIds = Collections.emptyList();
 
         // when
@@ -53,6 +53,6 @@ class NoticeEventHandlerTest {
         noticeEventHandler.handle(event);
 
         // then
-        verify(eventPublisher, never()).publish(any(NotificationEvent.class));
+        verify(eventPublisher, never()).publish(any(NewNoticeOfBookmarkedHospitalEvent.class));
     }
 }
