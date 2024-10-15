@@ -12,9 +12,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import lombok.RequiredArgsConstructor;
 
-import com.nbe2.domain.notification.NotificationEvent;
 import com.nbe2.domain.notification.NotificationType;
-import com.nbe2.infra.notification.client.RedisSubscriber;
+import com.nbe2.infra.notification.subscriber.CommentRedisSubscriber;
+import com.nbe2.infra.notification.subscriber.NoticeRedisSubscriber;
 
 @Configuration
 @RequiredArgsConstructor
@@ -24,26 +24,32 @@ public class RedisPubsubConfig {
 
     @Bean
     public RedisMessageListenerContainer redisMessageListenerContainer(
-            MessageListenerAdapter listenerAdapter) {
+            MessageListenerAdapter noticeListener, MessageListenerAdapter commentListener) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(redisConnectionFactory);
         container.addMessageListener(
-                listenerAdapter, new PatternTopic(NotificationType.CHANNEL_ID));
+                noticeListener, new PatternTopic(NotificationType.NOTICE.getChannelId()));
+        container.addMessageListener(
+                commentListener, new PatternTopic(NotificationType.COMMENT.getChannelId()));
         return container;
     }
 
     @Bean
-    public MessageListenerAdapter listenerAdapter(RedisSubscriber redisSubscriber) {
-        return new MessageListenerAdapter(redisSubscriber);
+    public MessageListenerAdapter noticeListener(NoticeRedisSubscriber noticeRedisSubscriber) {
+        return new MessageListenerAdapter(noticeRedisSubscriber);
     }
 
     @Bean
-    public RedisTemplate<String, NotificationEvent> notificationTemplate() {
-        RedisTemplate<String, NotificationEvent> redisTemplate = new RedisTemplate<>();
+    public MessageListenerAdapter commentListener(CommentRedisSubscriber commentRedisSubscriber) {
+        return new MessageListenerAdapter(commentRedisSubscriber);
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> notificationTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(
-                new Jackson2JsonRedisSerializer<>(NotificationEvent.class));
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
         return redisTemplate;
     }
 }

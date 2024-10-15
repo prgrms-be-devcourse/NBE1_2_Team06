@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import com.nbe2.common.dto.Page;
 import com.nbe2.common.dto.PageResult;
 import com.nbe2.domain.global.util.PagingUtil;
-import com.nbe2.domain.notification.NoticeEventPublisher;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +19,7 @@ public class NoticeService {
     private final NoticeReader noticeReader;
     private final NoticeUpdater noticeUpdater;
     private final NoticeDeleter noticeDeleter;
-    private final NoticeEventPublisher noticeEventPublisher;
+    private final NoticeEventInnerPublisher noticeEventInnerPublisher;
 
     @Transactional
     public void writeNoticeWithFile(
@@ -29,7 +28,7 @@ public class NoticeService {
 
         noticeAppender.addFileIds(newNotice, fileIds);
         noticeAppender.append(newNotice);
-        noticeEventPublisher.publish(newNotice);
+        noticeEventInnerPublisher.publish(newNotice);
     }
 
     public void deleteNotice(Long noticeId) {

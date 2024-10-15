@@ -1,4 +1,4 @@
-package com.nbe2.domain.notification;
+package com.nbe2.domain.notice;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -15,14 +15,17 @@ import com.nbe2.domain.bookmark.BookmarkReader;
 public class NoticeEventHandler {
 
     private final BookmarkReader bookmarkReader;
-    private final EventPublisher eventPublisher;
+    private final NoticeEventPublisher eventPublisher;
 
     @Async
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handle(NoticeEvent event) {
+    public void handle(NewNoticeEvent event) {
         bookmarkReader
                 .readUserIdsByEmergencyRoomId(event.notice().getEmergencyRoom().getId())
-                .forEach(id -> eventPublisher.publish(NotificationEvent.from(id, event.notice())));
+                .forEach(
+                        id ->
+                                eventPublisher.publish(
+                                        NewNoticeOfBookmarkedHospitalEvent.of(id, event.notice())));
     }
 }
