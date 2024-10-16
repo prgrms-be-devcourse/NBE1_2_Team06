@@ -47,6 +47,26 @@ public class OpenAiClient implements ChatbotService {
     }
 
     @Override
+    public String getSyncResponse(Question question) {
+        return chatClient
+                .prompt()
+                .user(question.query())
+                .advisors(
+                        advisorSpec ->
+                                advisorSpec
+                                        .param(
+                                                AbstractChatMemoryAdvisor
+                                                        .CHAT_MEMORY_CONVERSATION_ID_KEY,
+                                                question.sessionId())
+                                        .param(
+                                                AbstractChatMemoryAdvisor
+                                                        .CHAT_MEMORY_RETRIEVE_SIZE_KEY,
+                                                100))
+                .call()
+                .content();
+    }
+
+    @Override
     public void closeChatMemorySession(String sessionId) {
         chatMemory.clear(sessionId);
     }

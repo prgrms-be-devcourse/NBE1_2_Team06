@@ -10,6 +10,8 @@ public interface ChatbotService {
 
     void getResponse(Question question, ResponseHandler handler);
 
+    String getSyncResponse(Question question);
+
     void closeChatMemorySession(String sessionId);
 
     interface ResponseHandler {
