@@ -8,14 +8,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NoticeUpdater {
 
-    private final NoticeInfoValidator noticeInfoValidator;
+    private final NoticeValidator noticeValidator;
     private final NoticeRepository noticeRepository;
     private final NoticeReader noticeReader;
 
-    public void updateNotice(NoticeUpdateInfo updateInfo, Long noticeId) {
-        noticeInfoValidator.validate(updateInfo.title(), updateInfo.content());
+    public void updateNotice(NoticeUpdateInfo updateInfo, Long noticeId, Long userId) {
         Notice before = noticeReader.readNotice(noticeId);
-        before.updateNotice(updateInfo.title().get(), updateInfo.content().get());
+
+        noticeValidator.validateAuthor(before, userId);
+        before.updateNotice(updateInfo.title(), updateInfo.content());
         noticeRepository.save(before);
     }
 }
