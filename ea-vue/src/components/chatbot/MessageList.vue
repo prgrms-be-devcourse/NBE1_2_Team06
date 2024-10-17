@@ -3,8 +3,10 @@
     <div v-for="(message, index) in messages" :key="index" :class="getMessageClass(message)">
       <span v-html="message.text"></span>
     </div>
-    <div v-if="isLoading" class="bot-message loading-spinner">
-      <span class="spinner"></span>
+    <div v-if="isLoading" class="bot-message loading-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
     </div>
   </div>
 </template>
@@ -44,8 +46,6 @@ export default {
   max-height: calc(100vh - 120px);
   overflow-y: auto;
   padding: 10px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
   background-color: #ffffff;
 }
 
@@ -69,27 +69,41 @@ export default {
   background-color: #f1f1f1;
 }
 
-.loading-spinner {
+.loading-dots {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 5px;
 }
 
-.spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-left-color: #242424;
+.dot {
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  width: 15px;
-  height: 15px;
-  animation: spin 1s linear infinite;
+  background-color: rgba(0, 0, 0, 0.3); /* 초기 상태 색상 */
+  animation: bounce 1.2s infinite ease-in-out;
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
+.dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    background-color: rgba(0, 0, 0, 0.3);
   }
-  100% {
-    transform: rotate(360deg);
+  40% {
+    transform: scale(1.0);
+    background-color: rgba(0, 0, 0, 1);
   }
 }
 </style>
