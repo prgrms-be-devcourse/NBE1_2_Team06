@@ -35,17 +35,17 @@ class RealTimeEmergencyRoomInfoFetcherTest {
             Coordinate coordinate = EmergencyRoomFixture.COORDINATE;
             List<RealTimeEmergencyRoomInfo> expectedInfo =
                     EmergencyRoomFixture.createRealTimeInfoList();
+            Region expectedRegion = EmergencyRoomFixture.getRegion();
 
             // when
-            Region region = coordinateToRegionConverter.convert(coordinate);
-            when(realTimeClient.getRealTimeInfo(region)).thenReturn(expectedInfo);
+            when(coordinateToRegionConverter.convert(coordinate)).thenReturn(expectedRegion);
+            when(realTimeClient.getRealTimeInfo(expectedRegion)).thenReturn(expectedInfo);
 
             // then
             List<RealTimeEmergencyRoomInfo> actualInfo =
                     realTimeEmergencyRoomInfoFetcher.fetch(coordinate);
-
             assertEquals(expectedInfo, actualInfo);
-            verify(realTimeClient, times(1)).getRealTimeInfo(region);
+            verify(realTimeClient, times(1)).getRealTimeInfo(expectedRegion);
             verify(cacheManager, times(1)).cache(expectedInfo);
         }
 
@@ -54,12 +54,13 @@ class RealTimeEmergencyRoomInfoFetcherTest {
         void givenCoordinate_RealTimeInfo_whenConvertRegion_CacheManagerCalled_thenCacheInfo() {
             // given
             Coordinate coordinate = EmergencyRoomFixture.COORDINATE;
+            Region expectedRegion = EmergencyRoomFixture.getRegion();
             List<RealTimeEmergencyRoomInfo> realTimeInfo =
                     EmergencyRoomFixture.createRealTimeInfoList();
 
             // when
-            Region region = coordinateToRegionConverter.convert(coordinate);
-            when(realTimeClient.getRealTimeInfo(region)).thenReturn(realTimeInfo);
+            when(coordinateToRegionConverter.convert(coordinate)).thenReturn(expectedRegion);
+            when(realTimeClient.getRealTimeInfo(expectedRegion)).thenReturn(realTimeInfo);
             doNothing().when(cacheManager).cache(realTimeInfo);
 
             // then
