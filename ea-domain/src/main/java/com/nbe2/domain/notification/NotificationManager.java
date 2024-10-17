@@ -9,10 +9,11 @@ import lombok.RequiredArgsConstructor;
 public class NotificationManager {
 
     private final NotificationAppender notificationAppender;
-    private final EventSender eventSender;
+    private final NotificationSender notificationSender;
 
-    public void sendCommentNotification(NotificationEvent event) {
-        notificationAppender.append(event);
-        eventSender.send(event);
+    public void send(NewNotification notification) {
+        notificationAppender.append(notification);
+        notificationSender.send(
+                NewNotificationEvent.of(notification.targetId(), notification.type()));
     }
 }

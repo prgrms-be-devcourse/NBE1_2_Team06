@@ -13,13 +13,12 @@ public class NotificationAppender {
     private final UserReader userReader;
     private final NotificationRepository notificationRepository;
 
-    public void append(NotificationEvent event) {
-        Notification notification =
+    public void append(NewNotification notification) {
+        notificationRepository.save(
                 Notification.of(
-                        userReader.read(event.targetId()),
-                        event.referenceUri(),
-                        event.title(),
-                        NotificationType.COMMENT);
-        notificationRepository.save(notification);
+                        userReader.read(notification.targetId()),
+                        notification.referenceUri(),
+                        notification.title(),
+                        notification.type()));
     }
 }
