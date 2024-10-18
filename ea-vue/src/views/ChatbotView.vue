@@ -49,6 +49,10 @@ export default {
         sender: 'bot',
       });
     } catch (error) {
+      this.messages.push({
+        text: formatChatMessage('문제가 발생했습니다.\n잠시 후 다시 시도해주세요!'),
+        sender: 'bot',
+      });
       console.log('Error on connect', error);
     }
   },

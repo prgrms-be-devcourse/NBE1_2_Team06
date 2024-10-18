@@ -30,10 +30,10 @@ export default {
   },
   updated() {
     this.$nextTick(() => {
-      const messageList = this.$refs.messageList;
+      const { messageList } = this.$refs;
       messageList.scrollTop = messageList.scrollHeight;
     });
-  }
+  },
 };
 </script>
 

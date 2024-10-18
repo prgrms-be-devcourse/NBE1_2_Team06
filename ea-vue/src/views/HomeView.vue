@@ -9,7 +9,7 @@
 <script>
 // @ is an alias to /src
 import HealthCheck from '@/components/HealthCheck.vue';
-import ChatbotView from "@/views/ChatbotView.vue";
+import ChatbotView from '@/views/ChatbotView.vue';
 
 export default {
   name: 'HomeView',
