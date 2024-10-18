@@ -6,7 +6,7 @@ async function useConnect() {
 }
 
 async function useSendingQuery(query, sessionId) {
-  const response = await axios.post('/api/chatbot/sync-query', {
+  const response = await axios.post('/api/chatbot/query', {
     query,
     sessionId,
   });
