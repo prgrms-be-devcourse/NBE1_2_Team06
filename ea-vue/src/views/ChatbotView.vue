@@ -3,17 +3,25 @@
     <i class="fas fa-first-aid"></i>
   </button>
 
-  <div v-if="isChatbotVisible" class="overlay" @click="toggleChatbot"></div>
+  <div v-if="isChatbotVisible" class="overlay"
+       @click="toggleChatbot"
+       @keydown.enter="toggleChatbot"
+       tabindex="0">
+  </div>
 
   <div v-if="isChatbotVisible" class="chatbot-window">
-    <ChatbotWindow :messages="messages" :sessionId="sessionId" @updateMessages="updateMessages" @closeChatbot="toggleChatbot"/>
+    <ChatbotWindow
+        :messages="messages"
+        :sessionId="sessionId"
+        @updateMessages="updateMessages"
+        @closeChatbot="toggleChatbot"/>
   </div>
 </template>
 
 <script>
-import ChatbotWindow from "@/components/chatbot/ChatbotWindow.vue";
-import { useConnect, useDisconnect } from "@/composables/chatbot-api";
-import formatChatMessage from "@/composables/format-chat-message";
+import ChatbotWindow from '@/components/chatbot/ChatbotWindow.vue';
+import { useConnect, useDisconnect } from '@/composables/chatbot-api';
+import formatChatMessage from '@/composables/format-chat-message';
 
 export default {
   name: 'ChatbotView',
@@ -32,13 +40,13 @@ export default {
       const response = await useConnect();
       this.sessionId = response.sessionId;
 
-      this.updateMessages({
+      this.messages.push({
         text: formatChatMessage('안녕하세요!\n저는 응급🚑 비서 **은비**입니다.'),
-        sender: 'bot'
+        sender: 'bot',
       });
-      this.updateMessages({
+      this.messages.push({
         text: formatChatMessage('응급 처치 방법에 대해서 질문해주세요!'),
-        sender: 'bot'
+        sender: 'bot',
       });
     } catch (error) {
       console.log('Error on connect', error);
@@ -48,8 +56,23 @@ export default {
     toggleChatbot() {
       this.isChatbotVisible = !this.isChatbotVisible;
     },
-    updateMessages(newMessage) {
-      this.messages.push(newMessage);
+    updateMessages({ text, sender }) {
+      if (sender === 'user') {
+        this.messages.push({ text: formatChatMessage(text), sender });
+        return;
+      }
+
+      this.messages.push({ text: '', sender });
+      this.typeCharacter(this.messages.length - 1, text, 0);
+    },
+    typeCharacter(messageIndex, fullText, index) {
+      if (index >= fullText.length) return;
+
+      this.messages[messageIndex].text += fullText[index];
+      this.messages[messageIndex].text = formatChatMessage(this.messages[messageIndex].text);
+      setTimeout(() => {
+        this.typeCharacter(messageIndex, fullText, index + 1);
+      }, 40);
     },
   },
   beforeUnmount() {
@@ -57,7 +80,7 @@ export default {
       useDisconnect(this.sessionId).catch((error) => console.log('Error on disconnect', error));
     }
   },
-}
+};
 </script>
 
 <style scoped>

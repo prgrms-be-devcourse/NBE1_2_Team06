@@ -12,7 +12,6 @@
 
 <script>
 import { useSendingQuery } from '@/composables/chatbot-api';
-import formatChatMessage from "@/composables/format-chat-message";
 import MessageList from './MessageList.vue';
 import MessageInput from './MessageInput.vue';
 
@@ -25,7 +24,7 @@ export default {
     sessionId: {
       type: String,
       required: true,
-    }
+    },
   },
   components: {
     MessageList,
@@ -40,13 +39,13 @@ export default {
     async handleSendMessage(message) {
       if (!this.sessionId) return;
 
-      this.$emit('updateMessages', {text: formatChatMessage(message), sender: 'user'});
+      this.$emit('updateMessages', { text: message, sender: 'user' });
       this.isLoading = true;
 
       const data = await useSendingQuery(message, this.sessionId);
 
       this.isLoading = false;
-      this.$emit('updateMessages', {text: formatChatMessage(data), sender: 'bot'});
+      this.$emit('updateMessages', { text: data, sender: 'bot' });
     },
   },
 };
