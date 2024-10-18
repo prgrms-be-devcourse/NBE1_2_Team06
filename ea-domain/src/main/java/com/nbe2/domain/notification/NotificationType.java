@@ -4,7 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum NotificationType {
-    COMMENT("comment");
+    COMMENT("comment"),
+    NOTICE("notice");
 
     private final String channelId;
 

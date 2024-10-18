@@ -20,6 +20,7 @@ public class NoticeService {
     private final NoticeReader noticeReader;
     private final NoticeUpdater noticeUpdater;
     private final NoticeDeleter noticeDeleter;
+    private final NoticeEventInnerPublisher noticeEventInnerPublisher;
 
     @Transactional
     public void writeNoticeWithFile(
@@ -31,6 +32,7 @@ public class NoticeService {
 
         noticeAppender.addFileIds(newNotice, fileIds);
         noticeAppender.append(newNotice);
+        noticeEventInnerPublisher.publish(newNotice);
     }
 
     public void deleteNotice(Long noticeId, Long userId) {

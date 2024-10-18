@@ -27,9 +27,9 @@ class NotificationAppenderTest {
 
     @Test
     @DisplayName("사용자에게 온 알림을 저장한다.")
-    void givenNotificationEvent_thenShouldSaveNotification() {
+    void givenNotification_thenShouldSaveNotification() {
         // given
-        NotificationEvent event = NotificationFixture.createCommentNotificationEvent();
+        NewNotification event = NotificationFixture.createNewNotification();
         User user = UserFixture.createUserWithId();
 
         // when

@@ -33,7 +33,7 @@ public class NotificationFixture {
         return notification;
     }
 
-    public static NotificationEvent createCommentNotificationEvent() {
-        return new NotificationEvent(ID, REFERENCE_URI, TITLE, NotificationType.COMMENT);
+    public static NewNotification createNewNotification() {
+        return NewNotification.of(ID, REFERENCE_URI, TITLE, NotificationType.COMMENT);
     }
 }
