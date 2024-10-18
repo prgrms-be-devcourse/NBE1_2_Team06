@@ -1,20 +1,25 @@
 package com.nbe2.domain.bookmark;
 
+import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import com.nbe2.domain.emergencyroom.EmergencyRoom;
+import com.nbe2.domain.emergencyroom.EmergencyRoomFixture;
 import com.nbe2.domain.emergencyroom.EmergencyRoomReader;
 import com.nbe2.domain.user.User;
+import com.nbe2.domain.user.UserFixture;
 import com.nbe2.domain.user.UserReader;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-class BookmarkAppenderTest {
+@ExtendWith(MockitoExtension.class)
+public class BookmarkAppenderTest {
 
 	@InjectMocks
 	private BookmarkAppender bookmarkAppender;
@@ -28,26 +33,35 @@ class BookmarkAppenderTest {
 	@Mock
 	private EmergencyRoomReader emergencyRoomReader;
 
-	@Test
-	@DisplayName("응급실 Id와 회원 Id를 통해 즐겨찾기를 저장한다")
-	void given_emergencyRoomId_userId_when_create_bookmark_then_save_bookmark(){
-		//given
-		long emergencyRoomId = 1;
-		long userId = 1;
-		EmergencyRoom emergencyRoom = emergencyRoomReader.read(emergencyRoomId);
-		User user = userReader.read(userId);
 
-		when(emergencyRoomReader.read(emergencyRoomId)).thenReturn(emergencyRoom);
-		when(userReader.read(userId)).thenReturn(user);
-		when(bookmarkRepository.save(any(Bookmark.class))).thenReturn(new Bookmark());
+	private EmergencyRoom expectedEmergencyRoom;
+	private User expectedkUser;
+
+	@BeforeEach
+	void setup() {
+		expectedEmergencyRoom = EmergencyRoomFixture.create();
+		expectedkUser = UserFixture.createUserWithId();
+	}
+
+	@Test
+	@DisplayName("유저Id, 응급실Id를 통해 즐겨찾기를 저장한다.")
+	void given_userId_emergencyRoomId_when_create_bookmark_then_should_save_bookmark() {
+		// Given:
+		Long emergencyRoomId = 1L;
+		Long userId = 1L;
 
 		// When
+		when(emergencyRoomReader.read(emergencyRoomId)).thenReturn(expectedEmergencyRoom);
+		when(userReader.read(userId)).thenReturn(expectedkUser);
+
 		bookmarkAppender.save(emergencyRoomId, userId);
 
 		// Then
-		// verify(emergencyRoomReader).read(emergencyRoomId);
-		// verify(userReader).read(userId);
-		verify(bookmarkRepository).save(any(Bookmark.class));
+		assertEquals(userId, expectedkUser.getId());
+		verify(bookmarkRepository, times(1))
+				.save(argThat(bookmark ->
+						bookmark.getUser().equals(expectedkUser) &&
+								bookmark.getEmergencyRoom().equals(expectedEmergencyRoom)
+				));
 	}
-
 }
