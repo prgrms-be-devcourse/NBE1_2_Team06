@@ -1,9 +1,10 @@
 <template>
   <div class="input-container">
     <textarea v-model="message"
-              @keyup="handleKeyDown"
+              @keyup.enter="handleKeyUp"
               placeholder="질문을 입력하세요."
               class="message-input"
+              aria-label="input-message"
     ></textarea>
     <button @click="sendMessage" class="send-button">
       <i class="fas fa-paper-plane"></i>
@@ -19,8 +20,8 @@ export default {
     };
   },
   methods: {
-    handleKeyDown(event) {
-      if (event.key === 'Enter' && !event.shiftKey) {
+    handleKeyUp(event) {
+      if (!event.shiftKey) {
         event.preventDefault();
         this.sendMessage();
       }
