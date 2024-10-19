@@ -39,6 +39,7 @@ class BookmarkDeleterTest {
 	void given_bookmark_when_delete_bookmark_then_should_delete_bookmark() {
 		//given
 		Bookmark bookmark =Bookmark.from(expectedUser,expectedEmergencyRoom);
+
 		//when
 		bookmarkDeleter.deleteBookmark(bookmark);
 
