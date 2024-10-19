@@ -1,11 +1,13 @@
 package com.nbe2.domain.bookmark;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.nbe2.domain.bookmark.exception.BookmarkNotFoundEmergencyRoomIdException;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,6 +68,23 @@ class BookmarkReaderTest {
 		//then
 		Bookmark actualBookmark = bookmarkReader.readByEmergencyRoomIdAndUserId(emergencyRoomId, userId);
 		assertEquals(expectedBookmark,actualBookmark);
+	}
+
+	@Test
+	@DisplayName("즐겨찾기 되어있지 않은 응급실 Id로 즐겨찾기 조회 시 예외가 발생한다.")
+	void given_userId_notValid_emergencyRoomId_when_read_bookmark_then_should_return_error(){
+		//given
+		//when
+		when(bookmarkRepository.findByEmergencyRoomIdAndUserId(emergencyRoomId, userId))
+				.thenReturn(Optional.empty());
+
+		assertThatThrownBy(() ->
+				bookmarkReader.readByEmergencyRoomIdAndUserId(emergencyRoomId, userId)
+		).isInstanceOf(BookmarkNotFoundEmergencyRoomIdException.class);
+
+		//then
+		verify(bookmarkRepository, times(1))
+				.findByEmergencyRoomIdAndUserId(emergencyRoomId, userId);
 	}
 
 }
