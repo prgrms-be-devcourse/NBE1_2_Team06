@@ -3,12 +3,7 @@ package com.nbe2.domain.bookmark;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import com.nbe2.domain.emergencyroom.EmergencyRoom;
-import com.nbe2.domain.emergencyroom.EmergencyRoomFixture;
-import com.nbe2.domain.user.User;
-import com.nbe2.domain.user.UserFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,34 +12,37 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.nbe2.domain.emergencyroom.EmergencyRoom;
+import com.nbe2.domain.emergencyroom.EmergencyRoomFixture;
+import com.nbe2.domain.user.User;
+import com.nbe2.domain.user.UserFixture;
+
 @ExtendWith(MockitoExtension.class)
 class BookmarkDeleterTest {
 
-	@InjectMocks
-	private BookmarkDeleter bookmarkDeleter;
+    @InjectMocks private BookmarkDeleter bookmarkDeleter;
 
-	@Mock
-	private BookmarkRepository bookmarkRepository;
+    @Mock private BookmarkRepository bookmarkRepository;
 
-	private EmergencyRoom expectedEmergencyRoom;
-	private User expectedUser;
-	@BeforeEach
-	void setup(){
-		expectedEmergencyRoom = EmergencyRoomFixture.create();
-		expectedUser = UserFixture.createUserWithId();
-	}
+    private EmergencyRoom expectedEmergencyRoom;
+    private User expectedUser;
 
-	@Test
-	@DisplayName("즐겨찾기 객체를 통해 즐겨찾기를 삭제한다.")
-	void given_bookmark_when_delete_bookmark_then_should_delete_bookmark() {
-		//given
-		Bookmark bookmark =Bookmark.from(expectedUser,expectedEmergencyRoom);
+    @BeforeEach
+    void setup() {
+        expectedEmergencyRoom = EmergencyRoomFixture.create();
+        expectedUser = UserFixture.createUserWithId();
+    }
 
-		//when
-		bookmarkDeleter.deleteBookmark(bookmark);
+    @Test
+    @DisplayName("즐겨찾기 객체를 통해 즐겨찾기를 삭제한다.")
+    void given_bookmark_when_delete_bookmark_then_should_delete_bookmark() {
+        // given
+        Bookmark bookmark = Bookmark.from(expectedUser, expectedEmergencyRoom);
 
-		//then
-		verify(bookmarkRepository, times(1)).delete(bookmark);
-	}
+        // when
+        bookmarkDeleter.deleteBookmark(bookmark);
 
+        // then
+        verify(bookmarkRepository, times(1)).delete(bookmark);
+    }
 }
