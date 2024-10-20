@@ -38,7 +38,7 @@ class BookmarkReaderTest {
 
     @Test
     @DisplayName("유저 ID를 통해 즐겨찾기 목록를 조회한다.")
-    void given_userId_when_read_bookmark_then_should_return_bookmarkList() {
+    void givenUserId_whenReadBookmark_thenShouldReturnBookmarkList() {
         // given
         userId = 1L;
         List<Bookmark> expectedBookmarks = List.of(expectedBookmark);
@@ -55,7 +55,7 @@ class BookmarkReaderTest {
 
     @Test
     @DisplayName("유저ID와 응급실 ID를 통해 즐겨찾기된 응급실을 조회한다.")
-    void given_userId_emergencyRoomId_When_read_bookmark_then_should_return_bookmark() {
+    void givenUserIdEmergencyRoomId_WhenReadBookmark_thenShouldReturnBookmark() {
         // given
         userId = 1L;
         emergencyRoomId = 1L;
@@ -72,7 +72,7 @@ class BookmarkReaderTest {
 
     @Test
     @DisplayName("즐겨찾기 되어있지 않은 응급실 Id로 즐겨찾기 조회 시 예외가 발생한다.")
-    void given_userId_notValid_emergencyRoomId_when_read_bookmark_then_should_return_error() {
+    void givenUserIdNotValidEmergencyRoomId_whenReadBookmark_thenShouldReturnError() {
         // given
         // when
         when(bookmarkRepository.findByEmergencyRoomIdAndUserId(emergencyRoomId, userId))

@@ -40,7 +40,7 @@ public class BookmarkAppenderTest {
 
     @Test
     @DisplayName("유저Id, 응급실Id를 통해 즐겨찾기를 저장한다.")
-    void given_userId_emergencyRoomId_when_create_bookmark_then_should_save_bookmark() {
+    void givenUserIdEmergencyRoomId_whenCreateBookmark_thenShouldSaveBookmark() {
         // Given:
         Long emergencyRoomId = 1L;
         Long userId = 1L;

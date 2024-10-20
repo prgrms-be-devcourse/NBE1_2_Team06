@@ -37,7 +37,7 @@ class BookmarkServiceTest {
 
     @Test
     @DisplayName("사용자가 즐겨찾기를 추가한다.")
-    void given_userId_emergencyRoomId_when_bookmarkAppender_save_then_bookmark_save() {
+    void givenUserIdEmergencyRoomId_whenBookmarkAppenderSave_thenShouldBookmarkSave() {
         // given
         long userId = 1L;
         long emergencyRoomId = 1L;
@@ -51,7 +51,7 @@ class BookmarkServiceTest {
 
     @Test
     @DisplayName("사용자가 즐겨찾기를 조회한다.")
-    void given_userId_when_bookmarkReader_readByUserId_then_bookmarkReadInfo_from() {
+    void givenUserId_whenBookmarkReaderReadByUserId_thenShouldBookmarkReadInfoFrom() {
         // given
         User user = UserFixture.createUserWithId();
         EmergencyRoom emergencyRoom1 = EmergencyRoomFixture.create();
@@ -71,7 +71,7 @@ class BookmarkServiceTest {
     @Test
     @DisplayName("사용자가 즐겨찾기를 삭제한다.")
     void
-            given_userId_emnergencyRoomId_when_bookmarkReader_readByEmergencyRoomIdAndUserId_then_bookmark_delete() {
+            givenUserIdEmnergencyRoomId_whenBookmarkReaderReadByEmergencyRoomIdAndUserId_thenBookmarkDelete() {
         // Given
         Long emergencyRoomId = 1L;
         Long userId = 2L;

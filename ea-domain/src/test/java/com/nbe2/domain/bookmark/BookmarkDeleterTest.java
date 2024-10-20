@@ -35,7 +35,7 @@ class BookmarkDeleterTest {
 
     @Test
     @DisplayName("즐겨찾기 객체를 통해 즐겨찾기를 삭제한다.")
-    void given_bookmark_when_delete_bookmark_then_should_delete_bookmark() {
+    void givenBookmark_whenDeleteBookmark_thenShouldDeleteBookmark() {
         // given
         Bookmark bookmark = Bookmark.from(expectedUser, expectedEmergencyRoom);
 
