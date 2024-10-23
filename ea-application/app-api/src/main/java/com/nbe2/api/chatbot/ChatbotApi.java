@@ -23,7 +23,7 @@ public class ChatbotApi {
     }
 
     @PostMapping("/query")
-    public Response<ChatResponse> testForLocal(@RequestBody QuestionRequest request) {
+    public Response<ChatResponse> askOfEmergencyManual(@RequestBody QuestionRequest request) {
         return Response.success(
                 ChatResponse.of(chatbotService.getChatResponse(request.toQuestion())));
     }
