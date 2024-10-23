@@ -8,16 +8,7 @@ public interface ChatbotService {
         return UUID.randomUUID().toString();
     }
 
-    void getResponse(Question question, ResponseHandler handler);
+    String getChatResponse(Question question);
 
     void closeChatMemorySession(String sessionId);
-
-    interface ResponseHandler {
-
-        void onResponse(String response);
-
-        void onComplete();
-
-        void onError(Throwable throwable);
-    }
 }
