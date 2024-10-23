@@ -1,7 +1,8 @@
 package com.nbe2.domain.review;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.DisplayName;
@@ -11,35 +12,39 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.nbe2.domain.emergencyroom.EmergencyRoomFixture;
-import com.nbe2.domain.user.UserFixture;
-
 @ExtendWith(MockitoExtension.class)
 class ReviewUpdaterTest {
-    @InjectMocks private ReviewUpdater updater;
+    @InjectMocks private ReviewUpdater reviewUpdater;
 
     @Mock ReviewReader reviewReader;
 
     @Mock ReviewRepository reviewRepository;
 
     @Test
-    @DisplayName("유효한 리뷰ID로 사용자가 유효한 내용으로 리뷰를 수정한다.")
+    @DisplayName("유효한 리뷰ID와 유효한 내용으로 리뷰를 수정한다.")
     void givenReviewUpdateInfoAndReviewId_whenReviewReaderReadReview_thenShouldUpdateReview() {
-        // TODO 어쩌다보니 reader 테스트가 되어버림..
-        // given
-        ReviewInfo reviewInfo = ReviewFixture.createReviewInfo();
-        Review expectedReview =
-                Review.from(
-                        reviewInfo,
-                        UserFixture.createUserWithId(),
-                        EmergencyRoomFixture.createWithId());
+        // Given
+        Review review = ReviewFixture.createReview();
         Long reviewId = 1L;
 
-        // when
-        when(reviewReader.readReview(reviewId)).thenReturn(expectedReview);
-        Review actualReview = reviewReader.readReview(reviewId);
+        ReviewUpdateInfo updateInfo = ReviewFixture.createReviewUpdateInfo("수정된 리뷰", 4.5, 3.0, 4.0);
 
-        // then
-        assertAll(() -> assertEquals(expectedReview, actualReview));
+        // Mock 설정: 리뷰 ID로 리뷰 읽기 동작
+        when(reviewReader.readReview(reviewId)).thenReturn(review);
+
+        // When
+        reviewUpdater.updateReview(updateInfo, reviewId);
+
+        // Then
+        // 리뷰가 업데이트되었는지 확인
+        assertThat(review.getContent()).isEqualTo("수정된 리뷰");
+        assertThat(review.getSpeedScore()).isEqualTo(4.5);
+        assertThat(review.getKindScore()).isEqualTo(3.0);
+        assertThat(review.getFacilityScore()).isEqualTo(4.0);
+
+        // 리뷰 저장 메서드 호출 확인
+        verify(reviewRepository, times(1)).save(review);
+        // 리뷰 읽기 메서드 호출 확인
+        verify(reviewReader, times(1)).readReview(reviewId);
     }
 }

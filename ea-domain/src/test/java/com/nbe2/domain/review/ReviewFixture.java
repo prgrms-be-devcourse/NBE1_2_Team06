@@ -22,4 +22,13 @@ public class ReviewFixture {
     public static ReviewInfo createReviewInfo() {
         return new ReviewInfo(CONTENT, SPEEDSCORE, KINDSCORE, FACILITYSCORE, HPID);
     }
+
+    public static ReviewUpdateInfo createReviewUpdateInfo(
+            String updatedContent,
+            Double updatedSpeedScore,
+            Double updatedKindScore,
+            Double updatedFacilityScore) {
+        return new ReviewUpdateInfo(
+                updatedContent, updatedSpeedScore, updatedKindScore, updatedFacilityScore);
+    }
 }
