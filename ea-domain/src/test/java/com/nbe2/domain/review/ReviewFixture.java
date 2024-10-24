@@ -31,4 +31,17 @@ public class ReviewFixture {
         return new ReviewUpdateInfo(
                 updatedContent, updatedSpeedScore, updatedKindScore, updatedFacilityScore);
     }
+
+    public static ReviewReadInfo createReviewReadInfo(
+            Review review, EmergencyRoom emergencyRoom, User user) {
+        return new ReviewReadInfo(
+                review.getReviewId(),
+                emergencyRoom.getId(),
+                user.getId(),
+                user.getEmail(),
+                CONTENT,
+                SPEEDSCORE,
+                KINDSCORE,
+                FACILITYSCORE);
+    }
 }
