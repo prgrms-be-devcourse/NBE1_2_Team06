@@ -2,6 +2,7 @@ package com.nbe2.domain.notification;
 
 import static com.nbe2.domain.notification.QNotification.notification;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -46,5 +47,10 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
                 .where(notification.target.id.eq(userId))
                 .where(notification.isRead.eq(!isRead))
                 .execute();
+    }
+
+    @Override
+    public void removeByCreatedAtBefore(LocalDateTime at) {
+        queryFactory.delete(notification).where(notification.createdAt.before(at)).execute();
     }
 }

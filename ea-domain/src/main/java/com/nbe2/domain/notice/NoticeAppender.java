@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
+import com.nbe2.domain.auth.UserPrincipal;
 import com.nbe2.domain.emergencyroom.EmergencyRoom;
 import com.nbe2.domain.emergencyroom.EmergencyRoomReader;
 import com.nbe2.domain.file.FileMetaData;
@@ -19,7 +20,7 @@ public class NoticeAppender {
 
     private final UserReader userReader;
     private final NoticeRepository noticeRepository;
-    private final NoticeInfoValidator noticeInfoValidator;
+    private final NoticeValidator noticeValidator;
     private final EmergencyRoomReader emergencyRoomReader;
     private final FileMetaDataReader fileMetaDataReader;
 
@@ -27,10 +28,12 @@ public class NoticeAppender {
         return noticeRepository.save(newNotice);
     }
 
-    public Notice createNotice(NoticeInfo newNoticeInfo, Long userId) {
+    public Notice createNotice(NoticeInfo newNoticeInfo, UserPrincipal userPrincipal) {
+        noticeValidator.validateRole(userPrincipal);
+
         EmergencyRoom emergencyRoom = emergencyRoomReader.read(newNoticeInfo.hpId());
-        User user = userReader.read(userId);
-        noticeInfoValidator.validate(newNoticeInfo.title(), newNoticeInfo.content());
+        User user = userReader.read(userPrincipal.userId());
+
         return Notice.from(newNoticeInfo, user, emergencyRoom);
     }
 

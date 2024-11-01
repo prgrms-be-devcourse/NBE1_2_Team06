@@ -23,7 +23,7 @@ public class DistanceCalculator {
                 .toList();
     }
 
-    private RealTimeEmergencyRoomWithDistance calculateDistance(
+    public RealTimeEmergencyRoomWithDistance calculateDistance(
             Coordinate currentCoordinate, RealTimeEmergencyRoomInfo info) {
         EmergencyRoom emergencyRoom = emergencyRoomReader.read(info.hospitalId());
         double distance = currentCoordinate.distanceTo(emergencyRoom.getLocation());

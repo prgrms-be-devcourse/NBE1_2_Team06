@@ -47,6 +47,12 @@ naver:
   directions-client-id: ${NAVER_MAP_CLIENT_ID}
   directions-secret-key: ${NAVER_MAP_SECRET_KEY}
 
+oauth:
+  kakao:
+    base-url: https://kauth.kakao.com
+    client-id: ${KAKAO_REST_API_KEY}
+    redirect-url: http://localhost:8080/api/v1/oauth/login
+
 ---
 
 spring:
@@ -58,8 +64,21 @@ spring:
       chroma:
         client:
           host: ${CHROMADB_HOST}
-          port: ${CHROMADB_HOST}
+          port: ${CHROMADB_PORT}
 
 redis:
   host: ${REDIS_HOST}
   port: ${REDIS_PORT}
+
+kakao:
+  rest-api-key: ${KAKAO_REST_API_KEY}
+
+naver:
+  directions-client-id: ${NAVER_MAP_CLIENT_ID}
+  directions-secret-key: ${NAVER_MAP_SECRET_KEY}
+
+oauth:
+  kakao:
+    base-url: https://kauth.kakao.com
+    client-id: ${KAKAO_REST_API_KEY}
+    redirect-url: ${KAKAO_REDIRECT_URL}

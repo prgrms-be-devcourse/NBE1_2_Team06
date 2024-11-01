@@ -19,36 +19,34 @@ class NotificationManagerTest {
 
     @Mock private NotificationAppender notificationAppender;
 
-    @Mock private EventSender eventSender;
+    @Mock private NotificationSender notificationSender;
 
     @Test
     @DisplayName("알림 이벤트 시 알림을 저장하고 이벤트를 대상 회원에게 전송한다.")
     void
-            givenNotificationEvent_whenEventIsValid_thenShouldAppendNotificationAndSendEventToTarget() {
+            givenNewNotification_whenNotificationIsValid_thenShouldAppendNotificationAndSendEventToTarget() {
         // given
-        NotificationEvent event = NotificationFixture.createCommentNotificationEvent();
+        NewNotification notification = NotificationFixture.createNewNotification();
 
         // when
-        notificationManager.sendCommentNotification(event);
+        notificationManager.send(notification);
 
         // then
-        verify(notificationAppender).append(event);
-        verify(eventSender).send(event);
+        verify(notificationAppender).append(notification);
+        verify(notificationSender).send(any(NewNotificationEvent.class));
     }
 
     @Test
     @DisplayName("알림 저장 중 예외가 발생하면 이벤트는 전송하지 않고 예외가 전파된다.")
-    void givenNotificationEvent_whenEventIsInvalid_thenShouldNotSendEventAndThrowException() {
+    void givenNewNotification_whenNotificationIsInvalid_thenShouldNotSendEventAndThrowException() {
         // given
-        NotificationEvent event = NotificationFixture.createCommentNotificationEvent();
+        NewNotification notification = NotificationFixture.createNewNotification();
 
         // when
-        doThrow(UserNotFoundException.class).when(notificationAppender).append(event);
+        doThrow(UserNotFoundException.class).when(notificationAppender).append(notification);
 
         // then
-        verify(eventSender, never()).send(event);
-        assertThrows(
-                UserNotFoundException.class,
-                () -> notificationManager.sendCommentNotification(event));
+        verify(notificationSender, never()).send(any(NewNotificationEvent.class));
+        assertThrows(UserNotFoundException.class, () -> notificationManager.send(notification));
     }
 }

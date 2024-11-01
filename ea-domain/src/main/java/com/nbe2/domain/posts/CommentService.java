@@ -23,12 +23,14 @@ public class CommentService {
     private final CommentUpdater commentUpdater;
     private final CommentDeleter commentDeleter;
     private final CommentValidator commentValidator;
+    private final CommentEventPublisher eventPublisher;
 
     public Long save(final Long postId, final CommentWriteInfo writeInfo) {
         Post post = postReader.readWithPessimisticWriteLock(postId);
         User user = userReader.read(writeInfo.userId());
         commentAppender.append(post, user, writeInfo.commentInfo());
         post.increaseCommentCount();
+        eventPublisher.publish(NewCommentEvent.from(post));
         return postId;
     }
 

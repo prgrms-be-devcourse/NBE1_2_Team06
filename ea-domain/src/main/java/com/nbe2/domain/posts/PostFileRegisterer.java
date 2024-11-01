@@ -19,7 +19,7 @@ public class PostFileRegisterer {
     public void register(final Post post, final Optional<List<Long>> fileIdList) {
         postFileRepository.deleteByPostId(post.getId());
         fileIdList.ifPresent(
-                (fileIds) -> {
+                fileIds -> {
                     List<FileMetaData> fileMetaDatas = fileMetaDataReader.readAll(fileIds);
                     List<PostFile> postFiles =
                             fileMetaDatas.stream().map(data -> PostFile.of(data, post)).toList();

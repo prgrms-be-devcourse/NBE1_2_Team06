@@ -89,7 +89,8 @@ public class SecurityConfig {
         System.out.println("특정필터제외라인");
         return web ->
                 web.ignoring()
-                        //                        .requestMatchers("/api/v1/oauth/**")
+                        .requestMatchers("/api/v1/oauth/**")
+                        .requestMatchers("/api/v1/health/**")
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/**")
                         .requestMatchers(HttpMethod.GET, "/api/v1/notices/**")
                         .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**")

@@ -67,6 +67,10 @@ public class EmergencyRoom extends BaseTimeEntity {
         return Coordinate.of(location.getX(), location.getY());
     }
 
+    public int getEmergencyRoomBedCount() {
+        return bedCount.getEmergencyRoomBedCount();
+    }
+
     @Embeddable
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
@@ -88,6 +92,10 @@ public class EmergencyRoom extends BaseTimeEntity {
         private int neonatalIcuBedCount;
 
         private int operatingRoomBedCount;
+
+        public int getEmergencyRoomBedCount() {
+            return emergencyRoomBedCount;
+        }
     }
 
     @Builder

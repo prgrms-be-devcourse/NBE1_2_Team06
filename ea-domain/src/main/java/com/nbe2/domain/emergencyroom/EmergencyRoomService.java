@@ -17,6 +17,7 @@ public class EmergencyRoomService {
     private final EmergencyRoomInitializer emergencyRoomInitializer;
     private final EmergencyRoomReader emergencyRoomReader;
     private final EmergencyRoomDirections emergencyRoomDirections;
+    private final RealTimeEmergencyRoomInfoCacheManager realTimeEmergencyRoomInfoCacheManager;
 
     @Transactional
     public void init() {
@@ -25,8 +26,8 @@ public class EmergencyRoomService {
 
     public List<RealTimeEmergencyRoomWithDistance> getRealTimeEmergencyRooms(
             Coordinate currentCoordinate) {
-        Region region = coordinateConverter.convert(currentCoordinate);
-        List<RealTimeEmergencyRoomInfo> realTimeInfos = realTimeInfoFetcher.fetch(region);
+        List<RealTimeEmergencyRoomInfo> realTimeInfos =
+                realTimeInfoFetcher.fetch(currentCoordinate);
         return distanceCalculator.calculate(realTimeInfos, currentCoordinate);
     }
 
@@ -43,5 +44,23 @@ public class EmergencyRoomService {
 
     public List<EmergencyRoomMapInfo> getEmergencyRooms(Coordinate coordinate, double distance) {
         return emergencyRoomReader.read(coordinate, distance);
+    }
+
+    public EmergencyRoomDetailInfo getEmergencyRoomDetail(
+            String hospitalId, Coordinate coordinate) {
+        EmergencyRoom emergencyRoom = emergencyRoomReader.read(hospitalId);
+
+        RealTimeEmergencyRoomInfo realTimeEmergencyRoomInfo =
+                realTimeEmergencyRoomInfoCacheManager
+                        .getInfo(emergencyRoom.getHpId())
+                        .orElseGet(
+                                () ->
+                                        realTimeInfoFetcher.reloadRealTimeEmergencyRooms(
+                                                coordinate, hospitalId));
+
+        RealTimeEmergencyRoomWithDistance realTimeEmergencyRoomWithDistance =
+                distanceCalculator.calculateDistance(coordinate, realTimeEmergencyRoomInfo);
+
+        return EmergencyRoomDetailInfo.create(emergencyRoom, realTimeEmergencyRoomWithDistance);
     }
 }

@@ -9,7 +9,8 @@ import com.nbe2.common.exception.ErrorReason;
 
 @RequiredArgsConstructor
 public enum AuthErrorCode implements BaseErrorCode {
-    AUTHENTICATION_FAILED(UNAUTHORIZED, "AUTH_401_1", "로그인에 실패했습니다.");
+    AUTHENTICATION_FAILED(UNAUTHORIZED, "AUTH_401_1", "로그인에 실패했습니다."),
+    REFRESH_TOKEN_NOT_FOUND(UNAUTHORIZED, "AUTH_401_2", "Refresh Token이 유효하지 않습니다. 다시 로그인 해주세요.");
 
     private final Integer status;
     private final String errorCode;

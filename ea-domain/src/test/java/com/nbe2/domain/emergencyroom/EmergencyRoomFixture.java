@@ -1,5 +1,8 @@
 package com.nbe2.domain.emergencyroom;
 
+import static com.nbe2.domain.global.TestConstants.ID;
+
+import java.lang.reflect.Field;
 import java.util.List;
 
 public class EmergencyRoomFixture {
@@ -47,6 +50,19 @@ public class EmergencyRoomFixture {
                 .neonatalIcuBedCount(NEONATAL_ICU_BED_COUNT)
                 .operatingRoomBedCount(OPERATING_ROOM_BED_COUNT)
                 .build();
+    }
+
+    public static EmergencyRoom createWithId() {
+        EmergencyRoom emergencyRoom = create();
+
+        try {
+            Field field = EmergencyRoom.class.getDeclaredField("id");
+            field.setAccessible(true);
+            field.set(emergencyRoom, ID);
+        } catch (Exception ignored) {
+        }
+
+        return emergencyRoom;
     }
 
     public static EmergencyRoomMapInfo createMapInfo() {
