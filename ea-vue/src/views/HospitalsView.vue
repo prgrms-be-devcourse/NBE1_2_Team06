@@ -46,6 +46,7 @@ export default defineComponent({
     ChatbotView,
     MapPinIcon: MapPin,
     RefreshCcwIcon: RefreshCcw,
+
   },
   setup() {
     const longitude = ref(127.1086228);

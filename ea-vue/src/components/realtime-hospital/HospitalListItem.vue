@@ -64,6 +64,11 @@
         <span class="sr-only">전화하기</span>
       </button>
     </div>
+    <!-- 병원 상세 페이지 링크-->
+    <router-link :to="{ name: 'EmergencyRoomDetail', params: { id: hospital.id } }" class="block p-4">
+      <h2 class="font-bold">{{ hospital.name }}</h2>
+      <p>주소: {{ hospital.address }}</p>
+    </router-link>
   </li>
 </template>
 
