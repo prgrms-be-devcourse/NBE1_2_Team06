@@ -47,7 +47,8 @@ public class EmergencyRoomInitializer {
                                             + room.getLocation().getLongitude()
                                             + room.getLocation().getLatitude();
                             boolean contains = uniqueKeySet.contains(s);
-                            return !contains;
+                            boolean emergencyRoomAvailability = room.isEmergencyRoomAvailability();
+                            return !contains && emergencyRoomAvailability;
                         })
                 .toList();
     }
