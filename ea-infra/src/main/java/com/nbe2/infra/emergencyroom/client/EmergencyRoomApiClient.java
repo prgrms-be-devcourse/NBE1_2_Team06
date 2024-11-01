@@ -45,7 +45,7 @@ public class EmergencyRoomApiClient implements EmergencyRoomClient {
     @Override
     public EmergencyRoomDirectionsInfo directionsEmergencyRoom(String start, String hospitalName) {
         NaverDirectionsResponse realTimeEmergencyData =
-                naverApiClient.getEmergencyDirectionsData(start, hospitalName, "trafast");
+                naverApiClient.getEmergencyDirectionsData(hospitalName, start, "trafast");
         return NaverDirectionsResponse.to(realTimeEmergencyData);
     }
 

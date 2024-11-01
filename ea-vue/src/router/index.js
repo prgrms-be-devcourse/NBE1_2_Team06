@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router';
 import HospitalsView from '@/views/HospitalsView.vue';
 
 const routes = [
@@ -15,10 +15,14 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
   },
+  { path: '/EmergencyDirections',
+    name: 'EmergencyDirections',
+    component: () => import('../views/EmergencyDirections.vue')
+  },
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 
