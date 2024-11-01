@@ -30,6 +30,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
             HttpServletResponse response,
             AuthenticationException authException)
             throws IOException, ServletException {
+        System.out.println("JwtAuthenticationEntryPoint JwtAuthenticationEntryPoint");
         if (isExceptionInSecurityFilter(request)) {
             resolver.resolveException(
                     request, response, null, (Exception) request.getAttribute("exception"));

@@ -18,10 +18,10 @@ import io.jsonwebtoken.*;
 @Component
 public class JwtProvider implements TokenProvider {
 
+    @Value("${jwt.screat-key}")
     private static String SECRET_KEY;
 
-    @Value("${jwt.secret-key}")
-    public void setSecretKey(String secretKey) {
+    public JwtProvider(@Value("${jwt.screat-key}") String secretKey) {
         SECRET_KEY = secretKey;
     }
 
