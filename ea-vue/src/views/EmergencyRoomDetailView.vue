@@ -73,24 +73,42 @@
         </div>
       </div>
 
-      <!-- 공지사항 카드 -->
+      <!-- 공지사항 및 리뷰 탭 -->
       <div class="bg-white shadow-md rounded-lg p-6 space-y-4">
-        <h2 class="text-lg font-semibold text-gray-800">병원 공지사항</h2>
-        <ul class="space-y-2">
-          <li v-for="(notice, index) in notices" :key="index" class="text-blue-500 underline cursor-pointer">
-            {{ notice }}
-          </li>
-        </ul>
+        <div class="flex border-b border-gray-200">
+          <button @click="activeTab = '공지사항'" :class="{'border-b-2 border-blue-500 text-blue-600': activeTab === '공지사항'}" class="pb-2 px-4 font-medium text-gray-500">공지사항</button>
+          <button @click="activeTab = '리뷰'" :class="{'border-b-2 border-blue-500 text-blue-600': activeTab === '리뷰'}" class="pb-2 px-4 font-medium text-gray-500">리뷰</button>
+        </div>
+
+        <!-- 공지사항 탭 내용 -->
+        <div v-if="activeTab === '공지사항'" class="space-y-4">
+          <div v-for="(notice, index) in notices" :key="index" class="bg-gray-100 p-4 rounded-lg space-y-2">
+            <h3 class="text-lg font-semibold text-gray-800">{{ notice.title }}</h3>
+            <p class="text-gray-600">{{ notice.description }}</p>
+            <span class="text-sm text-gray-400">{{ notice.date }}</span>
+          </div>
+        </div>
+
+        <!-- 리뷰 탭 내용 -->
+        <div v-if="activeTab === '리뷰'" class="space-y-4">
+          <div v-for="(review, index) in reviews" :key="index" class="bg-gray-100 p-4 rounded-lg space-y-2">
+            <div class="flex justify-between items-center">
+              <h3 class="text-lg font-semibold text-gray-800">{{ review.reviewer }}</h3>
+              <span class="text-sm text-gray-400">{{ review.date }}</span>
+            </div>
+            <p class="text-gray-600">{{ review.comment }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useEmergencyRoomDetail } from '@/composables/useEmergencyRoomDetail';
-import { ArrowLeftIcon, MapPinIcon, PhoneIcon, UserIcon } from '@heroicons/vue/20/solid'; // Heroicons에서 필요한 아이콘들 가져오기
+import { ArrowLeftIcon, MapPinIcon, PhoneIcon, UserIcon } from '@heroicons/vue/20/solid';
 
 export default {
   name: 'EmergencyRoomDetailView',
@@ -105,14 +123,20 @@ export default {
     const router = useRouter();
 
     const { emergencyRoomDetail, isLoading, error, fetchEmergencyRoomDetail } = useEmergencyRoomDetail();
+    const activeTab = ref('공지사항');
 
     const departmentList = computed(() => {
       return emergencyRoomDetail.value?.medicalDepartments?.split(',') || [];
     });
 
     const notices = [
-      "코로나19 선별진료소 운영 안내",
-      "응급실 리모델링 공사 안내"
+      { title: "코로나19 백신 접종 안내", description: "다음 주부터 65세 이상 어르신들을 대상으로 코로나19 백신 접종을 시작합니다. 예약은 병원 홈페이지나 전화로 가능합니다.", date: "2023-09-25" },
+      { title: "응급실 리모델링 공사 안내", description: "10월 1일부터 2주간 응급실 리모델링 공사로 인해 일시적으로 응급실 이용이 제한될 수 있습니다. 양해 부탁드립니다.", date: "2023-09-20" }
+    ];
+
+    const reviews = [
+      { reviewer: "응급환자1", date: "2023-09-24", comment: "신속한 대응과 친절한 서비스에 감사드립니다." },
+      { reviewer: "응급환자2", date: "2023-09-23", comment: "응대가 조금 더 빨랐으면 좋겠어요." }
     ];
 
     onMounted(() => {
@@ -132,7 +156,9 @@ export default {
       error,
       goBack,
       departmentList,
-      notices
+      notices,
+      reviews,
+      activeTab
     };
   },
 };

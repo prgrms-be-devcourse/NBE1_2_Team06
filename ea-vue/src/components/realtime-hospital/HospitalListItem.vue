@@ -4,7 +4,10 @@
       <!-- 병원 정보 섹션 -->
       <div class="flex-1">
         <div class="flex items-center gap-2">
-          <h2 class="text-lg font-bold text-gray-900">{{ hospital.name }}</h2>
+          <!-- 병원 이름에 링크 적용 -->
+          <router-link :to="{ name: 'EmergencyRoomDetail', params: { id: hospital.id } }" class="text-lg font-bold text-gray-900 hover:underline">
+            {{ hospital.name }}
+          </router-link>
           <span
             class="px-2 py-0.5 text-xs font-medium rounded-full"
             :class="getStatusBadgeClass(hospital.availableBeds)"
@@ -64,11 +67,6 @@
         <span class="sr-only">전화하기</span>
       </button>
     </div>
-    <!-- 병원 상세 페이지 링크-->
-    <router-link :to="{ name: 'EmergencyRoomDetail', params: { id: hospital.id } }" class="block p-4">
-      <h2 class="font-bold">{{ hospital.name }}</h2>
-      <p>주소: {{ hospital.address }}</p>
-    </router-link>
   </li>
 </template>
 
@@ -124,9 +122,8 @@ export default defineComponent({
       console.log('Calling hospital:', this.hospital.name);
     },
     timeSinceUpdate(inputDate) {
-      // inputDate를 Date 객체로 변환
       const year = parseInt(inputDate.substring(0, 4), 10);
-      const month = parseInt(inputDate.substring(4, 6), 10) - 1; // JavaScript의 월은 0부터 시작
+      const month = parseInt(inputDate.substring(4, 6), 10) - 1;
       const day = parseInt(inputDate.substring(6, 8), 10);
       const hours = parseInt(inputDate.substring(8, 10), 10);
       const minutes = parseInt(inputDate.substring(10, 12), 10);
