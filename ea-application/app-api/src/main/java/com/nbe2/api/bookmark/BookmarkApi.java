@@ -38,7 +38,7 @@ public class BookmarkApi {
         return Response.success(bookmarkReadResponse);
     }
 
-    @DeleteMapping("/{emergencyRommId}")
+    @DeleteMapping("/{emergencyRoomId}")
     public Response<Void> deleteBookmark(
             @PathVariable Long emergencyRommId,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
