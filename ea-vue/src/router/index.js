@@ -22,6 +22,10 @@ const routes = [
     component: EmergencyRoomDetailView,
     props: true, // URL 파라미터를 컴포넌트에 props로 전달
   },
+  { path: '/EmergencyDirections',
+    name: 'EmergencyDirections',
+    component: () => import('../views/EmergencyDirections.vue')
+  },
 ];
 
 const router = createRouter({
