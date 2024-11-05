@@ -17,7 +17,7 @@ public class EmergencyRoomService {
     private final EmergencyRoomInitializer emergencyRoomInitializer;
     private final EmergencyRoomReader emergencyRoomReader;
     private final EmergencyRoomDirections emergencyRoomDirections;
-    private final RealTimeEmergencyRoomInfoCacheManager realTimeEmergencyRoomInfoCacheManager;
+    private final EmergencyRoomDetailCombiner emergencyRoomDetailCombiner;
 
     @Transactional
     public void init() {
@@ -48,19 +48,6 @@ public class EmergencyRoomService {
 
     public EmergencyRoomDetailInfo getEmergencyRoomDetail(
             String hospitalId, Coordinate coordinate) {
-        EmergencyRoom emergencyRoom = emergencyRoomReader.read(hospitalId);
-
-        RealTimeEmergencyRoomInfo realTimeEmergencyRoomInfo =
-                realTimeEmergencyRoomInfoCacheManager
-                        .getInfo(emergencyRoom.getHpId())
-                        .orElseGet(
-                                () ->
-                                        realTimeInfoFetcher.reloadRealTimeEmergencyRooms(
-                                                coordinate, hospitalId));
-
-        RealTimeEmergencyRoomWithDistance realTimeEmergencyRoomWithDistance =
-                distanceCalculator.calculateDistance(coordinate, realTimeEmergencyRoomInfo);
-
-        return EmergencyRoomDetailInfo.create(emergencyRoom, realTimeEmergencyRoomWithDistance);
+        return emergencyRoomDetailCombiner.combineEmergencyRoomDetailInfo(hospitalId, coordinate);
     }
 }

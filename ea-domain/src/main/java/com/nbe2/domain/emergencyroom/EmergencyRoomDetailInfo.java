@@ -6,6 +6,7 @@ public record EmergencyRoomDetailInfo(
         String emergencyRoomContactNumber,
         String medicalDepartments,
         int emergencyRoomBedCount,
+
         // 실시간 정보
         int availableBeds,
         int operatingRoomBeds,
@@ -15,16 +16,23 @@ public record EmergencyRoomDetailInfo(
         boolean isVentilatorAvailable,
         boolean isIncubatorAvailable,
         boolean isAmbulanceAvailable,
-        double distance) {
+        double distance,
+        boolean isOverAvailableBeds) {
     public static EmergencyRoomDetailInfo create(
             EmergencyRoom emergencyRoom,
-            RealTimeEmergencyRoomWithDistance realTimeEmergencyRoomWithDistance) {
+            RealTimeEmergencyRoomWithDistance realTimeEmergencyRoomWithDistance,
+            boolean isOverAvailableBeds) {
         return new EmergencyRoomDetailInfo(
                 emergencyRoom.getHospitalName(),
                 emergencyRoom.getAddress(),
                 emergencyRoom.getEmergencyRoomContactNumber(),
                 emergencyRoom.getMedicalDepartments(),
-                emergencyRoom.getEmergencyRoomBedCount(),
+                isOverAvailableBeds
+                        ? realTimeEmergencyRoomWithDistance
+                                        .realTimeEmergencyRoomInfo()
+                                        .availableBeds()
+                                * 2
+                        : emergencyRoom.getEmergencyRoomBedCount(), // 가용병상 > 전체 응급실 병상 -> 두배
                 realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().availableBeds(),
                 realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().operatingRoomBeds(),
                 realTimeEmergencyRoomWithDistance.realTimeEmergencyRoomInfo().isCtAvailable(),
@@ -41,6 +49,7 @@ public record EmergencyRoomDetailInfo(
                 realTimeEmergencyRoomWithDistance
                         .realTimeEmergencyRoomInfo()
                         .isAmbulanceAvailable(),
-                realTimeEmergencyRoomWithDistance.distance());
+                realTimeEmergencyRoomWithDistance.distance(),
+                isOverAvailableBeds);
     }
 }

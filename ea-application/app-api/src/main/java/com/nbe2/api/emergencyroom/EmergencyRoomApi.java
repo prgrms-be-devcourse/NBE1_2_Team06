@@ -84,6 +84,7 @@ public class EmergencyRoomApi {
         EmergencyRoomDetailInfo emergencyRoomDetail =
                 emergencyRoomService.getEmergencyRoomDetail(
                         hospitalId, Coordinate.of(longitude, latitude));
+
         return Response.success(emergencyRoomDetail);
     }
 }

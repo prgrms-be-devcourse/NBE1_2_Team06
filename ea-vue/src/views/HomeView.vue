@@ -10,12 +10,14 @@
 // @ is an alias to /src
 import HealthCheck from '@/components/HealthCheck.vue';
 import ChatbotView from '@/views/ChatbotView.vue';
+import EmergencyRoomDetailWindow from "@/components/emergencyRoom/EmergencyRoomDetail.vue";
 
 export default {
   name: 'HomeView',
   components: {
     HealthCheck,
     ChatbotView,
+    EmergencyRoomDetailWindow,
   },
 };
 </script>

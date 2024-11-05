@@ -22,7 +22,6 @@ public class RealTimeEmergencyRoomInfoFetcher {
         return realTimeInfo;
     }
 
-    // @TODO 기존의 fetch가 아니라 hpId로 캐싱해주는 로직이 필요함
     public RealTimeEmergencyRoomInfo reloadRealTimeEmergencyRooms(
             Coordinate currentLocation, String hospitalId) {
         fetch(currentLocation);

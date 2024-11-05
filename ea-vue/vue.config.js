@@ -1,7 +1,7 @@
 const { defineConfig } = require('@vue/cli-service');
 
 module.exports = defineConfig({
-  lintOnSave: false, // 여기 추가하시면 됩니다
+  lintOnSave: false,
   transpileDependencies: true,
   devServer: {
     port: 3000,
